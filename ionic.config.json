@@ -1,0 +1,8 @@
+{
+  "name": "m3p-appv1",
+  "app_id": "",
+  "type": "ionic-angular",
+  "integrations": {
+    "cordova": {}
+  }
+}

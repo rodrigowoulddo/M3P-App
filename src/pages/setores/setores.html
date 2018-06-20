@@ -1,0 +1,66 @@
+<!--
+  Generated template for the SetoresPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>Setores</ion-title>
+
+    <!--Botão de adicionar no iOS-->
+    <ion-buttons hideWhen="android, core" end>
+      <button ion-button icon-only (click)="addSetor()">
+        <ion-icon name="add"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+  <!--Barra de Pesquisa-->
+  <ion-toolbar>
+    <ion-searchbar
+      placeholder="Procurar"
+      [(ngModel)]="myInput"
+      [showCancelButton]="shouldShowCancel"
+      (ionInput)="filterItems($event)"
+      (ionCancel)="onCancel($event)">
+    </ion-searchbar>
+  </ion-toolbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-list class="browser-compat">
+    <ion-card
+      *ngFor="let setor of setoresFiltrados$ | async">
+
+      <ion-item (click)="irParaPaginaDoSetor(setor)">
+        <ion-avatar *ngIf="setor.nivel" icone-estrela item-end>
+          <img src="../assets/img/selo-nivel-5.png">
+        </ion-avatar>
+        <h2>{{setor.sigla}}</h2>
+        <p>{{setor.nome}}</p>
+      </ion-item>
+
+      <ion-card-content>
+        <ion-note>Última Avaliação: {{setor.ultimaAvaliacao}}</ion-note>
+      </ion-card-content>
+
+    </ion-card>
+  </ion-list>
+
+    <button padding showWhen="core" class="centralized" ion-button (click)="addSetor()">
+      Adicionar Setor
+    </button>
+
+  <ion-fab bottom right>
+    <button ion-fab showWhen="android" (click)="addSetor()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

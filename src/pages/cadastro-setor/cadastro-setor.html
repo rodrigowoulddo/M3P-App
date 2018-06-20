@@ -1,0 +1,58 @@
+<!--
+  Generated template for the CadastroSetorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+  <ion-navbar>
+    <ion-title>{{nomePagina}}</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card padding class="browser-compat">
+    <ion-card-content>
+
+      <form (ngSubmit)="registrarSetor(f.value)" #f="ngForm">
+        <!--<ion-row>-->
+          <!--<ion-col>-->
+            <ion-list>
+
+              <ion-item>
+                <ion-label color="dark">Sigla</ion-label>
+                <ion-input type="text" name="sigla" [(ngModel)]="setor.sigla" required ></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="dark">Nome Completo</ion-label>
+                <ion-input type="text" name="nome" [(ngModel)]="setor.nome" required></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="dark">Pró-Reitoria</ion-label>
+                <ion-input type="text" name="proReitoria" [(ngModel)]="setor.proReitoria"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="dark">Líder de Processo</ion-label>
+                <ion-input type="text" name="lider" [(ngModel)]="setor.lider"></ion-input>
+              </ion-item>
+
+              <ion-item>
+                <ion-label color="dark">Email do Líder</ion-label>
+                <ion-input type="text" name="emailLider" [(ngModel)]="setor.emailLider"></ion-input>
+              </ion-item>
+
+            </ion-list>
+
+            <button padding ion-button full clear type="submit" [disabled]="!f.valid">{{nomeBotaoSalvar}}</button>
+
+      </form>
+
+    </ion-card-content>
+  </ion-card>
+
+  </ion-content>

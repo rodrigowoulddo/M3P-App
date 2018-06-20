@@ -1,0 +1,97 @@
+
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{setor.sigla}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button icon-only (click)="editarSetor()">
+        <ion-icon name="create"></ion-icon>
+      </button>
+
+      <button ion-button icon-only (click)="excluirSetor()">
+        <ion-icon name="trash"></ion-icon>
+      </button>
+    </ion-buttons>
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card>
+
+
+    <ion-list>
+
+      <ion-item>
+        <p>Nome Completo</p>
+        <h2>{{setor.nome}}</h2>
+      </ion-item>
+
+     <ion-item *ngIf="setor.proReitoria">
+        <p>Pró-Reitoria de Vínculo</p>
+        <h2>{{setor.proReitoria}}</h2>
+      </ion-item>
+
+      <ion-item>
+        <p>Nível Atual</p>
+        <h2>{{setor.nivel? "Nível "+setor.nivel : "NA"}}</h2>
+      </ion-item>
+
+      <ion-item>
+        <p>Líder de Processos</p>
+        <h2>{{setor.lider? setor.lider : "Não especificado"}}</h2>
+      </ion-item>
+
+      <ion-item>
+        <p>Email do Líder</p>
+        <h2>{{setor.emailLider? setor.emailLider : "Não especificado"}}</h2>
+      </ion-item>
+
+      <ion-item>
+        <p>Última Avaliação</p>
+        <h2>{{setor.ultimaAvaliacao? setor.ultimaAvaliacao : "NA"}}</h2>
+      </ion-item>
+
+  </ion-list>
+  </ion-card>
+
+  <ion-card>
+    <ion-card-header>
+      Histórico de Avaliações
+    </ion-card-header>
+
+    <ion-list>
+
+      <ion-item>
+        <h3>Nível 3</h3>
+        <p>29/07/2018</p>
+      </ion-item>
+
+      <ion-item>
+        <h3>Nível 2</h3>
+        <p>29/07/2017</p>
+      </ion-item>
+
+      <ion-item>
+        <h3>Nível 2</h3>
+        <p>29/05/2017</p>
+      </ion-item>
+
+    </ion-list>
+
+    <button ion-button clear small full>Ver Mais</button>
+
+  </ion-card>
+
+
+  <ion-fab bottom right>
+    <button ion-fab  hideWhen="browser" class="cor-danger" (click)="avaliarSetor()">
+      <ion-icon name="options"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>
