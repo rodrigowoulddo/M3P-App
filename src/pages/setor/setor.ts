@@ -3,6 +3,8 @@ import {IonicPage, NavController, NavParams, AlertController, ViewController} fr
 import {Setor} from "../../data/setorInterface";
 import {CadastroSetorPage} from "../cadastro-setor/cadastro-setor";
 import {SetorService} from "../../services/setor";
+import {AvaliacaoPage} from "../avaliacao/avaliacao";
+import {PreAvaliacaoPage} from "../pre-avaliacao/pre-avaliacao";
 
 /**
  * Generated class for the SetorPage page.
@@ -68,6 +70,12 @@ export class SetorPage {
   }
 
   avaliarSetor() {
+
+    if(this.setor.sendoAvaliado)
+      this.navCtrl.push(AvaliacaoPage, {setor: this.setor});
+    else
+      this.navCtrl.push(PreAvaliacaoPage, {setor: this.setor});
+
 
   }
 }

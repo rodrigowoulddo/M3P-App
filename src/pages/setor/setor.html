@@ -2,7 +2,7 @@
 <ion-header>
 
   <ion-navbar>
-    <ion-title>{{setor.sigla}}</ion-title>
+    <!--<ion-title>{{setor.sigla}}</ion-title>-->
 
     <ion-buttons end>
       <button ion-button icon-only (click)="editarSetor()">
@@ -19,79 +19,103 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
 
-  <ion-card>
+  <div padding class="browser-compat">
+    <ion-card>
+
+      <ion-card-header>
+        <ion-item>
+          <h1 text-center width-50 class="nome-setor">{{setor.nome}}</h1>
+          <p text-center>({{setor.sigla}})</p>
+        </ion-item>
+      </ion-card-header>
+
+      <ion-list>
+
+        <ion-item *ngIf="setor.vinculo">
+          <p>Vínculo</p>
+          <h2>{{setor.vinculo}}</h2>
+        </ion-item>
+
+        <ion-item>
+          <p>Nível Atual</p>
+          <h2>{{setor.nivel? "Nível "+setor.nivel : "NA"}}</h2>
+        </ion-item>
+
+        <ion-item>
+          <p>Líder de Processos</p>
+          <h2>{{setor.lider? setor.lider : "Não especificado"}}</h2>
+        </ion-item>
+
+        <ion-item>
+          <p>Email do Líder</p>
+          <h2>{{setor.emailLider? setor.emailLider : "Não especificado"}}</h2>
+        </ion-item>
+
+        <ion-item>
+          <p>Última Avaliação</p>
+          <h2>{{setor.ultimaAvaliacao? setor.ultimaAvaliacao : "NA"}}</h2>
+        </ion-item>
+
+      </ion-list>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        Histórico de Avaliações
+      </ion-card-header>
+
+      <ion-list>
+
+        <ion-item>
+          <h3>Nível 3</h3>
+          <p>29/07/2018</p>
+        </ion-item>
+
+        <ion-item>
+          <h3>Nível 2</h3>
+          <p>29/07/2017</p>
+        </ion-item>
+
+        <ion-item>
+          <h3>Nível 2</h3>
+          <p>29/05/2017</p>
+        </ion-item>
+
+      </ion-list>
+
+      <button ion-button clear small full>Ver Mais</button>
+
+    </ion-card>
+  </div>
 
 
-    <ion-list>
 
-      <ion-item>
-        <p>Nome Completo</p>
-        <h2>{{setor.nome}}</h2>
-      </ion-item>
-
-     <ion-item *ngIf="setor.proReitoria">
-        <p>Pró-Reitoria de Vínculo</p>
-        <h2>{{setor.proReitoria}}</h2>
-      </ion-item>
-
-      <ion-item>
-        <p>Nível Atual</p>
-        <h2>{{setor.nivel? "Nível "+setor.nivel : "NA"}}</h2>
-      </ion-item>
-
-      <ion-item>
-        <p>Líder de Processos</p>
-        <h2>{{setor.lider? setor.lider : "Não especificado"}}</h2>
-      </ion-item>
-
-      <ion-item>
-        <p>Email do Líder</p>
-        <h2>{{setor.emailLider? setor.emailLider : "Não especificado"}}</h2>
-      </ion-item>
-
-      <ion-item>
-        <p>Última Avaliação</p>
-        <h2>{{setor.ultimaAvaliacao? setor.ultimaAvaliacao : "NA"}}</h2>
-      </ion-item>
-
-  </ion-list>
-  </ion-card>
-
-  <ion-card>
-    <ion-card-header>
-      Histórico de Avaliações
-    </ion-card-header>
-
-    <ion-list>
-
-      <ion-item>
-        <h3>Nível 3</h3>
-        <p>29/07/2018</p>
-      </ion-item>
-
-      <ion-item>
-        <h3>Nível 2</h3>
-        <p>29/07/2017</p>
-      </ion-item>
-
-      <ion-item>
-        <h3>Nível 2</h3>
-        <p>29/05/2017</p>
-      </ion-item>
-
-    </ion-list>
-
-    <button ion-button clear small full>Ver Mais</button>
-
-  </ion-card>
-
+  <!--<ion-fab bottom right>-->
+    <!--<button ion-fab class="cor-danger">-->
+      <!--<ion-icon name="options"></ion-icon>-->
+    <!--</button>-->
+    <!--<ion-fab-list>-->
+      <!--<button ion-fab><ion-icon name="logo-facebook"></ion-icon></button>-->
+      <!--<button ion-fab><ion-icon name="logo-twitter"></ion-icon></button>-->
+      <!--<button ion-fab><ion-icon name="logo-vimeo"></ion-icon></button>-->
+      <!--<button ion-fab><ion-icon name="logo-googleplus"></ion-icon></button>-->
+    <!--</ion-fab-list>-->
+  <!--</ion-fab>-->
 
   <ion-fab bottom right>
-    <button ion-fab  hideWhen="browser" class="cor-danger" (click)="avaliarSetor()">
-      <ion-icon name="options"></ion-icon>
-    </button>
+    <button ion-fab class="cor-danger" (click)="avaliarSetor()"><ion-icon name="options"></ion-icon></button>
+    <!--<ion-fab-list side="top">-->
+      <!--<button ion-fab class="botao-nivel">1</button>-->
+      <!--<button ion-fab class="botao-nivel">2</button>-->
+      <!--<button ion-fab class="botao-nivel">3</button>-->
+      <!--<button ion-fab class="botao-nivel">4</button>-->
+      <!--<button ion-fab class="botao-nivel">5</button>-->
+      <!--<button ion-fab class="botao-nivel">6</button>-->
+      <!--<button ion-fab class="botao-nivel">7</button>-->
+
+    <!--</ion-fab-list>-->
   </ion-fab>
 
 </ion-content>

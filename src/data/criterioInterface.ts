@@ -1,0 +1,8 @@
+import {ItemDeAvaliacao} from "./itemDeAvaliacaoInterface";
+
+export interface Criterio {
+  key?: string,
+  descricao: string,
+  nome: string,
+  itensDeAvaliacao: ItemDeAvaliacao[]
+}

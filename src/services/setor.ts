@@ -21,21 +21,17 @@ export class SetorService {
   save(setor: Setor){
 
     if(setor.key == null){
-      console.log(setor.key);
       setor.key = this.setoresRef.push(null).key;
-      this.setoresRef.update('/'+setor.key,setor);
+      this.setoresRef.update('/'+setor.key,JSON.parse(JSON.stringify(setor)));
 
       this.mostrarToast('Setor '+setor.sigla+' adicionado');
-
       console.log("FIREBASE: Setor Adicionado:");
       console.log(setor);
     }
     else{
-      console.log(setor.key);
-      this.setoresRef.update('/'+setor.key,setor);
+      this.setoresRef.update('/'+setor.key,JSON.parse(JSON.stringify(setor)));
 
       this.mostrarToast('Setor '+setor.sigla+' editado');
-
       console.log("FIREBASE: Setor Editado:");
       console.log(setor);
     }

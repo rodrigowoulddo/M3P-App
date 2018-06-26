@@ -19,6 +19,10 @@ import {FIREBASE_CONFIG} from "./firebase.credentials";
 import {SetorService} from "../services/setor";
 import {CadastroSetorPage} from "../pages/cadastro-setor/cadastro-setor";
 import {SetorPage} from "../pages/setor/setor";
+import {PreAvaliacaoPage} from "../pages/pre-avaliacao/pre-avaliacao";
+import {AvaliacaoPage} from "../pages/avaliacao/avaliacao";
+import {NivelService} from "../services/nivel";
+import {AvaliacaoService} from "../services/avaliacao";
 
 @NgModule({
   declarations: [
@@ -27,7 +31,9 @@ import {SetorPage} from "../pages/setor/setor";
     SetoresPage,
     NiveisPage,
     CadastroSetorPage,
-    SetorPage
+    SetorPage,
+    PreAvaliacaoPage,
+    AvaliacaoPage
   ],
   imports: [
     BrowserModule,
@@ -42,13 +48,17 @@ import {SetorPage} from "../pages/setor/setor";
     SetoresPage,
     NiveisPage,
     CadastroSetorPage,
-    SetorPage
+    SetorPage,
+    PreAvaliacaoPage,
+    AvaliacaoPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
-    SetorService
+    SetorService,
+    NivelService,
+    AvaliacaoService
   ]
 })
 export class AppModule {}

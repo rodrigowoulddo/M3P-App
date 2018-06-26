@@ -1,8 +1,23 @@
 page-setor {
 
 
-  .tituloSetor{
-    font-size: 18px;
+  .nome-setor{
+    font-size: 100%;
+    white-space: normal;
+    font-weight: bold;
+    color: map-get($colors, primary);
   }
+
+  .atributo-setor{
+    color: map-get($colors, primary);
+  }
+
+  .botao-nivel{
+    color: map-get($colors, light);
+    background: map-get($colors, primary);
+  }
+
+
+
 
 }

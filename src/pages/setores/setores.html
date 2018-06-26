@@ -21,11 +21,12 @@
   <!--Barra de Pesquisa-->
   <ion-toolbar>
     <ion-searchbar
+      class="browser-compat"
       placeholder="Procurar"
       [(ngModel)]="myInput"
       [showCancelButton]="shouldShowCancel"
       (ionInput)="filterItems($event)"
-      (ionCancel)="onCancel($event)">
+      (ionCancel)="onCancel()">
     </ion-searchbar>
   </ion-toolbar>
 
@@ -47,7 +48,7 @@
       </ion-item>
 
       <ion-card-content>
-        <ion-note>Última Avaliação: {{setor.ultimaAvaliacao}}</ion-note>
+        <ion-note>{{setor.ultimaAvaliacao? 'Última Avaliação: '+setor.ultimaAvaliacao : 'Setor ainda não avaliado'}}</ion-note>
       </ion-card-content>
 
     </ion-card>

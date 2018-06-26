@@ -30,3 +30,11 @@
 .cor-danger{
   background: map-get($colors, danger) ;
 }
+
+.cor-primary{
+  background: map-get($colors, primary) ;
+}
+
+.cor-secondary{
+  background: map-get($colors, secondary) ;
+}
