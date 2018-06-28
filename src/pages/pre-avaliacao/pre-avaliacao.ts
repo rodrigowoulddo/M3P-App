@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {NivelService} from "../../services/nivel";
 import {Nivel} from "../../data/nivelInterface";
 import {Setor} from "../../data/setorInterface";
@@ -7,6 +7,7 @@ import {Observable} from "rxjs/index";
 import {map} from "rxjs/operators";
 import {Avaliacao} from "../../data/avaliacaoInterface";
 import {AvaliacaoService} from "../../services/avaliacao";
+import {SetorService} from "../../services/setor";
 
 /**
  * Generated class for the PreAvaliacaoPage page.
@@ -30,7 +31,9 @@ export class PreAvaliacaoPage {
               public navCtrl: NavController,
               public navParams: NavParams,
               private nivelService: NivelService,
-              private avaliacaoService: AvaliacaoService
+              private avaliacaoService: AvaliacaoService,
+              private setorService: SetorService,
+              private viewCtrl: ViewController
   ) {
 
     //Debug
@@ -63,23 +66,39 @@ export class PreAvaliacaoPage {
       setor: this.setor.key,
       dataInicio: this.avaliacaoService.getDataAgora(),
       nivelPretendido: this.nivelPretendido,
-      // corpo: this.transformarNiveisEmArray(this.niveis$)
       corpo: []
     };
 
-    // this.avaliacaoService.save(avaliacao);
+    this.salvaNovaAvaliacao(avaliacao, this.insereNovaAvaliacao);
     console.log(avaliacao);
-    this.setor.sendoAvaliado = true;
   }
 
-  async transformarNiveisEmArray(niveis$: Observable<Nivel[]>){
-    // let niveis : Nivel[];
-    // niveis = [];
 
-    // this.niveis$.forEach(function(nivel){
-    //   console.log(nivel);
-    //   niveis.concat(nivel);
-    // }).then(v => {return niveis});
 
+  salvaNovaAvaliacao(avaliacao: Avaliacao, insereNovaAvaliacao){
+
+    let niveis: Nivel[];
+    niveis = [];
+
+    this.niveis$.forEach( nivel_array =>{
+      nivel_array.forEach(nivel => {
+        niveis.push(nivel);
+      })
+    });
+
+    avaliacao.corpo = niveis;
+    insereNovaAvaliacao(avaliacao, this);
+
+    this.fecharPágina();
+  }
+
+  insereNovaAvaliacao(avaliacao: Avaliacao, self){
+    self.avaliacaoService.save(avaliacao);
+    self.setor.sendoAvaliado = true;
+    self.setorService.save(self.setor);
+  }
+
+  fecharPágina(){
+    this.viewCtrl.dismiss();
   }
 }

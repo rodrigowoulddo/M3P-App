@@ -15,7 +15,7 @@ import {AngularFireModule} from "angularfire2";
 import {AngularFireDatabaseModule} from "angularfire2/database";
 import {FIREBASE_CONFIG} from "./firebase.credentials";
 
-// Own Services
+// Own Services and Pages
 import {SetorService} from "../services/setor";
 import {CadastroSetorPage} from "../pages/cadastro-setor/cadastro-setor";
 import {SetorPage} from "../pages/setor/setor";
@@ -23,6 +23,7 @@ import {PreAvaliacaoPage} from "../pages/pre-avaliacao/pre-avaliacao";
 import {AvaliacaoPage} from "../pages/avaliacao/avaliacao";
 import {NivelService} from "../services/nivel";
 import {AvaliacaoService} from "../services/avaliacao";
+import {Toaster} from "../services/toaster";
 
 @NgModule({
   declarations: [
@@ -58,7 +59,8 @@ import {AvaliacaoService} from "../services/avaliacao";
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     SetorService,
     NivelService,
-    AvaliacaoService
+    AvaliacaoService,
+    Toaster
   ]
 })
 export class AppModule {}

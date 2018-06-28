@@ -1,7 +1,6 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {Avaliacao} from "../data/avaliacaoInterface";
-import {ToastController} from "ionic-angular";
 
 @Injectable()
 export class AvaliacaoService {
@@ -10,9 +9,7 @@ export class AvaliacaoService {
   private avaliacaoRef = this.db.list<Avaliacao>('avaliacoes');
   public avaliacoes: Avaliacao[];
 
-  constructor(private db: AngularFireDatabase,
-              private toastCtrl: ToastController
-  ){ }
+  constructor(private db: AngularFireDatabase){ }
 
 
   getAll(){
