@@ -47,9 +47,6 @@ export class PreAvaliacaoPage {
           }));
         }
       ));
-
-    console.log(this.niveis$);
-
   }
 
   ionViewDidLoad() {
@@ -70,7 +67,6 @@ export class PreAvaliacaoPage {
     };
 
     this.salvaNovaAvaliacao(avaliacao, this.insereNovaAvaliacao);
-    console.log(avaliacao);
   }
 
 
@@ -87,6 +83,7 @@ export class PreAvaliacaoPage {
     });
 
     avaliacao.corpo = niveis;
+
     insereNovaAvaliacao(avaliacao, this);
 
     this.fecharPágina();

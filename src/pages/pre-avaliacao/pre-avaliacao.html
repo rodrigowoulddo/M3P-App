@@ -17,18 +17,22 @@
 
   <ion-card>
 
-    <ion-list radio-group [(ngModel)]="nivelPretendido">
-
-      <ion-list-header>
+      <ion-card-header>
         Nível Pretendido
-      </ion-list-header>
+      </ion-card-header>
 
-      <ion-item *ngFor="let nivel of niveis$ | async">
-        <ion-label>{{nivel.nome}}</ion-label>
-        <ion-radio value={{nivel.nome}}></ion-radio>
-      </ion-item>
+    <ion-card-content>
+      <ion-list radio-group [(ngModel)]="nivelPretendido">
 
-    </ion-list>
+        <ion-item *ngFor="let nivel of niveis$ | async">
+
+          <ion-label>{{nivel.nome}}</ion-label>
+          <ion-radio value={{nivel.nome}}></ion-radio>
+
+        </ion-item>
+
+      </ion-list>
+    </ion-card-content>
 
   </ion-card>
 

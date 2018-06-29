@@ -6,5 +6,5 @@ export interface Avaliacao {
   nivelPretendido: string,
   dataInicio: string,
   dataFim?: string,
-  corpo: Nivel[]
+  corpo: any
 }
