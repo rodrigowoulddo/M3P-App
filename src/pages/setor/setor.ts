@@ -5,6 +5,7 @@ import {CadastroSetorPage} from "../cadastro-setor/cadastro-setor";
 import {SetorService} from "../../services/setor";
 import {AvaliacaoPage} from "../avaliacao/avaliacao";
 import {PreAvaliacaoPage} from "../pre-avaliacao/pre-avaliacao";
+import {AvaliacaoService} from "../../services/avaliacao";
 
 /**
  * Generated class for the SetorPage page.
@@ -26,6 +27,7 @@ export class SetorPage {
               public navParams: NavParams,
               private alertCtrl: AlertController,
               private setorService: SetorService,
+              private avaliacaoService: AvaliacaoService,
               private viewCtrl: ViewController
   ) {
   }
@@ -71,11 +73,20 @@ export class SetorPage {
 
   avaliarSetor() {
 
-    if(this.setor.sendoAvaliado)
-      this.navCtrl.push(AvaliacaoPage, {setor: this.setor});
-    else
+    if(!this.setor.sendoAvaliado){
       this.navCtrl.push(PreAvaliacaoPage, {setor: this.setor});
+    }else{
+      this.avaliacaoService.getAvaliacaoMaisRecente(this.setor.key, this.abrirPaginaAvaliacao, this);
+    }
+  }
 
+  abrirPaginaAvaliacao(refAvaliacaoCorrente, self){
 
+    self.navCtrl.push(
+                      AvaliacaoPage,
+                            {
+                                      setor: self.setor,
+                                      avaliacao: refAvaliacaoCorrente
+                                    });
   }
 }

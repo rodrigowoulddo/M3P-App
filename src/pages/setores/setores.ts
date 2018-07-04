@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {Observable} from "rxjs";
 import {Setor} from "../../data/setorInterface";
 import {SetorService} from "../../services/setor";
@@ -28,7 +28,8 @@ export class SetoresPage {
 
   constructor(  public navCtrl: NavController,
                 public navParams: NavParams,
-                private setorService: SetorService) {
+                private setorService: SetorService,
+                private viewCtrl: ViewController) {
 
     this.setores$ = this.setorService
       .getAll() //DB LIST
@@ -80,4 +81,9 @@ export class SetoresPage {
   private atualizaListaDeSetores() {
     this.setoresFiltrados$ = this.setores$;
   }
+
+  fecharPágina(){
+    this.viewCtrl.dismiss();
+  }
+
 }

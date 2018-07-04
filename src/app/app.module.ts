@@ -24,6 +24,8 @@ import {AvaliacaoPage} from "../pages/avaliacao/avaliacao";
 import {NivelService} from "../services/nivel";
 import {AvaliacaoService} from "../services/avaliacao";
 import {Toaster} from "../services/toaster";
+import {AvaliacaoCriteriosPage} from "../pages/avaliacao-criterios/avaliacao-criterios";
+import {AvaliacaoItensPage} from "../pages/avaliacao-itens/avaliacao-itens";
 
 @NgModule({
   declarations: [
@@ -34,7 +36,9 @@ import {Toaster} from "../services/toaster";
     CadastroSetorPage,
     SetorPage,
     PreAvaliacaoPage,
-    AvaliacaoPage
+    AvaliacaoPage,
+    AvaliacaoCriteriosPage,
+    AvaliacaoItensPage
   ],
   imports: [
     BrowserModule,
@@ -51,7 +55,9 @@ import {Toaster} from "../services/toaster";
     CadastroSetorPage,
     SetorPage,
     PreAvaliacaoPage,
-    AvaliacaoPage
+    AvaliacaoPage,
+    AvaliacaoCriteriosPage,
+    AvaliacaoItensPage
   ],
   providers: [
     StatusBar,

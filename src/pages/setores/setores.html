@@ -37,7 +37,8 @@
 
   <ion-list class="browser-compat">
     <ion-card
-      *ngFor="let setor of setoresFiltrados$ | async">
+      *ngFor="let setor of setoresFiltrados$ | async"
+    >
 
       <ion-item (click)="irParaPaginaDoSetor(setor)">
         <ion-avatar *ngIf="setor.nivel" icone-estrela item-end>

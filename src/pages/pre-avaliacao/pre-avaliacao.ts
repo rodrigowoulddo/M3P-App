@@ -7,7 +7,6 @@ import {Observable} from "rxjs/index";
 import {map} from "rxjs/operators";
 import {Avaliacao} from "../../data/avaliacaoInterface";
 import {AvaliacaoService} from "../../services/avaliacao";
-import {SetorService} from "../../services/setor";
 
 /**
  * Generated class for the PreAvaliacaoPage page.
@@ -32,7 +31,6 @@ export class PreAvaliacaoPage {
               public navParams: NavParams,
               private nivelService: NivelService,
               private avaliacaoService: AvaliacaoService,
-              private setorService: SetorService,
               private viewCtrl: ViewController
   ) {
 

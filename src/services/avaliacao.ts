@@ -1,8 +1,7 @@
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {Avaliacao} from "../data/avaliacaoInterface";
-import {NivelService} from "./nivel";
-import {Nivel} from "../data/nivelInterface";
+import {Criterio} from "../data/criterioInterface";
 
 @Injectable()
 export class AvaliacaoService {
@@ -12,17 +11,55 @@ export class AvaliacaoService {
   private niveisRef = this.db.database.ref('niveis');
   public avaliacoes: Avaliacao[];
 
-  constructor(private db: AngularFireDatabase, private nivelService: NivelService){ }
+  constructor(private db: AngularFireDatabase){ }
 
 
   getAll(){
     return this.avaliacaoRef;
   }
 
+  getCriterios(refNivel){
+    return this.db.list<Criterio>(refNivel);
+  }
+
+  getCorpoAvaliacao(idSetor: string,idAvaliacao: string){
+    let pathAvaliacaoEspecifica = 'avaliacoes'+'/'+idSetor+'/'+idAvaliacao;
+    let refCorpoAvaliacaoEspecifica = this.db.object<Avaliacao>(pathAvaliacaoEspecifica);
+    return refCorpoAvaliacaoEspecifica;
+  }
+
+  getAvaliacaoMaisRecente(idSetor: string, onResponse, context){
+    let pathAvaliacoes = 'avaliacoes'+'/'+idSetor+'/';
+    let refAvaliacaoMaisRecente  = this.db.database.ref(pathAvaliacoes).orderByChild('dataInicio').limitToLast(1);
+
+    let self = this;
+
+    //@Rodrigo
+    // Usar o '.once' para ter o retorno do firebase somente uma vez. Caso
+    // se use '.on' ele executa a cada vez que o objeto muda no banco
+
+    refAvaliacaoMaisRecente.once("value", function(data) {
+      let avaliacaoMaisRecenteObj: Avaliacao = data.val();
+      let avaliacaoMaisRecente;
+
+      for(var key in avaliacaoMaisRecenteObj) {
+        var value = avaliacaoMaisRecenteObj[key];
+        avaliacaoMaisRecente = value;
+      }
+
+      //DEBUG
+      console.log("ON DO SERIVÇO BUSCANDO ULTIMA AVALIACAO");
+      //
+      onResponse(self.getCorpoAvaliacao(idSetor, avaliacaoMaisRecente.key), context);
+
+    }, function (error) {
+      console.log("Error: " + error.code);
+    });
+  }
+
   save(avaliacao: Avaliacao){
 
     let self = this; // Para referências dos métodos assíncronos
-
 
         // Create
         if(avaliacao.key == null){
@@ -47,18 +84,14 @@ export class AvaliacaoService {
           console.log("FIREBASE: Avaliação Editada:");
           console.log(avaliacao);
         }
-
-
-
   }
-
-
-//TODO CONSERTAR HORA E MINUTOS PRO TAMANHO NA STRING (IGUAL DIA E MÊS)
 
   getDataAgora(){
 
     let sdia;
     let smes;
+    let shora;
+    let smin;
 
     let data = new Date();
 
@@ -71,11 +104,19 @@ export class AvaliacaoService {
     smes = mes.toString();
     if (mes.toString().length == 1)
       smes = "0"+mes;
-    let ano = data.getFullYear();
-    return sdia+"/"+smes+"/"+ano+' (' + data.getHours() + ':' + data.getMinutes() + ')';
 
-    // let dateAgora = new Date();
-    // return dateAgora.getDay() + '/' + dateAgora.getMonth() + '/' + dateAgora.getDay() + ' (' + dateAgora.getHours() + ':' + dateAgora.getMinutes() + ')';
+    let hora = data.getHours();
+    shora = hora.toString();
+    if (hora.toString().length == 1)
+      shora = "0"+hora;
+
+    let min = data.getMinutes();
+    smin = min.toString();
+    if (min.toString().length == 1)
+      smin = "0"+min;
+
+    let ano = data.getFullYear();
+    return ano+"/"+smes+"/"+sdia+' (' + shora + ':' + smin + ')';
   }
 
 }
