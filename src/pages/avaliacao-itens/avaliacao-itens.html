@@ -1,0 +1,61 @@
+<!--
+  Generated template for the AvaliacaoItensPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{criterio?.nome}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+
+  <ion-card *ngFor="let item of itensDeAvaliacao$ | async">
+
+    <ion-card-header>
+      <ion-label text-wrap> <p>{{item.descricao}}</p></ion-label>
+
+      <ion-row float-right>
+        <button ion-button  round  small color="avaliacaoVermelho" [outline]="item.avaliacao !== 'vermelho'"
+        (click)="avaliarComo(item,'vermelho')"
+        >
+          <ion-icon name="close"></ion-icon>
+        </button>
+        <button ion-button  round small  color="avaliacaoAmarelo"  [outline]="item.avaliacao !== 'amarelo'"
+        (click)="avaliarComo(item,'amarelo')"
+        >
+          <ion-icon name="help"></ion-icon>
+        </button>
+        <button ion-button  round  small color="avaliacaoVerde"    [outline]="item.avaliacao !== 'verde'"
+        (click)="avaliarComo(item,'verde')"
+        >
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-row>
+    </ion-card-header>
+
+    <!--<ion-item>-->
+      <!--<ion-label class="label-avaliacao" color="avaliacaoVermelho">Vermelho</ion-label>-->
+      <!--<ion-checkbox color="avaliacaoVermelho"   [checked]="item.avaliacao == 'vermelho'"></ion-checkbox>-->
+    <!--</ion-item>-->
+    <!--<ion-item>-->
+      <!--<ion-label color="avaliacaoAmarelo">Amarelo</ion-label>-->
+      <!--<ion-checkbox color="avaliacaoAmarelo"   [checked]="item.avaliacao == 'amarelo'"></ion-checkbox>-->
+    <!--</ion-item>-->
+    <!--<ion-item>-->
+      <!--<ion-label color="avaliacaoVerde">Verde</ion-label>-->
+      <!--<ion-checkbox color="avaliacaoVerde"  [checked]="item.avaliacao == 'verde'"></ion-checkbox>-->
+    <!--</ion-item>-->
+
+
+
+
+
+  </ion-card>
+
+</ion-content>

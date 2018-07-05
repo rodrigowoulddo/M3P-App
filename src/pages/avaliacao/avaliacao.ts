@@ -58,14 +58,10 @@ export class AvaliacaoPage {
       });
   }
 
-  ionViewWillLeave(){
-     //this.avaliacaoSubscription.unsubscribe();
-  }
-
-
   abrirCriterios(nivel) {
     //Abrir página do nível com os critérios
-    this.navCtrl.push(AvaliacaoCriteriosPage,{nivel: nivel, refNivel:'avaliacoes'+'/'+this.setor.key+'/'+this.objAvaliacao.key+'/'+'corpo'+'/'+nivel.key});
+    let refNivel = 'avaliacoes'+'/'+this.setor.key+'/'+this.objAvaliacao.key+'/'+'corpo'+'/'+nivel.key;
+    this.navCtrl.push(AvaliacaoCriteriosPage,{nivel: nivel, refNivel: refNivel});
   }
 
   getCor(nivel) {

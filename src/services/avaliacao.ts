@@ -2,6 +2,7 @@ import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
 import {Avaliacao} from "../data/avaliacaoInterface";
 import {Criterio} from "../data/criterioInterface";
+import {ItemDeAvaliacao} from "../data/itemDeAvaliacaoInterface";
 
 @Injectable()
 export class AvaliacaoService {
@@ -20,6 +21,10 @@ export class AvaliacaoService {
 
   getCriterios(refNivel){
     return this.db.list<Criterio>(refNivel);
+  }
+
+  getItensDeAvaliacao(refCriterio){
+    return this.db.list<ItemDeAvaliacao>(refCriterio);
   }
 
   getCorpoAvaliacao(idSetor: string,idAvaliacao: string){
@@ -55,6 +60,17 @@ export class AvaliacaoService {
     }, function (error) {
       console.log("Error: " + error.code);
     });
+  }
+
+  saveItem(item: ItemDeAvaliacao, path: string){
+
+    console.log(path);
+
+    let refItem = this.db.database.ref(path+'/'+item.key);
+    refItem.update(JSON.parse(JSON.stringify(item)));
+
+    console.log("FIREBASE: Item de Avaliação Editada:");
+    console.log(item);
   }
 
   save(avaliacao: Avaliacao){

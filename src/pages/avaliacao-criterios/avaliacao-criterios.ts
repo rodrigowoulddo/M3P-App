@@ -1,10 +1,11 @@
-import {Component, Pipe, PipeTransform} from '@angular/core';
+import {Component} from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Nivel} from "../../data/nivelInterface";
 import {Observable} from "rxjs/Observable";
 import {Criterio} from "../../data/criterioInterface";
 import {map} from "rxjs/operators";
 import {AvaliacaoService} from "../../services/avaliacao";
+import {AvaliacaoItensPage} from "../avaliacao-itens/avaliacao-itens";
 
 /**
  * Generated class for the AvaliacaoCriteriosPage page.
@@ -31,20 +32,6 @@ export class AvaliacaoCriteriosPage {
     this.refNivel = this.navParams.get('refNivel');
     this.nivel = this.navParams.get('nivel');
 
-    //DEBUG
-    console.log(this.refNivel);
-
-    // this.setores$ = this.setorService
-    //   .getAll() //DB LIST
-    //   .snapshotChanges()// KEY AND VALUE
-    //   .pipe(map(
-    //     changes => {
-    //       return changes.map(c => ({
-    //         key: c.payload.key, ...c.payload.val(),
-    //       }));
-    //     }
-    //   ));
-
     this.criterios$ = this.avaliacaoService
       .getCriterios(this.refNivel+'/'+'criterios')
       .snapshotChanges()// KEY AND VALUE
@@ -63,6 +50,12 @@ export class AvaliacaoCriteriosPage {
 
   ngOnInit(){
 
+
+  }
+
+  abrirItensDeAvaliacao(criterio: Criterio) {
+    let refCriterio = this.refNivel+'/'+'criterios'+'/'+criterio.key;
+    this.navCtrl.push(AvaliacaoItensPage,{criterio: criterio, refCriterio: refCriterio});
 
   }
 
@@ -109,4 +102,6 @@ export class AvaliacaoCriteriosPage {
     }
 
   }
+
+
 }
