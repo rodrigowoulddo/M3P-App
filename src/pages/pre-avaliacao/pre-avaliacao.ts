@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
 import {NivelService} from "../../services/nivel";
 import {Nivel} from "../../data/nivelInterface";
 import {Setor} from "../../data/setorInterface";
@@ -8,6 +8,7 @@ import {map} from "rxjs/operators";
 import {Avaliacao} from "../../data/avaliacaoInterface";
 import {AvaliacaoService} from "../../services/avaliacao";
 import {SetorService} from "../../services/setor";
+import {AvaliacaoPage} from "../avaliacao/avaliacao";
 
 /**
  * Generated class for the PreAvaliacaoPage page.
@@ -85,8 +86,11 @@ export class PreAvaliacaoPage {
     avaliacao.corpo = niveis;
 
     insereNovaAvaliacao(avaliacao, this);
-
+    this.avaliacaoService.getAvaliacaoMaisRecente(this.setor.key, this.abrirPaginaAvaliacao, this);
     this.fecharPágina();
+
+
+
   }
 
   insereNovaAvaliacao(avaliacao: Avaliacao, self){
@@ -97,5 +101,15 @@ export class PreAvaliacaoPage {
 
   fecharPágina(){
     this.viewCtrl.dismiss();
+  }
+
+  abrirPaginaAvaliacao(refAvaliacaoCorrente, self){
+
+    self.navCtrl.push(
+      AvaliacaoPage,
+      {
+        setor: self.setor,
+        avaliacao: refAvaliacaoCorrente
+      });
   }
 }

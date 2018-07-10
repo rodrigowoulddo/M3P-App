@@ -15,46 +15,59 @@
 
 <ion-content padding>
 
-  <ion-card *ngFor="let item of itensDeAvaliacao$ | async">
+  <ion-card *ngFor="let item of itensDeAvaliacao; let i = index">
 
     <ion-card-header>
+
+      <ion-card-title>Item {{i+1}}</ion-card-title>
+
       <ion-label text-wrap> <p>{{item.descricao}}</p></ion-label>
 
+        <button
+          ion-button
+          mini
+          clear
+          icon-only
+          (click)="alterarVisualizacaoObservacao(item,i)">
+          <ion-icon
+            [name]="mostrarObservacao(item,i)? 'ios-arrow-dropup-circle':'ios-arrow-dropdown-circle'">
+          </ion-icon>
+        </button>
+
+      <!--Nesse button:-->
+      <!--[disabled]="observacaoConforme[i] == false"-->
+
+
       <ion-row float-right>
-        <button ion-button  round  small color="avaliacaoVermelho" [outline]="item.avaliacao !== 'vermelho'"
-        (click)="avaliarComo(item,'vermelho')"
-        >
-          <ion-icon name="close"></ion-icon>
-        </button>
-        <button ion-button  round small  color="avaliacaoAmarelo"  [outline]="item.avaliacao !== 'amarelo'"
-        (click)="avaliarComo(item,'amarelo')"
-        >
-          <ion-icon name="help"></ion-icon>
-        </button>
-        <button ion-button  round  small color="avaliacaoVerde"    [outline]="item.avaliacao !== 'verde'"
-        (click)="avaliarComo(item,'verde')"
-        >
-          <ion-icon name="checkmark"></ion-icon>
-        </button>
+          <button ion-button  round  small color="avaliacaoVermelho" [outline]="item.avaliacao !== 'vermelho'"
+                  (click)="avaliarComo(item,'vermelho')"
+          >
+            <ion-icon name="close"></ion-icon>
+          </button>
+          <button ion-button  round small  color="avaliacaoAmarelo"  [outline]="item.avaliacao !== 'amarelo'"
+                  (click)="avaliarComo(item,'amarelo')"
+          >
+            <ion-icon name="help"></ion-icon>
+          </button>
+          <button ion-button  round  small color="avaliacaoVerde"    [outline]="item.avaliacao !== 'verde'"
+                  (click)="avaliarComo(item,'verde')"
+          >
+            <ion-icon name="checkmark"></ion-icon>
+          </button>
+        </ion-row>
+
+      <ion-item no-lines *ngIf="mostrarObservacao(item,i)">
+        <ion-label color="primary" stacked>Observação</ion-label>
+        <ion-textarea class="md-no-underline" name="observacao" [(ngModel)]="item.observacao"></ion-textarea>
+      </ion-item>
+
+      <ion-row float-right *ngIf="mostrarObservacao(item,i)">
+        <button ion-button mini round clear (click)="salvarObservacao(item, item.observacao)">Salvar</button>
       </ion-row>
+
+
+
     </ion-card-header>
-
-    <!--<ion-item>-->
-      <!--<ion-label class="label-avaliacao" color="avaliacaoVermelho">Vermelho</ion-label>-->
-      <!--<ion-checkbox color="avaliacaoVermelho"   [checked]="item.avaliacao == 'vermelho'"></ion-checkbox>-->
-    <!--</ion-item>-->
-    <!--<ion-item>-->
-      <!--<ion-label color="avaliacaoAmarelo">Amarelo</ion-label>-->
-      <!--<ion-checkbox color="avaliacaoAmarelo"   [checked]="item.avaliacao == 'amarelo'"></ion-checkbox>-->
-    <!--</ion-item>-->
-    <!--<ion-item>-->
-      <!--<ion-label color="avaliacaoVerde">Verde</ion-label>-->
-      <!--<ion-checkbox color="avaliacaoVerde"  [checked]="item.avaliacao == 'verde'"></ion-checkbox>-->
-    <!--</ion-item>-->
-
-
-
-
 
   </ion-card>
 

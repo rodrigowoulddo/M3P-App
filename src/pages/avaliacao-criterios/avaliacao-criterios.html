@@ -18,10 +18,13 @@
   <ion-card *ngFor="let criterio of criterios$ | async">
 
     <!--<ion-card-header>-->
-      <ion-item margin-left="45" padding-right="30" (click)="abrirItensDeAvaliacao(criterio)">{{criterio.nome}}<ion-icon item-end [color]="getCor(criterio)" name="star"></ion-icon></ion-item>
+    <ion-item margin-left="45" padding-right="30" (click)="abrirItensDeAvaliacao(criterio)">
+      <ion-card-title>{{criterio.nome}}</ion-card-title>
+      <ion-icon item-end [color]="getCor(criterio)" name="star"></ion-icon>
+    </ion-item>
     <!--</ion-card-header>-->
 
-    <ion-card-content>
+    <ion-card-content (click)="abrirItensDeAvaliacao(criterio)">
       <p margin-left="25" margin-right="20">{{criterio.descricao}}</p>
     </ion-card-content>
   </ion-card>

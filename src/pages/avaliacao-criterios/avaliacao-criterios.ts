@@ -73,11 +73,12 @@ export class AvaliacaoCriteriosPage {
         criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
           if(itemAvaliacao.avaliacao){
             if (itemAvaliacao.avaliacao === 'vermelho') {
-              cor = 'vermelho';
-              return;
+              cor = 'vermelho'; return;
             }
             if (itemAvaliacao.avaliacao === 'amarelo') {
-              cor = 'amarelo';
+              if(cor !== 'vermelho')
+                cor = 'amarelo';
+              return;
             }
           } else{
             cor = 'cinza'; return;

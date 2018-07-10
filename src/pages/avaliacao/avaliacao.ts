@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams } from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {Setor} from "../../data/setorInterface";
 import {AngularFireObject} from "angularfire2/database";
@@ -7,6 +7,7 @@ import {Avaliacao} from "../../data/avaliacaoInterface";
 import {Subscription} from "rxjs/Subscription";
 import {AvaliacaoCriteriosPage} from "../avaliacao-criterios/avaliacao-criterios";
 import {Nivel} from "../../data/nivelInterface";
+import {SetorService} from "../../services/setor";
 
 
 /**
@@ -32,7 +33,7 @@ export class AvaliacaoPage {
   avaliacaoSubscription: Subscription;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private setorService: SetorService, private viewCtrl: ViewController, private toastCtrl: ToastController) {
 
     this.setor = this.navParams.get('setor');
     this.avaliacaoRef = {...this.navParams.get('avaliacao')}; // cópia
@@ -48,6 +49,11 @@ export class AvaliacaoPage {
 
     this.avaliacaoSubscription = this.avaliacao$.subscribe((data) => {
       this.objAvaliacao = data;
+
+      //DEBUG
+      console.log('AVALIACAO ATUALIZADA:');
+      console.log(data);
+
 
       this.niveis = [];
       Object.keys(this.objAvaliacao.corpo).forEach((keyNivel) =>{
@@ -91,22 +97,70 @@ export class AvaliacaoPage {
               return;
             }
             if (itemAvaliacao.avaliacao === 'amarelo') {
-              cor = 'amarelo';
+              if(cor !== 'vermelho')
+                cor = 'amarelo';
+
+              return;
             }
           } else{
             cor = 'cinza'; return;
           }
         });
       });
-      //                  Referência de variable.scss > $colors
-      if(cor === 'vermelho')  {return 'avaliacaoVermelho';}
-      if(cor === 'amarelo')   {return 'avaliacaoAmarelo';}
-      if(cor === 'verde')     {return 'avaliacaoVerde';}
-      if (cor === 'cinza')    {return 'avaliacaoCinza';}
+      //                       Referência de variable.scss > $colors
+      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
+      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
+      if (cor === 'verde')     {return 'avaliacaoVerde';}
+      if (cor === 'cinza')     {return 'avaliacaoCinza';}
     } else{
       return 'avaliacaoCinza' //Cinza ()
     }
 
 
+  }
+
+  finalizarAvaliacaoClick() {
+      let alert = this.alertCtrl.create({
+        title: 'Finalizar avaliação',
+        message: 'Deseja finalizar avaliação do setor? o nível atingido será: [nivel]',
+        buttons: [
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Finalizar',
+            handler: () => {
+              this.finalizarAvaliacao()
+              console.log('Avaliação do setor '+this.setor.sigla+' finalizada.');
+            }
+          }
+        ]
+      });
+      alert.present();
+  }
+
+  finalizarAvaliacao() {
+    this.setor.sendoAvaliado = false;
+    this.setorService.save(this.setor);
+    this.fecharPágina();
+    this.mostrarToastAvaliacaoFinalizada();
+  }
+
+  fecharPágina(){
+    this.viewCtrl.dismiss();
+  }
+
+
+  mostrarToastAvaliacaoFinalizada() {
+    let toast = this.toastCtrl.create({
+      message: 'Avaliação do setor '+this.setor.sigla+' finalizada.',
+      duration: 3000,
+      position: 'bottom'
+    });
+
+    toast.present();
   }
 }

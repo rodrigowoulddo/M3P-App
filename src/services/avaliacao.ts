@@ -3,6 +3,7 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {Avaliacao} from "../data/avaliacaoInterface";
 import {Criterio} from "../data/criterioInterface";
 import {ItemDeAvaliacao} from "../data/itemDeAvaliacaoInterface";
+import {map} from "rxjs/operators";
 
 @Injectable()
 export class AvaliacaoService {
@@ -52,9 +53,6 @@ export class AvaliacaoService {
         avaliacaoMaisRecente = value;
       }
 
-      //DEBUG
-      console.log("ON DO SERIVÇO BUSCANDO ULTIMA AVALIACAO");
-      //
       onResponse(self.getCorpoAvaliacao(idSetor, avaliacaoMaisRecente.key), context);
 
     }, function (error) {
@@ -69,8 +67,19 @@ export class AvaliacaoService {
     let refItem = this.db.database.ref(path+'/'+item.key);
     refItem.update(JSON.parse(JSON.stringify(item)));
 
-    console.log("FIREBASE: Item de Avaliação Editada:");
-    console.log(item);
+    // console.log("FIREBASE: Item de Avaliação Editada:");
+    // console.log(item);
+  }
+
+  saveAvaliacaoItem(item: ItemDeAvaliacao, path: string){
+
+    console.log(path);
+
+    let refItem = this.db.database.ref(path+'/'+item.key+'/');
+    refItem.update({avaliacao: item.avaliacao});
+
+    // console.log("FIREBASE: Item de Avaliação Editada:");
+    // console.log(item);
   }
 
   save(avaliacao: Avaliacao){

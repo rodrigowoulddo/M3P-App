@@ -19,13 +19,19 @@
     <ion-card>
       <ion-card-header><h1 text-center>{{setor?.sigla}}</h1></ion-card-header>
       <ion-note><p text-center>Nível Pretendido: {{objAvaliacao?.nivelPretendido}}</p></ion-note>
+
+      <ion-list>
+
+      <button *ngFor="let nivel of niveis" ion-item  (click)="abrirCriterios(nivel)">
+        {{nivel.nome}}
+        <ion-icon item-end [color]="getCor(nivel)" name="star"></ion-icon>
+      </button>
+
+      </ion-list>
+
     </ion-card>
 
-    <ion-card *ngFor="let nivel of niveis">
-      <ion-item (click)="abrirCriterios(nivel)"> {{nivel.nome}}<ion-icon item-end [color]="getCor(nivel)" name="star"></ion-icon></ion-item>
-    </ion-card>
 
-
-  <button ion-button round class="centralized"> Finalizar Avaliação</button>
+  <button ion-button round class="centralized" (click)="finalizarAvaliacaoClick()"> Finalizar Avaliação</button>
 
 </ion-content>
