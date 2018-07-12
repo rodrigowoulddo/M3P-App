@@ -6,6 +6,9 @@ import {SetorService} from "../../services/setor";
 import {AvaliacaoPage} from "../avaliacao/avaliacao";
 import {PreAvaliacaoPage} from "../pre-avaliacao/pre-avaliacao";
 import {AvaliacaoService} from "../../services/avaliacao";
+import {Observable} from "rxjs/Observable";
+import {Avaliacao} from "../../data/avaliacaoInterface";
+import {map} from "rxjs/operators";
 
 /**
  * Generated class for the SetorPage page.
@@ -22,6 +25,9 @@ import {AvaliacaoService} from "../../services/avaliacao";
 export class SetorPage {
 
   setor:Setor;
+  historico$ : Observable<Avaliacao[]>;
+  mostrarHistoricoCompleto: boolean;
+  btnVerMaisMenosContent: string;
 
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
@@ -30,6 +36,24 @@ export class SetorPage {
               private avaliacaoService: AvaliacaoService,
               private viewCtrl: ViewController
   ) {
+
+    //Startar botão 'ver mais / menos'
+    this.mostrarHistoricoCompleto = false;
+    this.btnVerMaisMenosContent = "Ver Mais";
+
+    this.setor = this.navParams.get('setor');
+
+    this.historico$ = this.avaliacaoService
+      .getRef3UltimasAvaliacoes(this.setor.key) //DB LIST
+      .snapshotChanges()// KEY AND VALUE
+      .pipe(map(
+        changes => {
+          return changes.map(c => ({
+            key: c.payload.key, ...c.payload.val(),
+          }));
+        }
+      ));
+
   }
 
   ionViewDidLoad() {
@@ -37,7 +61,6 @@ export class SetorPage {
   }
 
   ngOnInit(){
-    this.setor = this.navParams.get('setor');
   }
 
   editarSetor() {
@@ -88,5 +111,15 @@ export class SetorPage {
                                       setor: self.setor,
                                       avaliacao: refAvaliacaoCorrente
                                     });
+  }
+
+  verMaisMenosClick() {
+    if (!this.mostrarHistoricoCompleto){
+      this.btnVerMaisMenosContent = "Ver Menos";
+      this.mostrarHistoricoCompleto = true;
+    } else{
+      this.btnVerMaisMenosContent = "Ver Mais";
+      this.mostrarHistoricoCompleto = false;
+    }
   }
 }

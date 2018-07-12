@@ -30,6 +30,7 @@
     "firebase": "^5.0.4",
     "ionic-angular": "3.9.2",
     "ionicons": "3.0.0",
+    "ngx-pipes": "^2.2.0",
     "rxjs": "^6.0.0",
     "rxjs-compat": "^6.2.1",
     "sw-toolbox": "3.6.0",

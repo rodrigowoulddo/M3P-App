@@ -68,24 +68,44 @@
 
       <ion-list>
 
-        <ion-item>
-          <h3>Nível 3</h3>
-          <p>29/07/2018</p>
-        </ion-item>
+        <!--<ion-item>-->
+          <!--<h3>Nível 3</h3>-->
+          <!--<p>29/07/2018</p>-->
+        <!--</ion-item>-->
 
-        <ion-item>
-          <h3>Nível 2</h3>
-          <p>29/07/2017</p>
-        </ion-item>
+        <!--<ion-item>-->
+          <!--<h3>Nível 3</h3>-->
+          <!--<p>29/07/2018</p>-->
+        <!--</ion-item>-->
 
-        <ion-item>
-          <h3>Nível 2</h3>
-          <p>29/05/2017</p>
-        </ion-item>
+        <!--<ion-item>-->
+          <!--<h3>Nível 3</h3>-->
+          <!--<p>29/07/2018</p>-->
+        <!--</ion-item>-->
+
+        <div *ngFor="let avaliacao of historico$ | async | reverse; let i = index">
+          <ion-item *ngIf="mostrarHistoricoCompleto || (i <= 2)">
+
+            <!--Caso ja tenha finalizado-->
+            <h3 ion-text [color]="avaliacao.dataFim? 'dark' : 'danger'">{{avaliacao.dataFim? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
+            <p>{{avaliacao.dataFim? avaliacao.dataFim: avaliacao.dataInicio}}</p>
+
+
+            <!--Botão de restart-->
+            <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim) && (i==0)">
+              Retomar
+              <ion-icon color="danger" name="refresh"></ion-icon>
+            </button>
+
+          </ion-item>
+
+        </div>
+
 
       </ion-list>
 
-      <button ion-button clear small full>Ver Mais</button>
+      <button ion-button clear small full
+      (click)="verMaisMenosClick()">{{btnVerMaisMenosContent}}</button>
 
     </ion-card>
   </div>
@@ -105,17 +125,7 @@
   <!--</ion-fab>-->
 
   <ion-fab bottom right>
-    <button ion-fab class="cor-danger" (click)="avaliarSetor()"><ion-icon name="options"></ion-icon></button>
-    <!--<ion-fab-list side="top">-->
-      <!--<button ion-fab class="botao-nivel">1</button>-->
-      <!--<button ion-fab class="botao-nivel">2</button>-->
-      <!--<button ion-fab class="botao-nivel">3</button>-->
-      <!--<button ion-fab class="botao-nivel">4</button>-->
-      <!--<button ion-fab class="botao-nivel">5</button>-->
-      <!--<button ion-fab class="botao-nivel">6</button>-->
-      <!--<button ion-fab class="botao-nivel">7</button>-->
-
-    <!--</ion-fab-list>-->
+    <button ion-fab color="danger" (click)="avaliarSetor()"><ion-icon name="clipboard"></ion-icon></button>
   </ion-fab>
 
 </ion-content>

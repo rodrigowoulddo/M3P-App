@@ -28,14 +28,14 @@ export class AvaliacaoService {
     return this.db.list<ItemDeAvaliacao>(refCriterio);
   }
 
-  getCorpoAvaliacao(idSetor: string,idAvaliacao: string){
-    let pathAvaliacaoEspecifica = 'avaliacoes'+'/'+idSetor+'/'+idAvaliacao;
+  getCorpoAvaliacao(setorKey: string,idAvaliacao: string){
+    let pathAvaliacaoEspecifica = 'avaliacoes'+'/'+setorKey+'/'+idAvaliacao;
     let refCorpoAvaliacaoEspecifica = this.db.object<Avaliacao>(pathAvaliacaoEspecifica);
     return refCorpoAvaliacaoEspecifica;
   }
 
-  getAvaliacaoMaisRecente(idSetor: string, onResponse, context){
-    let pathAvaliacoes = 'avaliacoes'+'/'+idSetor+'/';
+  getAvaliacaoMaisRecente(setorKey: string, onResponse, context){
+    let pathAvaliacoes = 'avaliacoes'+'/'+setorKey+'/';
     let refAvaliacaoMaisRecente  = this.db.database.ref(pathAvaliacoes).orderByChild('dataInicio').limitToLast(1);
 
     let self = this;
@@ -53,11 +53,18 @@ export class AvaliacaoService {
         avaliacaoMaisRecente = value;
       }
 
-      onResponse(self.getCorpoAvaliacao(idSetor, avaliacaoMaisRecente.key), context);
+      onResponse(self.getCorpoAvaliacao(setorKey, avaliacaoMaisRecente.key), context);
 
     }, function (error) {
       console.log("Error: " + error.code);
     });
+  }
+
+  getRef3UltimasAvaliacoes(setorKey){
+    let pathAvaliacoes = 'avaliacoes'+'/'+setorKey+'/';
+    // let refUltimas3Avaliacoes  = this.db.database.ref(pathAvaliacoes).limitToLast(3);
+    // return this.db.list<Avaliacao>(refUltimas3Avaliacoes);
+    return  this.db.list<Avaliacao>(pathAvaliacoes, ref => ref.orderByChild('dataInicio'));
   }
 
   saveItem(item: ItemDeAvaliacao, path: string){

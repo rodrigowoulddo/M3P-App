@@ -86,10 +86,10 @@ export class PreAvaliacaoPage {
     avaliacao.corpo = niveis;
 
     insereNovaAvaliacao(avaliacao, this);
+
     this.avaliacaoService.getAvaliacaoMaisRecente(this.setor.key, this.abrirPaginaAvaliacao, this);
+
     this.fecharPágina();
-
-
 
   }
 

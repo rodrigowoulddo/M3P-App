@@ -8,6 +8,7 @@ import {Subscription} from "rxjs/Subscription";
 import {AvaliacaoCriteriosPage} from "../avaliacao-criterios/avaliacao-criterios";
 import {Nivel} from "../../data/nivelInterface";
 import {SetorService} from "../../services/setor";
+import {AvaliacaoService} from "../../services/avaliacao";
 
 
 /**
@@ -33,7 +34,14 @@ export class AvaliacaoPage {
   avaliacaoSubscription: Subscription;
 
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private alertCtrl: AlertController, private setorService: SetorService, private viewCtrl: ViewController, private toastCtrl: ToastController) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private alertCtrl: AlertController,
+              private setorService: SetorService,
+              private viewCtrl: ViewController,
+              private toastCtrl: ToastController,
+              private avaliacaoService: AvaliacaoService
+              ) {
 
     this.setor = this.navParams.get('setor');
     this.avaliacaoRef = {...this.navParams.get('avaliacao')}; // cópia
@@ -133,7 +141,7 @@ export class AvaliacaoPage {
           {
             text: 'Finalizar',
             handler: () => {
-              this.finalizarAvaliacao()
+              this.finalizarAvaliacao();
               console.log('Avaliação do setor '+this.setor.sigla+' finalizada.');
             }
           }
@@ -143,13 +151,18 @@ export class AvaliacaoPage {
   }
 
   finalizarAvaliacao() {
+
+    this.objAvaliacao.nivelAtingido = this.getNivelAtingido();
+    this.objAvaliacao.dataFim = this.avaliacaoService.getDataAgora();
+    this.avaliacaoService.save(this.objAvaliacao);
+
     this.setor.sendoAvaliado = false;
     this.setorService.save(this.setor);
-    this.fecharPágina();
+    this.fecharPagina();
     this.mostrarToastAvaliacaoFinalizada();
   }
 
-  fecharPágina(){
+  fecharPagina(){
     this.viewCtrl.dismiss();
   }
 
@@ -162,5 +175,12 @@ export class AvaliacaoPage {
     });
 
     toast.present();
+  }
+
+  private getNivelAtingido() {
+
+    //TODO Buscar nível
+
+    return "Nível 3";
   }
 }

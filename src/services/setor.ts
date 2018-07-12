@@ -41,4 +41,8 @@ export class SetorService {
     console.log(setor);
   }
 
+  setorTemAvaliacaoAnterior(key: string){
+    return false;
+  }
+
 }

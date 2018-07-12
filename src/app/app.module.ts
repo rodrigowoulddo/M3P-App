@@ -9,6 +9,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {SetoresPage} from "../pages/setores/setores";
 import {NiveisPage} from "../pages/niveis/niveis";
+import {NgPipesModule} from "ngx-pipes";
+
 
 //Imports Database
 import {AngularFireModule} from "angularfire2";
@@ -44,7 +46,8 @@ import {AvaliacaoItensPage} from "../pages/avaliacao-itens/avaliacao-itens";
     BrowserModule,
     IonicModule.forRoot(MyApp),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
-    AngularFireDatabaseModule
+    AngularFireDatabaseModule,
+    NgPipesModule
   ],
   bootstrap: [IonicApp],
   entryComponents: [
