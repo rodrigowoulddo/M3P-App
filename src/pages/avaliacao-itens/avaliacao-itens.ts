@@ -22,6 +22,8 @@ import {Subscription} from "rxjs/Subscription";
 export class AvaliacaoItensPage {
 
   refCriterio: string;
+  criterio$: Observable<Criterio>;
+  criterioSubscription: Subscription;
   criterio: Criterio;
   itensDeAvaliacao$: Observable<ItemDeAvaliacao[]>;
   itensDeAvaliacao: ItemDeAvaliacao[];
@@ -39,6 +41,16 @@ export class AvaliacaoItensPage {
     this.criterio = this.navParams.get('criterio');
     this.observacaoVisible = [];
     this.observacaoConforme = [];
+
+    this.criterio$ = this.avaliacaoService.getCriterio(this.refCriterio).snapshotChanges().map(c => ({key: c.payload.key, ...c.payload.val(),}));
+
+    this.criterioSubscription = this.criterio$.subscribe((data) => {
+      this.criterio = data;
+
+      //DEBUG
+      console.log('NIVEL ATUALIZADO:');
+      console.log(data);
+    });
 
     this.itensDeAvaliacao$ = this.avaliacaoService
       .getItensDeAvaliacao(this.refCriterio+'/'+'itensDeAvaliacao')
@@ -124,5 +136,10 @@ export class AvaliacaoItensPage {
     });
 
     toast.present();
+  }
+
+  avaliarCriterioManual(cor: string) {
+    this.criterio.avaliacaoManual = (cor !== 'cinza')? cor : null;
+    this.avaliacaoService.saveCriterioAvaliacao(this.criterio, this.refCriterio);
   }
 }

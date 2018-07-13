@@ -4,6 +4,7 @@ import {Avaliacao} from "../data/avaliacaoInterface";
 import {Criterio} from "../data/criterioInterface";
 import {ItemDeAvaliacao} from "../data/itemDeAvaliacaoInterface";
 import {map} from "rxjs/operators";
+import {Nivel} from "../data/nivelInterface";
 
 @Injectable()
 export class AvaliacaoService {
@@ -24,12 +25,20 @@ export class AvaliacaoService {
     return this.db.list<Criterio>(refNivel);
   }
 
+  getNivel(refNivel){
+    return this.db.object<Nivel>(refNivel);
+  }
+
+  getCriterio(refCriterio){
+    return this.db.object<Criterio>(refCriterio);
+  }
+
   getItensDeAvaliacao(refCriterio){
     return this.db.list<ItemDeAvaliacao>(refCriterio);
   }
 
-  getCorpoAvaliacao(setorKey: string,idAvaliacao: string){
-    let pathAvaliacaoEspecifica = 'avaliacoes'+'/'+setorKey+'/'+idAvaliacao;
+  getCorpoAvaliacao(setorKey: string,avaliacaoKey: string){
+    let pathAvaliacaoEspecifica = 'avaliacoes'+'/'+setorKey+'/'+avaliacaoKey;
     let refCorpoAvaliacaoEspecifica = this.db.object<Avaliacao>(pathAvaliacaoEspecifica);
     return refCorpoAvaliacaoEspecifica;
   }
@@ -116,6 +125,14 @@ export class AvaliacaoService {
           console.log("FIREBASE: Avaliação Editada:");
           console.log(avaliacao);
         }
+  }
+
+  saveNivelAvaliacao(nivel: Nivel, refNivel){
+    this.db.database.ref(refNivel).update(nivel);
+  }
+
+  saveCriterioAvaliacao(criterio: Criterio, refCriterio){
+    this.db.database.ref(refCriterio).update(criterio);
   }
 
   getDataAgora(){

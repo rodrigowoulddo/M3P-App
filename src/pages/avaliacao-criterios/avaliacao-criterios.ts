@@ -6,6 +6,8 @@ import {Criterio} from "../../data/criterioInterface";
 import {map} from "rxjs/operators";
 import {AvaliacaoService} from "../../services/avaliacao";
 import {AvaliacaoItensPage} from "../avaliacao-itens/avaliacao-itens";
+import {NivelService} from "../../services/nivel";
+import {Subscription} from "rxjs/Subscription";
 
 /**
  * Generated class for the AvaliacaoCriteriosPage page.
@@ -23,14 +25,25 @@ import {AvaliacaoItensPage} from "../avaliacao-itens/avaliacao-itens";
 export class AvaliacaoCriteriosPage {
 
   nivel: Nivel;
+  nivel$: Observable<Nivel>;
   criterios$ : Observable<Criterio[]>;
   refNivel: string;
+  nivelSubscription: Subscription;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private avaliacaoService: AvaliacaoService) {
 
 
     this.refNivel = this.navParams.get('refNivel');
     this.nivel = this.navParams.get('nivel');
+
+    this.nivel$ = this.avaliacaoService.getNivel(this.refNivel).snapshotChanges().map(c => ({key: c.payload.key, ...c.payload.val(),}));
+    this.nivelSubscription = this.nivel$.subscribe((data) => {
+      this.nivel = data;
+
+      //DEBUG
+      console.log('NIVEL ATUALIZADO:');
+      console.log(data);
+    });
 
     this.criterios$ = this.avaliacaoService
       .getCriterios(this.refNivel+'/'+'criterios')
@@ -48,11 +61,6 @@ export class AvaliacaoCriteriosPage {
     console.log('ionViewDidLoad AvaliacaoCriteriosPage');
   }
 
-  ngOnInit(){
-
-
-  }
-
   abrirItensDeAvaliacao(criterio: Criterio) {
     let refCriterio = this.refNivel+'/'+'criterios'+'/'+criterio.key;
     this.navCtrl.push(AvaliacaoItensPage,{criterio: criterio, refCriterio: refCriterio});
@@ -60,6 +68,13 @@ export class AvaliacaoCriteriosPage {
   }
 
   getCor(criterio) {
+
+    //Verifica set manual
+    if(criterio.avaliacaoManual !== undefined){
+      if(criterio.avaliacaoManual == 'verde') return 'avaliacaoVerde';
+      if(criterio.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
+      if(criterio.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
+    }
 
     if (criterio.itensDeAvaliacao) {
       let cor = 'verde';
@@ -105,4 +120,8 @@ export class AvaliacaoCriteriosPage {
   }
 
 
+  avaliarNivelManual(cor: string) {
+    this.nivel.avaliacaoManual = (cor !== 'cinza')? cor : null;
+    this.avaliacaoService.saveNivelAvaliacao(this.nivel, this.refNivel);
+  }
 }

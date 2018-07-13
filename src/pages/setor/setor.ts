@@ -122,4 +122,40 @@ export class SetorPage {
       this.mostrarHistoricoCompleto = false;
     }
   }
+
+  iniciarAvaliacaoComplementarClick(avaliacao: Avaliacao) {
+
+    //Alert de confirmação
+    const confirm = this.alertCtrl.create({
+      title: 'Avaliação Complementar',
+      message: 'Deseja retomar a avaliação do setor?',
+      buttons: [
+        {
+          text: 'Retomar',
+          handler: () => {
+            this.iniciarAvaliacaoComplementar(avaliacao);
+          }
+        },
+        {
+          text: 'Cancelar',
+          handler: () => {}
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  iniciarAvaliacaoComplementar(avaliacao: Avaliacao){
+
+    this.setor.sendoAvaliado = true;
+    avaliacao.dataFim = null;
+    avaliacao.dataInicioAvaliacaoComplementar = this.avaliacaoService.getDataAgora();
+
+    this.setorService.save(this.setor);
+    this.avaliacaoService.save(avaliacao);
+
+
+    this.avaliarSetor();
+
+  }
 }

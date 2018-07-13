@@ -16,6 +16,31 @@
 <ion-content padding>
   <div class="browser-compat">
 
+    <!--Avaliação Manual-->
+    <ion-card>
+      <ion-card-header margin-left="45" text-center="">
+        <h2>Avaliação Manual</h2>
+      </ion-card-header>
+
+      <ion-card-content text-center>
+        <button ion-button round  small color="avaliacaoCinza" [outline]="criterio.avaliacaoManual !== undefined" (click)="avaliarCriterioManual('cinza')">
+          <ion-icon name="ios-remove-circle-outline"></ion-icon>
+        </button>
+
+        <button ion-button round  small color="avaliacaoVermelho" [outline]="criterio.avaliacaoManual !== 'vermelho'" (click)="avaliarCriterioManual('vermelho')">
+          <ion-icon name="close"></ion-icon>
+        </button>
+
+        <button ion-button round  small color="avaliacaoAmarelo" [outline]="criterio.avaliacaoManual !== 'amarelo'" (click)="avaliarCriterioManual('amarelo')">
+          <ion-icon name="help"></ion-icon>
+        </button>
+
+        <button ion-button round  small color="avaliacaoVerde" [outline]="criterio.avaliacaoManual !== 'verde'" (click)="avaliarCriterioManual('verde')">
+          <ion-icon name="checkmark"></ion-icon>
+        </button>
+      </ion-card-content>
+    </ion-card>
+
   <ion-card *ngFor="let item of itensDeAvaliacao; let i = index">
 
     <ion-card-header>

@@ -2,7 +2,7 @@ export interface Setor{
   key?: string,
   sigla: string,
   nome: string,
-  nivel?: number,
+  nivel?: string,
   vinculo?: string,
   lider?: string,
   emailLider?: string,

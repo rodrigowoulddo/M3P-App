@@ -27,6 +27,7 @@ export class PreAvaliacaoPage {
   niveis$: Observable<Nivel[]>;
   nivelPretendido: string;
   setor: Setor;
+  botaoInicialDisabled: boolean;
 
   constructor(
               public navCtrl: NavController,
@@ -36,6 +37,8 @@ export class PreAvaliacaoPage {
               private setorService: SetorService,
               private viewCtrl: ViewController
   ) {
+
+    this.botaoInicialDisabled = true;
 
     //Debug
     this.niveis$ = this.nivelService

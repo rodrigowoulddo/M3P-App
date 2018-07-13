@@ -25,10 +25,10 @@
     <ion-card-content>
       <ion-list radio-group [(ngModel)]="nivelPretendido">
 
-        <ion-item *ngFor="let nivel of niveis$ | async">
+        <ion-item *ngFor="let nivel of niveis$ | async; let i = index">
 
           <ion-label>{{nivel.nome}}</ion-label>
-          <ion-radio value={{nivel.nome}}></ion-radio>
+          <ion-radio value={{nivel.nome}} (ionSelect)="botaoInicialDisabled = false"></ion-radio>
 
         </ion-item>
 
@@ -37,7 +37,7 @@
 
   </ion-card>
 
-  <button ion-button round class="centralized" (click)="iniciarAvaliacao()">Iniciar Valiação</button>
+  <button ion-button round class="centralized" [disabled]="botaoInicialDisabled" (click)="iniciarAvaliacao()">Iniciar Valiação</button>
 
   </div>
 </ion-content>
