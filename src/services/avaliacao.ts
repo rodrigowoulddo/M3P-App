@@ -3,7 +3,6 @@ import {AngularFireDatabase} from "angularfire2/database";
 import {Avaliacao} from "../data/avaliacaoInterface";
 import {Criterio} from "../data/criterioInterface";
 import {ItemDeAvaliacao} from "../data/itemDeAvaliacaoInterface";
-import {map} from "rxjs/operators";
 import {Nivel} from "../data/nivelInterface";
 
 @Injectable()
@@ -135,6 +134,14 @@ export class AvaliacaoService {
     this.db.database.ref(refCriterio).update(criterio);
   }
 
+  saveAvaliacaoManualCriterio(cor, refCriterio){
+    this.db.database.ref(refCriterio).update({avaliacaoManual: cor});
+  }
+
+  saveAvaliacaoManualNivel(cor, refNivel){
+    this.db.database.ref(refNivel).update({avaliacaoManual: cor});
+  }
+
   getDataAgora(){
 
     let sdia;
@@ -167,5 +174,236 @@ export class AvaliacaoService {
     let ano = data.getFullYear();
     return ano+"/"+smes+"/"+sdia+' (' + shora + ':' + smin + ')';
   }
+
+  getCorCriterioAutomatico(criterio) {
+
+    if (criterio.itensDeAvaliacao) {
+      let cor = 'verde';
+
+      criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+        let value = criterio.itensDeAvaliacao[i];
+        value.key = i;
+        return value;
+      });
+
+      criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
+        if(itemAvaliacao.avaliacao){
+          if (itemAvaliacao.avaliacao === 'vermelho') {
+            cor = 'vermelho'; return;
+          }
+          if (itemAvaliacao.avaliacao === 'amarelo') {
+            if(cor !== 'vermelho')
+              cor = 'amarelo';
+            return;
+          }
+        } else{
+          cor = 'cinza'; return;
+        }
+      });
+      //                  Referência de variable.scss > $colors
+      if (cor === 'vermelho') {
+        return 'avaliacaoVermelho';
+      }
+      if (cor === 'amarelo') {
+        return 'avaliacaoAmarelo';
+      }
+      if (cor === 'verde') {
+        return 'avaliacaoVerde';
+      }
+      if (cor === 'cinza') {
+        return 'avaliacaoCinza';
+      }
+    }
+    else {
+      return 'avaliacaoCinza' //Cinza ()
+    }
+
+  }
+
+  getCorCriterio(criterio) {
+
+    //Verifica set manual
+    if(criterio.avaliacaoManual !== undefined){
+      if(criterio.avaliacaoManual == 'verde') return 'avaliacaoVerde';
+      if(criterio.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
+      if(criterio.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
+    }
+
+    if (criterio.itensDeAvaliacao) {
+      let cor = 'verde';
+
+      criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+        let value = criterio.itensDeAvaliacao[i];
+        value.key = i;
+        return value;
+      });
+
+      criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
+        if(itemAvaliacao.avaliacao){
+          if (itemAvaliacao.avaliacao === 'vermelho') {
+            cor = 'vermelho'; return;
+          }
+          if (itemAvaliacao.avaliacao === 'amarelo') {
+            if(cor !== 'vermelho')
+              cor = 'amarelo';
+            return;
+          }
+        } else{
+          cor = 'cinza'; return;
+        }
+      });
+      //                  Referência de variable.scss > $colors
+      if (cor === 'vermelho') {
+        return 'avaliacaoVermelho';
+      }
+      if (cor === 'amarelo') {
+        return 'avaliacaoAmarelo';
+      }
+      if (cor === 'verde') {
+        return 'avaliacaoVerde';
+      }
+      if (cor === 'cinza') {
+        return 'avaliacaoCinza';
+      }
+    }
+    else {
+      return 'avaliacaoCinza' //Cinza ()
+    }
+
+  }
+
+  getCorNivelAutomatico(nivel) {
+
+
+    if(nivel.criterios){
+
+      nivel.criterios = Object.keys( nivel.criterios).map(i => {
+        let value = nivel.criterios[i];
+        value.key = i;
+        return value;
+      });
+
+      let cor = 'verde';
+      nivel.criterios.forEach((criterio, index) => {
+
+        //Verifica set manual
+        if(criterio.avaliacaoManual !== undefined){
+          if(criterio.avaliacaoManual == 'verde') cor = 'verde';
+          if(criterio.avaliacaoManual == 'amarelo') cor = 'amarelo';
+          if(criterio.avaliacaoManual == 'vermelho') cor = 'vermelho';
+        }
+
+        else{
+          criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+            let value = criterio.itensDeAvaliacao[i];
+            value.key = i;
+            return value;
+          });
+
+
+          criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
+            if(itemAvaliacao.avaliacao){
+              if (itemAvaliacao.avaliacao === 'vermelho') {
+                cor = 'vermelho';
+                return;
+              }
+              if (itemAvaliacao.avaliacao === 'amarelo') {
+                if(cor !== 'vermelho')
+                  cor = 'amarelo';
+
+                return;
+              }
+            } else{
+              cor = 'cinza'; return;
+            }
+          });
+        }
+      });
+      //                       Referência de variable.scss > $colors
+      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
+      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
+      if (cor === 'verde')     {return 'avaliacaoVerde';}
+      if (cor === 'cinza')     {return 'avaliacaoCinza';}
+    } else{
+      return 'avaliacaoCinza' //Cinza ()
+    }
+
+
+  }
+
+  getCorNivel(nivel) {
+
+    //TODO CORREÇÃO
+
+    //DEBUG
+    console.log('Avaliacao manual de Nivel:' );
+    console.log(nivel);
+
+    //Verifica set manual
+    if(nivel.avaliacaoManual !== undefined){
+      if(nivel.avaliacaoManual == 'verde') return 'avaliacaoVerde';
+      if(nivel.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
+      if(nivel.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
+    }
+
+    if(nivel.criterios){
+
+      //DEBUG
+      console.log('Criterios analisado:');
+      console.log(nivel.criterios);
+
+      nivel.criterios = Object.keys( nivel.criterios).map(i => {
+        let value = nivel.criterios[i];
+        value.key = i;
+        return value;
+      });
+
+      let cor = 'verde';
+      nivel.criterios.forEach((criterio, index) => {
+
+        //Verifica set manual
+        if(criterio.avaliacaoManual !== undefined){
+          if(criterio.avaliacaoManual == 'verde') cor = 'verde';
+          if(criterio.avaliacaoManual == 'amarelo') cor = 'amarelo';
+          if(criterio.avaliacaoManual == 'vermelho') cor = 'vermelho';
+        }
+        else{
+          criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+            let value = criterio.itensDeAvaliacao[i];
+            value.key = i;
+            return value;
+          });
+
+
+          criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
+            if(itemAvaliacao.avaliacao){
+              if (itemAvaliacao.avaliacao === 'vermelho') {
+                cor = 'vermelho';
+                return;
+              }
+              if (itemAvaliacao.avaliacao === 'amarelo') {
+                if(cor !== 'vermelho')
+                  cor = 'amarelo';
+
+                return;
+              }
+            } else{
+              cor = 'cinza'; return;
+            }
+          });
+        }
+      });
+      //                       Referência de variable.scss > $colors
+      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
+      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
+      if (cor === 'verde')     {return 'avaliacaoVerde';}
+      if (cor === 'cinza')     {return 'avaliacaoCinza';}
+    } else{
+      return 'avaliacaoCinza' //Cinza ()
+    }
+
+
+  }
+
 
 }

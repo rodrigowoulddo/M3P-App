@@ -40,9 +40,6 @@ export class AvaliacaoCriteriosPage {
     this.nivelSubscription = this.nivel$.subscribe((data) => {
       this.nivel = data;
 
-      //DEBUG
-      console.log('NIVEL ATUALIZADO:');
-      console.log(data);
     });
 
     this.criterios$ = this.avaliacaoService
@@ -67,61 +64,13 @@ export class AvaliacaoCriteriosPage {
 
   }
 
-  getCor(criterio) {
-
-    //Verifica set manual
-    if(criterio.avaliacaoManual !== undefined){
-      if(criterio.avaliacaoManual == 'verde') return 'avaliacaoVerde';
-      if(criterio.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
-      if(criterio.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
-    }
-
-    if (criterio.itensDeAvaliacao) {
-      let cor = 'verde';
-
-      criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-        let value = criterio.itensDeAvaliacao[i];
-        value.key = i;
-        return value;
-      });
-
-        criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-          if(itemAvaliacao.avaliacao){
-            if (itemAvaliacao.avaliacao === 'vermelho') {
-              cor = 'vermelho'; return;
-            }
-            if (itemAvaliacao.avaliacao === 'amarelo') {
-              if(cor !== 'vermelho')
-                cor = 'amarelo';
-              return;
-            }
-          } else{
-            cor = 'cinza'; return;
-          }
-        });
-      //                  Referência de variable.scss > $colors
-      if (cor === 'vermelho') {
-        return 'avaliacaoVermelho';
-      }
-      if (cor === 'amarelo') {
-        return 'avaliacaoAmarelo';
-      }
-      if (cor === 'verde') {
-        return 'avaliacaoVerde';
-      }
-      if (cor === 'cinza') {
-        return 'avaliacaoCinza';
-      }
-      }
-    else {
-      return 'avaliacaoCinza' //Cinza ()
-    }
-
-  }
-
-
   avaliarNivelManual(cor: string) {
     this.nivel.avaliacaoManual = (cor !== 'cinza')? cor : null;
     this.avaliacaoService.saveNivelAvaliacao(this.nivel, this.refNivel);
+  }
+
+  resetarAvaliacaoManualDeNivel() {
+    this.nivel.avaliacaoManual = null;
+    this.avaliacaoService.saveAvaliacaoManualCriterio(null, this.refNivel);
   }
 }

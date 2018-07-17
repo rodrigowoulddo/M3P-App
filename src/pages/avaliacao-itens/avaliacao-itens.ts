@@ -47,9 +47,10 @@ export class AvaliacaoItensPage {
     this.criterioSubscription = this.criterio$.subscribe((data) => {
       this.criterio = data;
 
-      //DEBUG
-      console.log('NIVEL ATUALIZADO:');
-      console.log(data);
+      if(this.avaliacaoService.getCorCriterioAutomatico(this.criterio) !== 'avaliacaoAmarelo'){
+        this.resetarAvaliacaoManualDeCriterio();
+      }
+
     });
 
     this.itensDeAvaliacao$ = this.avaliacaoService
@@ -65,10 +66,6 @@ export class AvaliacaoItensPage {
 
     this.itensSubscription = this.itensDeAvaliacao$.subscribe((data) =>{
       this.itensDeAvaliacao = data;
-
-      //DEBUG
-      console.log('ITEM ATUALIZADO:');
-      console.log(data);
     });
 
   }
@@ -78,9 +75,7 @@ export class AvaliacaoItensPage {
   }
 
   avaliarComo(item: ItemDeAvaliacao, avaliacao: string) {
-
     item.avaliacao = avaliacao;
-    // this.avaliacaoService.saveItem(item, this.refCriterio+'/'+'itensDeAvaliacao'+'/');
     this.avaliacaoService.saveAvaliacaoItem(item, this.refCriterio+'/'+'itensDeAvaliacao');
   }
 
@@ -90,19 +85,26 @@ export class AvaliacaoItensPage {
     if(this.observacaoVisible[i] !== undefined)
       this.observacaoVisible[i] = !this.observacaoVisible[i];
     else{
-      if(item.observacao)
-        this.observacaoVisible[i] = false;
-      else
-        this.observacaoVisible[i] = true;
+      this.observacaoVisible[i] = true;
     }
   }
 
-  salvarObservacao(item, observacao: string) {
+  salvarObservacao(item, observacao: string, index) {
 
     if(observacao === ""){observacao = null; item.observacaoVisible = false}
     item.observacao = observacao;
     this.avaliacaoService.saveItem(item, this.refCriterio+'/'+'itensDeAvaliacao');
+
+    /*
+    Fecha campos de observação
+    caso observação seja vazia
+    */
+    if(!observacao)
+      this.observacaoVisible[index] = false;
+
     this.mostrarToastObservacaoSalva();
+
+
   }
 
   disableBotaoOpenCloseObservacao(i) {
@@ -117,15 +119,10 @@ export class AvaliacaoItensPage {
 
     if(item == undefined) return;
 
-    // if(this.observacaoConforme[i] !== undefined)
-    //   return this.observacaoConforme[i];
-
     if(this.observacaoVisible[i] !== undefined)
       return this.observacaoVisible[i];
-
-    if(item.observacao)
-        return true
-
+    else
+      return false;
   }
 
   mostrarToastObservacaoSalva() {
@@ -139,7 +136,23 @@ export class AvaliacaoItensPage {
   }
 
   avaliarCriterioManual(cor: string) {
+
     this.criterio.avaliacaoManual = (cor !== 'cinza')? cor : null;
     this.avaliacaoService.saveCriterioAvaliacao(this.criterio, this.refCriterio);
+
+  }
+
+  resetarAvaliacaoManualDeCriterio() {
+    this.criterio.avaliacaoManual = null;
+    this.avaliacaoService.saveAvaliacaoManualCriterio(null, this.refCriterio);
+  }
+
+  getIconeShowObservacao(item: ItemDeAvaliacao, index) {
+
+    if(item.observacao) //iconse cheios
+      return this.observacaoVisible[index]? 'ios-arrow-dropup-circle':'ios-arrow-dropdown-circle';
+    else               //icones outline
+      return this.observacaoVisible[index]? 'ios-arrow-dropup':'ios-arrow-dropdown';
+
   }
 }

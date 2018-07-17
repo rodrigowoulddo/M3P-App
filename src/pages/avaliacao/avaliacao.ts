@@ -73,73 +73,6 @@ export class AvaliacaoPage {
     this.navCtrl.push(AvaliacaoCriteriosPage,{nivel: nivel, refNivel: refNivel});
   }
 
-  getCor(nivel) {
-
-    //TODO CORREÇÃO
-
-
-    //Verifica set manual
-    if(nivel.avaliacaoManual !== undefined){
-      if(nivel.avaliacaoManual == 'verde') return 'avaliacaoVerde';
-      if(nivel.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
-      if(nivel.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
-    }
-
-    if(nivel.criterios){
-
-      nivel.criterios = Object.keys( nivel.criterios).map(i => {
-        let value = nivel.criterios[i];
-        value.key = i;
-        return value;
-      });
-
-      let cor = 'verde';
-      nivel.criterios.forEach((criterio, index) => {
-
-        //Verifica set manual
-        if(criterio.avaliacaoManual !== undefined){
-          if(criterio.avaliacaoManual == 'verde') cor = 'verde';
-          if(criterio.avaliacaoManual == 'amarelo') cor = 'amarelo';
-          if(criterio.avaliacaoManual == 'vermelho') cor = 'vermelho';
-        }
-        else{
-          criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-            let value = criterio.itensDeAvaliacao[i];
-            value.key = i;
-            return value;
-          });
-
-
-          criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-            if(itemAvaliacao.avaliacao){
-              if (itemAvaliacao.avaliacao === 'vermelho') {
-                cor = 'vermelho';
-                return;
-              }
-              if (itemAvaliacao.avaliacao === 'amarelo') {
-                if(cor !== 'vermelho')
-                  cor = 'amarelo';
-
-                return;
-              }
-            } else{
-              cor = 'cinza'; return;
-            }
-          });
-        }
-      });
-      //                       Referência de variable.scss > $colors
-      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
-      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
-      if (cor === 'verde')     {return 'avaliacaoVerde';}
-      if (cor === 'cinza')     {return 'avaliacaoCinza';}
-    } else{
-      return 'avaliacaoCinza' //Cinza ()
-    }
-
-
-  }
-
   finalizarAvaliacaoClick() {
 
     let nivelAtingido = this.getNivelAtingidoAutomaticamente();
@@ -215,7 +148,7 @@ export class AvaliacaoPage {
     });
 
     this.objAvaliacao.corpo.forEach(nivel => {
-      if(!flagNivelNaoVerde && this.getCor(nivel) === 'avaliacaoVerde') nivelAtingido = nivel.nome;
+      if(!flagNivelNaoVerde && this.avaliacaoService.getCorNivel(nivel) === 'avaliacaoVerde') nivelAtingido = nivel.nome;
       else flagNivelNaoVerde = true;
     });
 

@@ -17,28 +17,44 @@
   <div class="browser-compat">
 
     <!--Avaliação Manual-->
-    <ion-card>
-      <ion-card-header margin-left="45" text-center="">
-        <h2>Avaliação Manual</h2>
+    <ion-card *ngIf="avaliacaoService.getCorCriterioAutomatico(criterio) === 'avaliacaoAmarelo'">
+
+      <ion-card-header margin-left="45" margin-right="45" text-center="">
+        <h2>Avaliação Manual de Critério</h2>
+        <ion-note text-wrap>É obrigatória a definição manual da avaliação deste critério, devido aos itens pendentes</ion-note>
       </ion-card-header>
 
-      <ion-card-content text-center>
-        <button ion-button round  small color="avaliacaoCinza" [outline]="criterio.avaliacaoManual !== undefined" (click)="avaliarCriterioManual('cinza')">
-          <ion-icon name="ios-remove-circle-outline"></ion-icon>
-        </button>
+      <ion-card-content>
 
-        <button ion-button round  small color="avaliacaoVermelho" [outline]="criterio.avaliacaoManual !== 'vermelho'" (click)="avaliarCriterioManual('vermelho')">
-          <ion-icon name="close"></ion-icon>
-        </button>
+        <div text-center>
+          <button
+            ion-button round  small color="avaliacaoVermelho" [outline]="criterio.avaliacaoManual !== 'vermelho'" (click)="avaliarCriterioManual('vermelho')">
+            <ion-icon name="close"></ion-icon>
+          </button>
 
-        <button ion-button round  small color="avaliacaoAmarelo" [outline]="criterio.avaliacaoManual !== 'amarelo'" (click)="avaliarCriterioManual('amarelo')">
-          <ion-icon name="help"></ion-icon>
-        </button>
+          <button
+            ion-button round  small color="avaliacaoAmarelo" [outline]="criterio.avaliacaoManual !== 'amarelo'" (click)="avaliarCriterioManual('amarelo')">
+            <ion-icon name="help"></ion-icon>
+          </button>
 
-        <button ion-button round  small color="avaliacaoVerde" [outline]="criterio.avaliacaoManual !== 'verde'" (click)="avaliarCriterioManual('verde')">
-          <ion-icon name="checkmark"></ion-icon>
-        </button>
+          <button
+            ion-button
+            mini
+            clear
+            icon-only
+            (click)="avaliarCriterioManual(null)">
+            <ion-icon
+              color="avaliacaoCinza"
+              name="close-circle">
+            </ion-icon>
+          </button>
+
+
+        </div>
+
+
       </ion-card-content>
+
     </ion-card>
 
   <ion-card *ngFor="let item of itensDeAvaliacao; let i = index">
@@ -56,7 +72,7 @@
           icon-only
           (click)="alterarVisualizacaoObservacao(item,i)">
           <ion-icon
-            [name]="mostrarObservacao(item,i)? 'ios-arrow-dropup-circle':'ios-arrow-dropdown-circle'">
+            [name]="getIconeShowObservacao(item,i)">
           </ion-icon>
         </button>
 
@@ -88,10 +104,8 @@
       </ion-item>
 
       <ion-row float-right *ngIf="mostrarObservacao(item,i)">
-        <button ion-button mini round clear (click)="salvarObservacao(item, item.observacao)">Salvar</button>
+        <button ion-button mini round clear (click)="salvarObservacao(item, item.observacao, i)">Salvar</button>
       </ion-row>
-
-
 
     </ion-card-header>
 
