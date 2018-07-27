@@ -133,6 +133,7 @@ export class AvaliacaoPage {
 
     this.setor.sendoAvaliado = false;
     this.setor.nivel = nivelAtingido;
+    this.setor.ultimaAvaliacao = this.objAvaliacao.dataFim;
     this.setorService.save(this.setor);
     this.fecharPagina();
     this.mostrarToastAvaliacaoFinalizada();

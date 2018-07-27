@@ -54,6 +54,9 @@
             </ion-avatar>
             <h2>{{setor.sigla}}</h2>
             <p>{{setor.nome}}</p>
+            <div *ngIf="setor.vinculo" margin-top="1">
+              <p>{{setor.vinculo}}</p>
+            </div>
           </ion-item>
 
           <ion-card-content>
