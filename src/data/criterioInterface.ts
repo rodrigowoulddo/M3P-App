@@ -5,5 +5,6 @@ export interface Criterio {
   descricao: string,
   nome: string,
   avaliacaoManual?: string,
-  itensDeAvaliacao: ItemDeAvaliacao[]
+  itensDeAvaliacao: ItemDeAvaliacao[],
+  usuarioAvaliacaoManual?: string,
 }

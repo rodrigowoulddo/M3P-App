@@ -92,6 +92,7 @@ export class AvaliacaoService {
 
     let refItem = this.db.database.ref(path+'/'+item.key+'/');
     refItem.update({avaliacao: item.avaliacao});
+    refItem.update({usuarioAvaliacao: item.usuarioAvaliacao});
 
     // console.log("FIREBASE: Item de Avaliação Editada:");
     // console.log(item);
@@ -126,6 +127,26 @@ export class AvaliacaoService {
         }
   }
 
+  saveAndWait(avaliacao:Avaliacao, onResponse, setorSelf){
+
+    let self = this; // Para referências dos métodos assíncronos
+
+    // Create
+      this.niveisRef.once("value")
+        .then(function(snapshot) {
+          avaliacao.corpo = snapshot.val();
+
+          avaliacao.key = self.avaliacaoRef.push(null).key;
+
+          self.avaliacaoRef.set('/'+avaliacao.setor+'/'+avaliacao.key,avaliacao).then(() => {
+            onResponse(setorSelf)
+          });
+
+          console.log("FIREBASE: Avaliação Adicionada ao setor "+avaliacao.setor+":");
+          console.log(avaliacao);
+
+        });
+  }
   saveNivelAvaliacao(nivel: Nivel, refNivel){
     this.db.database.ref(refNivel).update(nivel);
   }
@@ -333,12 +354,6 @@ export class AvaliacaoService {
 
   getCorNivel(nivel) {
 
-    //TODO CORREÇÃO
-
-    //DEBUG
-    console.log('Avaliacao manual de Nivel:' );
-    console.log(nivel);
-
     //Verifica set manual
     if(nivel.avaliacaoManual !== undefined){
       if(nivel.avaliacaoManual == 'verde') return 'avaliacaoVerde';
@@ -347,10 +362,6 @@ export class AvaliacaoService {
     }
 
     if(nivel.criterios){
-
-      //DEBUG
-      console.log('Criterios analisado:');
-      console.log(nivel.criterios);
 
       nivel.criterios = Object.keys( nivel.criterios).map(i => {
         let value = nivel.criterios[i];

@@ -90,16 +90,21 @@ export class PreAvaliacaoPage {
 
     insereNovaAvaliacao(avaliacao, this);
 
-    this.avaliacaoService.getAvaliacaoMaisRecente(this.setor.key, this.abrirPaginaAvaliacao, this);
+    // this.avaliacaoService.getAvaliacaoMaisRecente(this.setor.key, this.abrirPaginaAvaliacao, this);
 
     this.fecharPágina();
 
   }
 
   insereNovaAvaliacao(avaliacao: Avaliacao, self){
-    self.avaliacaoService.save(avaliacao);
+    // self.avaliacaoService.save(avaliacao);
+    self.avaliacaoService.saveAndWait(avaliacao,self.abreAvaliacao,self);
     self.setor.sendoAvaliado = true;
     self.setorService.save(self.setor);
+  }
+
+  abreAvaliacao(self){
+    self.avaliacaoService.getAvaliacaoMaisRecente(self.setor.key, self.abrirPaginaAvaliacao, self);
   }
 
   fecharPágina(){
@@ -115,4 +120,5 @@ export class PreAvaliacaoPage {
         avaliacao: refAvaliacaoCorrente
       });
   }
+
 }

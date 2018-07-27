@@ -3,7 +3,9 @@ export interface ItemDeAvaliacao{
   descricao: string,
   ordem: number,
   avaliacao: string,
-  observacao: string
+  observacao: string,
+  usuarioAvaliacao?: string,
+  usuarioObservacao?: string,
 }
 
 

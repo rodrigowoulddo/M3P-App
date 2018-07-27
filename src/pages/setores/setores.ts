@@ -1,5 +1,5 @@
 import {Component} from '@angular/core';
-import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
+import {AlertController, App, IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {Observable} from "rxjs";
 import {Setor} from "../../data/setorInterface";
 import {SetorService} from "../../services/setor";
@@ -7,6 +7,8 @@ import {map} from "rxjs/operators";
 import {CadastroSetorPage} from "../cadastro-setor/cadastro-setor";
 import {SetorPage} from "../setor/setor";
 import "rxjs-compat/add/operator/map";
+import {AngularFireAuth} from "angularfire2/auth";
+import {LoginPage} from "../login/login";
 
 /**
  * Generated class for the SetoresPage page.
@@ -29,7 +31,10 @@ export class SetoresPage {
   constructor(  public navCtrl: NavController,
                 public navParams: NavParams,
                 private setorService: SetorService,
-                private viewCtrl: ViewController) {
+                private viewCtrl: ViewController,
+                private angularFireAuth: AngularFireAuth,
+                private alertCtrl: AlertController,
+                private app: App) {
 
     this.setores$ = this.setorService
       .getAll() //DB LIST
@@ -86,4 +91,29 @@ export class SetoresPage {
     this.viewCtrl.dismiss();
   }
 
+  getUrlImagemNivel(nivel) {
+    return 'http://nqi.ufcspa.edu.br/wiki/selos-niveis/'+nivel+'.png';
+  }
+
+  logoff() {
+
+    let alert = this.alertCtrl.create({
+      title: 'Logout',
+      message: 'Deseja fazer logout da conta '+this.angularFireAuth.auth.currentUser.email,
+      buttons: [
+        {
+          text: 'Fazer logout',
+          handler: () => {
+            this.angularFireAuth.auth.signOut().then(() => {this.app.getRootNav().setRoot(LoginPage);})
+
+          }
+        },
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+        },
+      ]
+    });
+    alert.present();
+  }
 }

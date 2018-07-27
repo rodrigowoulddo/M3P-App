@@ -4,8 +4,7 @@ page-setor {
   .nome-setor{
     font-size: 100%;
     white-space: normal;
-    font-weight: bold;
-    color: map-get($colors, primary);
+    color: map-get($colors, dark);
   }
 
   .atributo-setor{

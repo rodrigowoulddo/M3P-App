@@ -9,6 +9,7 @@ import {AvaliacaoService} from "../../services/avaliacao";
 import {Observable} from "rxjs/Observable";
 import {Avaliacao} from "../../data/avaliacaoInterface";
 import {map} from "rxjs/operators";
+import {AvaliacaoAnteriorPage} from "../avaliacao-anterior/avaliacao-anterior";
 
 /**
  * Generated class for the SetorPage page.
@@ -157,5 +158,9 @@ export class SetorPage {
 
     this.avaliarSetor();
 
+  }
+
+  verAvaliacaoAnterior(avaliacao: Avaliacao) {
+    this.navCtrl.push(AvaliacaoAnteriorPage, {avaliacao: avaliacao, setor:this.setor});
   }
 }

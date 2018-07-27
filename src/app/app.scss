@@ -38,3 +38,13 @@
 .cor-secondary{
   background: map-get($colors, secondary) ;
 }
+
+.icon-avaliacao-anterior{
+  font-size: 40px;
+}
+
+//Background image
+.bg-image{
+  background-image: url('../assets/imgs/background.jpg');
+  background-size: cover;
+}

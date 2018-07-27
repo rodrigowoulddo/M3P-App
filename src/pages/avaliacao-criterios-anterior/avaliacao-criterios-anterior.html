@@ -1,0 +1,63 @@
+<!--
+  Generated template for the AvaliacaoCriteriosAnteriorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{nivel?.nome}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="bg-image">
+
+  <div class="browser-compat">
+
+    <!--Avaliação Manual-->
+    <ion-card *ngIf="avaliacaoService.getCorNivelAutomatico(nivel) === 'avaliacaoAmarelo'">
+
+      <ion-card-header margin-left="45" margin-right="45" text-center="">
+        <h2>Avaliação Manual de Nível</h2>
+        <ion-note text-wrap text-center>Avaliado por: {{nivel.usuarioAvaliacaoManual}}</ion-note>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <div text-center>
+          <ion-col>
+            <ion-icon *ngIf="nivel.avaliacaoManual == 'vermelho'" class="icon-avaliacao-anterior" name="close-circle"
+                      [color]="nivel.avaliacaoManual == 'vermelho'? 'avaliacaoVermelho': 'avaliacaoCinza'"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="nivel.avaliacaoManual == 'amarelo'" class="icon-avaliacao-anterior" name="help-circle"
+                      [color]="nivel.avaliacaoManual == 'amarelo'? 'avaliacaoAmarelo': 'avaliacaoCinza'"></ion-icon>
+          </ion-col>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="let criterio of nivel.criterios">
+
+      <!--<ion-card-header>-->
+      <ion-item margin-left="45" padding-right="30" (click)="abrirItensDeAvaliacao(criterio)">
+        <ion-card-title>{{criterio.nome}}</ion-card-title>
+        <ion-icon
+          *ngIf="!((avaliacaoService.getCorCriterio(criterio) === 'avaliacaoAmarelo') && !criterio.avaliacaoManual)"
+          item-end [color]="avaliacaoService.getCorCriterio(criterio)" name="star"></ion-icon>
+        <ion-icon
+          *ngIf="(avaliacaoService.getCorCriterio(criterio) === 'avaliacaoAmarelo') && !criterio.avaliacaoManual"
+          item-end color="avaliacaoAmarelo" name="md-help"></ion-icon>
+      </ion-item>
+      <!--</ion-card-header>-->
+
+      <ion-card-content (click)="abrirItensDeAvaliacao(criterio)">
+        <p margin-left="25" margin-right="20">{{criterio.descricao}}</p>
+      </ion-card-content>
+    </ion-card>
+
+  </div>
+</ion-content>

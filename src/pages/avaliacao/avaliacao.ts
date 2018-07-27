@@ -77,32 +77,52 @@ export class AvaliacaoPage {
 
     let nivelAtingido = this.getNivelAtingidoAutomaticamente();
 
-      let alert = this.alertCtrl.create({
+
+    //Checar conformidade da avaliação
+    let observacoesConformidade = this.verificarObservacoes();
+    let todosItensAvaliados = this.verificarTodosItensAvaliados();
+    let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
+
+    //IF tudo ok
+    this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
+
+  }
+
+
+  private finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido) {
+
+    if (
+      observacoesConformidade &&
+      todosItensAvaliados &&
+      avaliacoesManuaisConformidade
+    ) {
+      let alertFinalizar = this.alertCtrl.create({
         title: 'Finalizar avaliação',
-        message: 'Deseja finalizar avaliação do setor? o nível atingido será: '+nivelAtingido,
+        message: 'Deseja finalizar avaliação do setor? o nível atingido será: ' + nivelAtingido,
         buttons: [
           {
             text: 'Finalizar',
             handler: () => {
               this.finalizarAvaliacao(nivelAtingido);
-              console.log('Avaliação do setor '+this.setor.sigla+' finalizada.');
+              console.log('Avaliação do setor ' + this.setor.sigla + ' finalizada.');
             }
           },
           {
             text: 'Nível Manual',
             handler: () => {
               this.setarNivelManualmente();
-              console.log('Avaliação do setor '+this.setor.sigla+' finalizada.');
             }
           },
           {
             text: 'Cancelar',
             role: 'cancel',
-            handler: () => {}
+            handler: () => {
+            }
           }
         ]
       });
-      alert.present();
+      alertFinalizar.present();
+    }
   }
 
   finalizarAvaliacao(nivelAtingido: string) {
@@ -135,25 +155,23 @@ export class AvaliacaoPage {
 
   private getNivelAtingidoAutomaticamente() {
 
-    //TODO Buscar nível
-
     let nivelAtingido;
     let flagNivelNaoVerde = false;
 
 
-    this.objAvaliacao.corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
       let value = this.objAvaliacao.corpo[i];
       value.key = i;
       return value;
     });
 
-    this.objAvaliacao.corpo.forEach(nivel => {
+    corpo.forEach(nivel => {
       if(!flagNivelNaoVerde && this.avaliacaoService.getCorNivel(nivel) === 'avaliacaoVerde') nivelAtingido = nivel.nome;
       else flagNivelNaoVerde = true;
     });
 
     if(nivelAtingido) return nivelAtingido;
-    else return this.objAvaliacao.corpo[0].nome;
+    else return corpo[0].nome;
 
   }
 
@@ -164,13 +182,13 @@ export class AvaliacaoPage {
     let alert = this.alertCtrl.create();
     alert.setTitle('Nível Manual');
 
-    this.objAvaliacao.corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
       let value = this.objAvaliacao.corpo[i];
       value.key = i;
       return value;
     });
 
-    this.objAvaliacao.corpo.forEach(nivel => {
+    corpo.forEach(nivel => {
       alert.addInput({
         type: 'radio',
         label: nivel.nome,
@@ -178,7 +196,11 @@ export class AvaliacaoPage {
       });
     });
 
-    alert.addButton('Cancelar');
+    alert.addButton({
+      text: 'Cancelar',
+      role: 'cancel'
+    });
+
     alert.addButton({
       text: 'Confirmar',
       handler: (data: string) => {
@@ -189,4 +211,139 @@ export class AvaliacaoPage {
 
     alert.present();
   }
+
+  private verificarObservacoes() {
+    let flagEmOrdem = true;
+
+    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+      let value = this.objAvaliacao.corpo[i];
+      value.key = i;
+      return value;
+    });
+
+    corpo.forEach((nivel) => {
+      if (!flagEmOrdem) return;
+      if(nivel.criterios){
+        nivel.criterios.forEach(criterio => {
+          if (!flagEmOrdem) return;
+          criterio.itensDeAvaliacao.forEach(item => {
+            if ((item.avaliacao == 'amarelo' || item.avaliacao == 'vermelho') && item.observacao === undefined) {
+              flagEmOrdem = false;
+              return;
+            }
+          });
+        });
+      }
+    });
+
+    if (!flagEmOrdem) {
+      let alertFaltamObservaoes = this.alertCtrl.create({
+        title: 'Observações Faltantes',
+        subTitle: 'Faltam observações em itens de valiação avaliados como Amarelo ou Vermelho.',
+        buttons: ['Ok']
+      });
+      alertFaltamObservaoes.present();
+    }
+
+    return flagEmOrdem;
+  }
+
+  private verificarTodosItensAvaliados() {
+
+    let continuar = true;
+    let flagTodosAvaliados = true;
+
+    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+      let value = this.objAvaliacao.corpo[i];
+      value.key = i;
+      return value;
+    });
+
+    let flagNivelPretendido = false;
+    corpo.forEach((nivel) => {
+      if(flagNivelPretendido) return;
+      if (!flagTodosAvaliados) return;
+      if (this.objAvaliacao.nivelPretendido == nivel.nome) flagNivelPretendido = true;
+      if(nivel.criterios){
+        nivel.criterios.forEach(criterio => {
+          if (!flagTodosAvaliados) return;
+          criterio.itensDeAvaliacao.forEach(item => {
+            if (!item.avaliacao) {
+              flagTodosAvaliados = false;
+              return;
+            }
+          });
+        });
+      }
+    });
+
+    if (!flagTodosAvaliados) {
+
+      continuar = false;
+
+      let alertFaltamObservaoes = this.alertCtrl.create({
+        title: 'Avaliações Faltantes',
+        subTitle: 'Nem todos os itens correspondentes ao nível desejado foram avaliados, deseja continuar?',
+        buttons: [
+          {
+            text: 'Continuar',
+            handler: () => {
+
+
+              // Verifica avaliação novamente
+              // sem levar em consideração esse
+              // aspecto da verificação
+
+              continuar = true;
+
+              let nivelAtingido = this.getNivelAtingidoAutomaticamente();
+
+              //Checar conformidade da avaliação
+              let observacoesConformidade = this.verificarObservacoes();
+              let todosItensAvaliados = continuar;
+              let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
+
+              //IF tudo ok
+              this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
+            }
+          },
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+          }
+        ]
+      });
+      alertFaltamObservaoes.present();
+    }
+
+    return continuar;
+  }
+
+  private verificarAvaliacoesManuais() {
+
+    let flagAvaliacoesManuaisConformidade = true;
+
+    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+      let value = this.objAvaliacao.corpo[i];
+      value.key = i;
+      return value;
+    });
+
+    corpo.forEach(nivel => {
+      if((this.avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual){flagAvaliacoesManuaisConformidade = false}
+    });
+
+    if(!flagAvaliacoesManuaisConformidade){
+      let alertAvaliacoesManuais = this.alertCtrl.create({
+        title: 'Avaliações Manuais Faltantes',
+        subTitle: 'Faltam avaliações manuais em níveis com critérios avaliados como Amarelo.',
+        buttons: ['Ok']
+      });
+      alertAvaliacoesManuais.present();
+    }
+
+    return flagAvaliacoesManuaisConformidade;
+
+  }
+
 }

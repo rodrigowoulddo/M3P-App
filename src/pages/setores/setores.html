@@ -7,6 +7,14 @@
 <ion-header>
 
   <ion-navbar>
+
+    <!--Botão de adicionar no iOS-->
+    <ion-buttons start>
+      <button ion-button icon-only (click)="logoff()">
+        <ion-icon name="log-out"></ion-icon>
+      </button>
+    </ion-buttons>
+
     <ion-title>Setores</ion-title>
 
     <!--Botão de adicionar no iOS-->
@@ -33,25 +41,26 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="bg-image">
 
   <div class="browser-compat">
     <ion-list>
-      <ion-card
-        *ngFor="let setor of setoresFiltrados$ | async"
-      >
+      <ion-card *ngFor="let setor of setoresFiltrados$ | async">
 
-        <ion-item (click)="irParaPaginaDoSetor(setor)">
-          <ion-avatar *ngIf="setor.nivel" icone-estrela item-end>
-            <img src="../assets/img/selo-nivel-5.png">
-          </ion-avatar>
-          <h2>{{setor.sigla}}</h2>
-          <p>{{setor.nome}}</p>
-        </ion-item>
+        <div *ngIf="setor?.ativo">
+          <ion-item (click)="irParaPaginaDoSetor(setor)">
+            <ion-avatar *ngIf="setor.nivel" icone-estrela item-end>
+              <img src={{getUrlImagemNivel(setor.nivel)}}>
+            </ion-avatar>
+            <h2>{{setor.sigla}}</h2>
+            <p>{{setor.nome}}</p>
+          </ion-item>
 
-        <ion-card-content>
-          <ion-note>{{setor.ultimaAvaliacao? 'Última Avaliação: '+setor.ultimaAvaliacao : 'Setor ainda não avaliado'}}</ion-note>
-        </ion-card-content>
+          <ion-card-content>
+            <ion-note *ngIf="!setor.sendoAvaliado">{{setor.ultimaAvaliacao? 'Última Avaliação: '+setor.ultimaAvaliacao : 'Setor ainda não avaliado'}}</ion-note>
+            <ion-note *ngIf="setor.sendoAvaliado" color="danger">Avaliação em andamento</ion-note>
+          </ion-card-content>
+        </div>
 
       </ion-card>
     </ion-list>

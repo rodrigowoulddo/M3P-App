@@ -18,6 +18,7 @@ export class SetorService {
   save(setor: Setor){
 
     if(setor.key == null){
+      setor.ativo = true;
       setor.key = this.setoresRef.push(null).key;
       this.setoresRef.update('/'+setor.key,JSON.parse(JSON.stringify(setor)));
 
@@ -33,9 +34,12 @@ export class SetorService {
   }
 
   delete(setor: Setor){
-    let updates = {};
-    updates['/setores/' + setor.key] = null;
-    this.db.database.ref().update(updates);
+    // let updates = {};
+    // updates['/setores/' + setor.key] = {ativo: false};
+    // this.db.database.ref().update(updates);
+
+    setor.ativo = false;
+    this.save(setor);
 
     console.log("FIREBASE: Setor Excluído:");
     console.log(setor);

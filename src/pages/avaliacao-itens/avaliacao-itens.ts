@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Component, ViewChild} from '@angular/core';
+import {AlertController, IonicPage, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Criterio} from "../../data/criterioInterface";
 import {Observable} from "rxjs/Observable";
 import {ItemDeAvaliacao} from "../../data/itemDeAvaliacaoInterface";
 import {map} from "rxjs/operators";
 import {AvaliacaoService} from "../../services/avaliacao";
 import {Subscription} from "rxjs/Subscription";
+import {AngularFireAuth} from "angularfire2/auth";
 
 /**
  * Generated class for the AvaliacaoItensPage page.
@@ -32,10 +33,13 @@ export class AvaliacaoItensPage {
   observacaoConforme; //array
 
 
+
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               public avaliacaoService: AvaliacaoService,
-              private toastCtrl: ToastController) {
+              private toastCtrl: ToastController,
+              private alertCtrl: AlertController,
+              private angularFireAuth: AngularFireAuth) {
 
     this.refCriterio = this.navParams.get('refCriterio');
     this.criterio = this.navParams.get('criterio');
@@ -76,6 +80,11 @@ export class AvaliacaoItensPage {
 
   avaliarComo(item: ItemDeAvaliacao, avaliacao: string) {
     item.avaliacao = avaliacao;
+    item.usuarioAvaliacao = this.angularFireAuth.auth.currentUser.email;
+
+    //DEBUG
+    console.log('Avaliado Por: '+ this.angularFireAuth.auth.currentUser.email);
+
     this.avaliacaoService.saveAvaliacaoItem(item, this.refCriterio+'/'+'itensDeAvaliacao');
   }
 
@@ -93,6 +102,7 @@ export class AvaliacaoItensPage {
 
     if(observacao === ""){observacao = null; item.observacaoVisible = false}
     item.observacao = observacao;
+    item.usuarioObservacao = this.angularFireAuth.auth.currentUser.email;
     this.avaliacaoService.saveItem(item, this.refCriterio+'/'+'itensDeAvaliacao');
 
     /*
@@ -138,6 +148,7 @@ export class AvaliacaoItensPage {
   avaliarCriterioManual(cor: string) {
 
     this.criterio.avaliacaoManual = (cor !== 'cinza')? cor : null;
+    this.criterio.usuarioAvaliacaoManual = this.angularFireAuth.auth.currentUser.email;
     this.avaliacaoService.saveCriterioAvaliacao(this.criterio, this.refCriterio);
 
   }
@@ -154,5 +165,48 @@ export class AvaliacaoItensPage {
     else               //icones outline
       return this.observacaoVisible[index]? 'ios-arrow-dropup':'ios-arrow-dropdown';
 
+  }
+
+  backClick() {
+
+    if(this.checkObservacoesInseridas())
+      this.navCtrl.pop();
+    else {
+      console.log('Faltam observações');
+
+
+        let alert = this.alertCtrl.create({
+          title: 'Observações',
+          message: 'É obrigatória a inserção de observações em itens avaliados como Amarelo ou Vermelho, não será possível finalizar a avaliação com observações pendentes.',
+          buttons: [
+            {
+              text: 'Voltar mesmo assim',
+              handler: () => {
+                this.navCtrl.pop();
+              }
+            },
+            {
+              text: 'Cancelar',
+              role: 'cancel'
+            },
+          ]
+        });
+        alert.present();
+    }
+  }
+
+  checkObservacoesInseridas(){
+
+    let flagEmOrdem = true;
+
+    this.criterio.itensDeAvaliacao.forEach(item => {
+
+      if(item.avaliacao !== 'verde' && item.observacao === undefined){
+        flagEmOrdem = false;
+        return;
+      }
+    });
+
+    return flagEmOrdem;
   }
 }

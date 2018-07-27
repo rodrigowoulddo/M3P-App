@@ -4,6 +4,6 @@ export interface Nivel {
   key?: string,
   nome: string,
   avaliacaoManual? : string,
-  criterios: Criterio[]
-
+  criterios: Criterio[],
+  usuarioAvaliacaoManual?: string,
 }

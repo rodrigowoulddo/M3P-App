@@ -19,17 +19,18 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content pading class="bg-image">
 
   <div padding class="browser-compat">
-    <ion-card>
 
-      <ion-card-header>
-        <ion-item>
-          <h1 text-center width-50 class="nome-setor">{{setor.nome}}</h1>
-          <p text-center>({{setor.sigla}})</p>
-        </ion-item>
-      </ion-card-header>
+    <ion-list-header showWhen="ios" text-center padding ion-text text-wrap><h2>{{setor.nome}}</h2><br><p>({{setor.sigla}})</p></ion-list-header>
+
+    <ion-card padding  class="nome-setor" hideWhen="ios">
+      <h2 text-center text-wrap>{{setor.nome}}</h2>
+      <p text-center>({{setor.sigla}})</p>
+    </ion-card>
+
+    <ion-card>
 
       <ion-list>
 
@@ -66,19 +67,24 @@
         Histórico de Avaliações
       </ion-card-header>
 
+      <ion-item *ngIf="(historico$ | async)?.length==0"><p text-center>O setor não possui avaliações anteriores</p></ion-item>
+
       <ion-list>
 
         <div *ngFor="let avaliacao of historico$ | async | reverse; let i = index">
           <ion-item *ngIf="mostrarHistoricoCompleto || (i <= 2)">
 
             <!--Caso ja tenha finalizado-->
-            <h3 ion-text [color]="avaliacao.dataFim? 'dark' : 'danger'">{{avaliacao.dataFim? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
-            <p>{{avaliacao.dataFim? avaliacao.dataFim: avaliacao.dataInicio}}</p>
+            <div (click)="avaliacao.dataFim? verAvaliacaoAnterior(avaliacao):null">
+              <h3 ion-text [color]="avaliacao.dataFim? 'dark' : 'danger'">{{avaliacao.dataFim? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
+              <p>{{avaliacao.dataFim? avaliacao.dataFim: avaliacao.dataInicio}}</p>
+            </div>
+
 
 
             <!--Botão de avaliação complementar-->
             <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim) && (i==0)" (click)="iniciarAvaliacaoComplementarClick(avaliacao)">
-              Retomar
+              Complementar
               <ion-icon color="danger" name="refresh"></ion-icon>
             </button>
 
@@ -89,7 +95,7 @@
 
       </ion-list>
 
-      <button ion-button clear small full
+      <button ion-button clear small full *ngIf="(historico$ | async)?.length==0"
       (click)="verMaisMenosClick()">{{btnVerMaisMenosContent}}</button>
 
     </ion-card>

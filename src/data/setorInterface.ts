@@ -1,5 +1,6 @@
 export interface Setor{
   key?: string,
+  ativo?:boolean,
   sigla: string,
   nome: string,
   nivel?: string,
@@ -7,5 +8,5 @@ export interface Setor{
   lider?: string,
   emailLider?: string,
   ultimaAvaliacao?: string,
-  sendoAvaliado?: boolean
+  sendoAvaliado?: boolean,
 }

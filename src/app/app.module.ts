@@ -28,6 +28,11 @@ import {AvaliacaoService} from "../services/avaliacao";
 import {Toaster} from "../services/toaster";
 import {AvaliacaoCriteriosPage} from "../pages/avaliacao-criterios/avaliacao-criterios";
 import {AvaliacaoItensPage} from "../pages/avaliacao-itens/avaliacao-itens";
+import {AvaliacaoAnteriorPage} from "../pages/avaliacao-anterior/avaliacao-anterior";
+import {AvaliacaoCriteriosAnteriorPage} from "../pages/avaliacao-criterios-anterior/avaliacao-criterios-anterior";
+import {AvaliacaoItensAnteriorPage} from "../pages/avaliacao-itens-anterior/avaliacao-itens-anterior";
+import {LoginPage} from "../pages/login/login";
+import {AngularFireAuth} from "angularfire2/auth";
 
 @NgModule({
   declarations: [
@@ -40,7 +45,11 @@ import {AvaliacaoItensPage} from "../pages/avaliacao-itens/avaliacao-itens";
     PreAvaliacaoPage,
     AvaliacaoPage,
     AvaliacaoCriteriosPage,
-    AvaliacaoItensPage
+    AvaliacaoItensPage,
+    AvaliacaoAnteriorPage,
+    AvaliacaoCriteriosAnteriorPage,
+    AvaliacaoItensAnteriorPage,
+    LoginPage
   ],
   imports: [
     BrowserModule,
@@ -60,12 +69,17 @@ import {AvaliacaoItensPage} from "../pages/avaliacao-itens/avaliacao-itens";
     PreAvaliacaoPage,
     AvaliacaoPage,
     AvaliacaoCriteriosPage,
-    AvaliacaoItensPage
+    AvaliacaoItensPage,
+    AvaliacaoAnteriorPage,
+    AvaliacaoCriteriosAnteriorPage,
+    AvaliacaoItensAnteriorPage,
+    LoginPage
   ],
   providers: [
     StatusBar,
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
+    AngularFireAuth,
     SetorService,
     NivelService,
     AvaliacaoService,

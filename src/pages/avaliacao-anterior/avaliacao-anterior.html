@@ -1,0 +1,70 @@
+<!--
+  Generated template for the AvaliacaoAnteriorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{setor.sigla}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="bg-image">
+  <div class="browser-compat">
+
+    <ion-card>
+      <ion-row>
+        <ion-col text-center>
+          <ion-card-header><h1 text-center>{{setor?.sigla}}</h1></ion-card-header>
+          <ion-img style="width: 60px; height: 60px; border-radius: 50%;" src={{getUrlImagemNivel(setor.nivel)}}></ion-img>
+          <div margin-top="10"></div>
+        </ion-col>
+        <ion-col>
+          <div margin-top="10"></div>
+          <h6 ion-text  stacked color="primary">Pretendido:</h6><h2>{{avaliacao?.nivelPretendido}}</h2>
+          <div margin-top="10"></div>
+          <h6 ion-text  stacked color="primary">Atingido: </h6><h2>{{avaliacao?.nivelAtingido}}</h2>
+          <div margin-top="10"></div>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+
+    <ion-card>
+      <ion-row padding margin-right="10" margin-left="5">
+        <ion-col>
+          <h6 ion-text  stacked color="primary">Início:</h6><p>{{avaliacao?.dataInicio}}</p>
+        </ion-col>
+        <ion-col>
+          <h6 ion-text  stacked color="primary">Fim:</h6><p>{{avaliacao?.dataFim}}</p>
+        </ion-col>
+      </ion-row>
+      <ion-row margin-right="10" margin-left="5" *ngIf="avaliacao.dataInicioAvaliacaoComplementar">
+        <ion-col margin-left="auto" margin-right="auto" >
+          <h6 ion-text  stacked color="primary">Complementar:</h6><p>{{avaliacao?.dataInicioAvaliacaoComplementar}}</p>
+          <div margin-top="10"></div>
+        </ion-col>
+      </ion-row>
+
+    </ion-card>
+
+    <ion-card>
+      <ion-list>
+
+        <button *ngFor="let nivel of corpo" ion-item  (click)="abrirCriterios(nivel)">
+          {{nivel.nome}}
+
+          <ion-icon *ngIf="!((avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual)"    item-end [color]="avaliacaoService.getCorNivel(nivel)" name="star"></ion-icon>
+          <ion-icon *ngIf="(avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual"       item-end color="avaliacaoAmarelo" name="md-help"></ion-icon>
+
+        </button>
+
+      </ion-list>
+    </ion-card>
+
+  </div>
+</ion-content>

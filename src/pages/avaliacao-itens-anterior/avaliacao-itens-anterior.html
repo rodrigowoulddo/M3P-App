@@ -1,0 +1,121 @@
+<!--
+  Generated template for the AvaliacaoItensAnteriorPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>{{criterio?.nome}}</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="bg-image">
+  <div class="browser-compat">
+
+    <!--Avaliação Manual-->
+    <ion-card *ngIf="avaliacaoService.getCorCriterioAutomatico(criterio) === 'avaliacaoAmarelo'">
+
+      <ion-card-header margin-left="45" margin-right="45" text-center="">
+        <h2>Avaliação Manual de Critério</h2>
+        <ion-note text-wrap>Avaliado por: {{criterio.usuarioAvaliacaoManual}}</ion-note>
+      </ion-card-header>
+
+      <ion-card-content>
+
+        <div text-center>
+          <ion-col>
+            <ion-icon *ngIf="criterio.avaliacaoManual == 'vermelho'" class="icon-avaliacao-anterior" name="close-circle"
+                      [color]="criterio.avaliacaoManual == 'vermelho'? 'avaliacaoVermelho': 'avaliacaoCinza'"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="criterio.avaliacaoManual == 'amarelo'" class="icon-avaliacao-anterior" name="help-circle"
+                      [color]="criterio.avaliacaoManual == 'amarelo'? 'avaliacaoAmarelo': 'avaliacaoCinza'"></ion-icon>
+          </ion-col>
+        </div>
+
+      </ion-card-content>
+    </ion-card>
+    <ion-card *ngFor="let item of criterio.itensDeAvaliacao; let i = index">
+
+      <ion-card-header>
+
+        <ion-row float-right>
+          <ion-col>
+            <ion-icon *ngIf="item.avaliacao == 'vermelho'" color="avaliacaoVermelho" name="close-circle"
+                      class="icon-avaliacao-anterior"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="item.avaliacao == 'amarelo'" color="avaliacaoAmarelo" name="help-circle"
+                      class="icon-avaliacao-anterior"></ion-icon>
+          </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="item.avaliacao == 'verde'" color="avaliacaoVerde" name="checkmark-circle"
+                      class="icon-avaliacao-anterior"></ion-icon>
+          </ion-col>
+        </ion-row>
+
+        <!--<ion-row float-right>-->
+          <!--<ion-col>-->
+            <!--<ion-icon [color]="item.avaliacao == 'vermelho'? 'avaliacaoVermelho': 'avaliacaoCinza'" name="close-circle"-->
+                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
+          <!--</ion-col>-->
+          <!--<ion-col>-->
+            <!--<ion-icon [color]="item.avaliacao == 'amarelo'? 'avaliacaoAmarelo': 'avaliacaoCinza'" name="help-circle"-->
+                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
+          <!--</ion-col>-->
+          <!--<ion-col>-->
+            <!--<ion-icon [color]="item.avaliacao == 'verde'? 'avaliacaoVerde': 'avaliacaoCinza'" name="checkmark-circle"-->
+                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
+          <!--</ion-col>-->
+        <!--</ion-row>-->
+
+        <ion-card-title>Item {{i+1}}</ion-card-title>
+
+        <ion-label text-wrap margin-top="10"><p>{{item.descricao}}</p></ion-label>
+
+        <ion-item no-lines *ngIf="item.observacao">
+          <h6 ion-text color="primary" stacked>Observação</h6>
+          <ion-note text-wrap>{{item.observacao}}</ion-note>
+        </ion-item>
+
+        <ion-row float-right>
+            <ion-icon
+              color="primary"
+              style=" width: 30px; height: 30px"
+              (click)="alterarAvaliadoresVisiveis(i)">
+              <ion-icon
+                [name]="avaliadoresVisiveis[i]? 'contacts-outline' : 'contacts'">
+              </ion-icon>
+            </ion-icon>
+          <!--<button-->
+              <!--ion-button-->
+              <!--mini-->
+              <!--clear-->
+              <!--icon-only-->
+              <!--(click)="alterarAvaliadoresVisiveis(i)">-->
+              <!--<ion-icon-->
+                <!--[name]="avaliadoresVisiveis[i]? 'contacts-outline' : 'contacts'">-->
+              <!--</ion-icon>-->
+            <!--</button>-->
+        </ion-row>
+
+        <ion-row padding *ngIf="avaliadoresVisiveis[i]">
+          <ion-col *ngIf="item.usuarioAvaliacao">
+            <ion-note>Avaliado por:<br>{{item.usuarioAvaliacao}}</ion-note>
+          </ion-col>
+          <ion-col *ngIf="item.usuarioObservacao">
+            <ion-note>Observação por:<br>{{item.usuarioObservacao}}</ion-note>
+          </ion-col>
+        </ion-row>
+
+      </ion-card-header>
+
+
+    </ion-card>
+
+  </div>
+</ion-content>

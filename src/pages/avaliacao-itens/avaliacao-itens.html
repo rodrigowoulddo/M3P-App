@@ -6,14 +6,23 @@
 -->
 <ion-header>
 
-  <ion-navbar>
+  <!--<ion-navbar>-->
+    <!--<ion-title>{{criterio?.nome}}</ion-title>-->
+  <!--</ion-navbar>-->
+
+  <ion-navbar hideBackButton>
+    <ion-buttons left>
+      <button ion-button icon-left="" (click)="backClick()">
+        <ion-icon name="arrow-back"></ion-icon>
+      </button>
+    </ion-buttons>
     <ion-title>{{criterio?.nome}}</ion-title>
   </ion-navbar>
 
 </ion-header>
 
 
-<ion-content padding>
+<ion-content padding class="bg-image">
   <div class="browser-compat">
 
     <!--Avaliação Manual-->

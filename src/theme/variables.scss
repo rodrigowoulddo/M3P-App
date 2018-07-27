@@ -40,6 +40,8 @@ $colors: (
   light:      #f4f4f4,
   dark:       #555,
 
+  white: #ffffff,
+
   //  @Rodrigo
   //  Cores tiradas das guidelines da Apple
   // (por nenhum motivo específico, só porque eu acho bonito)
@@ -48,14 +50,8 @@ $colors: (
   avaliacaoVerde   : #4cd964,
   avaliacaoCinza   : #888,
 
+  corFundo: #EAEBED,
 
-  //Possíveis cores de fundo
-  corFundo1: #EBEBD3,
-  corFundo2: #EAEBED,
-  corFundo3: #AFC2D5,
-  corFundo4: #5D5E60,
-  corFundo5: #36413E,
-  corFundo6: #ddd,
 );
 
 
@@ -112,10 +108,9 @@ $toolbar-md-title-text-color: map-get($colors, primary);
 $toolbar-ios-title-text-color: map-get($colors, primary);
 $toolbar-wp-title-text-color: map-get($colors, primary);
 
-//$background-color: map-get($colors,secondary);
-//$background-color: map-get($colors,corFundo1);
-$background-color: map-get($colors,corFundo2);
-//$background-color: map-get($colors,corFundo3);
-//$background-color: map-get($colors,corFundo4);
-//$background-color: map-get($colors,corFundo5);
-//$background-color: map-get($colors,corFundo6);
+//Muda cor de fundo do app
+$background-color: map-get($colors,corFundo);
+
+//Muda cor de fundo das imagens do app
+$img-placeholder-background: map-get($colors, corFundo) ;
+
