@@ -107,12 +107,12 @@ export class AvaliacaoPage {
               console.log('Avaliação do setor ' + this.setor.sigla + ' finalizada.');
             }
           },
-          {
-            text: 'Nível Manual',
-            handler: () => {
-              this.setarNivelManualmente();
-            }
-          },
+          // {
+          //   text: 'Nível Manual',
+          //   handler: () => {
+          //     this.setarNivelManualmente();
+          //   }
+          // },
           {
             text: 'Cancelar',
             role: 'cancel',
