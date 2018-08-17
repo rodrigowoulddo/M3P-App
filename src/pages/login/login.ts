@@ -23,6 +23,8 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
 
+    if(this.verificaUsuarioJaLogado())
+      this.setarRootPáginaInicial();
 
 
   }
@@ -32,8 +34,22 @@ export class LoginPage {
   }
 
   ionViewDidLeave() {
-    this.loading.dismiss();
+    if(this.loading)
+      this.loading.dismiss();
   }
+
+  verificaUsuarioJaLogado(){
+   let user =  this.angularFireAuth.auth.currentUser;
+      return !!user;
+  }
+
+  // async login() {
+  //   if(this.verificaUsuarioJaLogado())
+  //     this.setarRootPáginaInicial();
+  //   else
+  //     this.realizarLogin();
+  //
+  // }
 
   async login() {
     try {
@@ -43,7 +59,7 @@ export class LoginPage {
       this.loading.present();
       const autenticacao = this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password)
         .then(auth => {
-          this.navCtrl.setRoot(TabsPage);
+          this.setarRootPáginaInicial();
         }).catch(err => {
           let alert = this.alertCtrl.create({
             title: 'Ops! :(',
@@ -63,6 +79,9 @@ export class LoginPage {
       this.loading.dismiss();
       alert.present();
     }
+  }
 
+  private setarRootPáginaInicial() {
+    this.navCtrl.setRoot(TabsPage);
   }
 }
