@@ -1,7 +1,7 @@
 # M3P App
 
 * **Plataforma:** iOS / Android / Web
-* **Idioma da aplicação:** PortuguÊs (BR)
+* **Idioma da aplicação:** Português (BR)
 * **Idioma do código:** Portugês (BR)
 
 Aplicação desenvolvida com o framework Ionic 3 para a avaliaçã de setores internos da Unuversidade Federal de Ciências da Saúde de Porto Alegre (UFCSPA) no Modelo de Maturidade em Mapeamento de Processos (M3P).
