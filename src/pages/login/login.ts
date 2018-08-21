@@ -57,7 +57,7 @@ export class LoginPage {
         content: 'Aguarde...'
       });
       this.loading.present();
-      const autenticacao = this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password)
+      this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password)
         .then(auth => {
           this.setarRootPáginaInicial();
         }).catch(err => {

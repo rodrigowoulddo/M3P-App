@@ -18,7 +18,7 @@
 
 
     <!--Avaliação Manual-->
-    <ion-card *ngIf="avaliacaoService.getCorNivelAutomatico(nivel) === 'avaliacaoAmarelo'">
+    <ion-card *ngIf="avaliacaoService.newMostrarCardAvaliacaoManualNivel(nivel)">
 
       <ion-card-header margin-left="45" margin-right="45" text-center="">
         <h2>Avaliação Manual de Nível</h2>
@@ -60,13 +60,10 @@
 
   <ion-card *ngFor="let criterio of criterios$ | async">
 
-    <!--<ion-card-header>-->
-    <ion-item margin-left="45" padding-right="30" (click)="abrirItensDeAvaliacao(criterio)">
+    <ion-item margin-left="45" padding-right="30" (click)="abrirItensDeAvaliacao(criterio)" (tap)="abrirItensDeAvaliacao(criterio)">
       <ion-card-title>{{criterio.nome}}</ion-card-title>
-      <ion-icon *ngIf="!((avaliacaoService.getCorCriterio(criterio) === 'avaliacaoAmarelo') && !criterio.avaliacaoManual)"    item-end [color]="avaliacaoService.getCorCriterio(criterio)" name="star"></ion-icon>
-      <ion-icon *ngIf="(avaliacaoService.getCorCriterio(criterio) === 'avaliacaoAmarelo') && !criterio.avaliacaoManual"       item-end color="avaliacaoAmarelo" name="md-help"></ion-icon>
+      <ion-icon item-end [color]="avaliacaoService.newGetCorCriterio(criterio)" [name]="avaliacaoService.newGetAvaliacaoCriterio(criterio) == 'avaliacaoManual'? avaliacaoService.ICON_AVALIACAO_MANUAL : avaliacaoService.ICON_ESTRELA"></ion-icon>
     </ion-item>
-    <!--</ion-card-header>-->
 
     <ion-card-content (click)="abrirItensDeAvaliacao(criterio)">
       <p margin-left="25" margin-right="20">{{criterio.descricao}}</p>

@@ -9,6 +9,11 @@ import {Nivel} from "../data/nivelInterface";
 export class AvaliacaoService {
 
 
+  // Os ícones foram definidos com constantes
+  // para facilitar a troca de identidade visual
+  public ICON_AVALIACAO_MANUAL = "md-alert";
+  public ICON_ESTRELA = "star";
+
   private avaliacaoRef = this.db.list<Avaliacao>('avaliacoes');
   private niveisRef = this.db.database.ref('niveis');
   public avaliacoes: Avaliacao[];
@@ -196,224 +201,121 @@ export class AvaliacaoService {
     return ano+"/"+smes+"/"+sdia+' (' + shora + ':' + smin + ')';
   }
 
-  getCorCriterioAutomatico(criterio) {
+  /*
+    Entrada: Critério com itens de avaliação (em formato de observable)
 
-    if (criterio.itensDeAvaliacao) {
-      let cor = 'verde';
+    Possíveis saídas:
+      - "avaliacaoVerde"
+      - "avaliacaoAmarelo"
+      - "avaliacaoVermelho"
+      - "avaliacao_manual"
+      - "avaliacaoCinza"
 
-      criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-        let value = criterio.itensDeAvaliacao[i];
-        value.key = i;
-        return value;
-      });
+   */
+  newGetAvaliacaoCriterio(criterio){
 
-      criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-        if(itemAvaliacao.avaliacao){
-          if (itemAvaliacao.avaliacao === 'vermelho') {
-            cor = 'vermelho'; return;
-          }
-          if (itemAvaliacao.avaliacao === 'amarelo') {
-            if(cor !== 'vermelho')
-              cor = 'amarelo';
-            return;
-          }
-        } else{
-          cor = 'cinza'; return;
-        }
-      });
-      //                  Referência de variable.scss > $colors
-      if (cor === 'vermelho') {
-        return 'avaliacaoVermelho';
-      }
-      if (cor === 'amarelo') {
-        return 'avaliacaoAmarelo';
-      }
-      if (cor === 'verde') {
-        return 'avaliacaoVerde';
-      }
-      if (cor === 'cinza') {
-        return 'avaliacaoCinza';
-      }
-    }
-    else {
-      return 'avaliacaoCinza' //Cinza ()
-    }
+    //Transformar em array
+    criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+      let value = criterio.itensDeAvaliacao[i];
+      value.key = i;
+      return value;
+    });
 
+    let avaliacoes = [];
+
+    criterio.itensDeAvaliacao.forEach(item => {avaliacoes.push(item.avaliacao)});
+
+    if(this.isInArray(undefined,avaliacoes)) return "avaliacaoCinza";
+    if(this.isInArray("vermelho",avaliacoes)) return "avaliacaoVermelho";
+    if(this.isInArray("amarelo",avaliacoes) && !criterio.avaliacaoManual) return "avaliacaoManual";
+    if(this.isInArray("amarelo",avaliacoes) && criterio.avaliacaoManual) return criterio.avaliacaoManual == "vermelho"? "avaliacaoVermelho":"avaliacaoAmarelo";
+    return "avaliacaoVerde";
   }
 
-  getCorCriterio(criterio) {
-
-    //Verifica set manual
-    if(criterio.avaliacaoManual !== undefined){
-      if(criterio.avaliacaoManual == 'verde') return 'avaliacaoVerde';
-      if(criterio.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
-      if(criterio.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
-    }
-
-    if (criterio.itensDeAvaliacao) {
-      let cor = 'verde';
-
-      criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-        let value = criterio.itensDeAvaliacao[i];
-        value.key = i;
-        return value;
-      });
-
-      criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-        if(itemAvaliacao.avaliacao){
-          if (itemAvaliacao.avaliacao === 'vermelho') {
-            cor = 'vermelho'; return;
-          }
-          if (itemAvaliacao.avaliacao === 'amarelo') {
-            if(cor !== 'vermelho')
-              cor = 'amarelo';
-            return;
-          }
-        } else{
-          cor = 'cinza'; return;
-        }
-      });
-      //                  Referência de variable.scss > $colors
-      if (cor === 'vermelho') {
-        return 'avaliacaoVermelho';
-      }
-      if (cor === 'amarelo') {
-        return 'avaliacaoAmarelo';
-      }
-      if (cor === 'verde') {
-        return 'avaliacaoVerde';
-      }
-      if (cor === 'cinza') {
-        return 'avaliacaoCinza';
-      }
-    }
-    else {
-      return 'avaliacaoCinza' //Cinza ()
-    }
-
+  newGetCorCriterio(criterio){
+    let avaliacao = this.newGetAvaliacaoCriterio(criterio);
+    return avaliacao == "avaliacaoManual"? "avaliacaoAmarelo": avaliacao;
   }
 
-  getCorNivelAutomatico(nivel) {
+  /*
+  Entrada: Nível com critérios (em formato de observable)
 
+  Possíveis saídas:
+    - "avaliacaoVerde"
+    - "avaliacaoAmarelo"
+    - "avaliacaoVermelho"
+    - "avaliacao_manual"
+    - "avaliacaoCinza"
 
-    if(nivel.criterios){
+ */
+  newGetAvaliacaoNivel(nivel){
 
-      nivel.criterios = Object.keys( nivel.criterios).map(i => {
-        let value = nivel.criterios[i];
-        value.key = i;
-        return value;
-      });
+    //Transformar em array
+    nivel.criterios = Object.keys( nivel.criterios).map(i => {
+      let value = nivel.criterios[i];
+      value.key = i;
+      return value;
+    });
 
-      let cor = 'verde';
-      nivel.criterios.forEach((criterio, index) => {
+    let avaliacoes = [];
 
-        //Verifica set manual
-        if(criterio.avaliacaoManual !== undefined){
-          if(criterio.avaliacaoManual == 'verde') cor = 'verde';
-          if(criterio.avaliacaoManual == 'amarelo') cor = 'amarelo';
-          if(criterio.avaliacaoManual == 'vermelho') cor = 'vermelho';
-        }
+    nivel.criterios.forEach(item => {avaliacoes.push(this.newGetAvaliacaoCriterio(item))});
 
-        else{
-          criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-            let value = criterio.itensDeAvaliacao[i];
-            value.key = i;
-            return value;
-          });
-
-
-          criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-            if(itemAvaliacao.avaliacao){
-              if (itemAvaliacao.avaliacao === 'vermelho') {
-                cor = 'vermelho';
-                return;
-              }
-              if (itemAvaliacao.avaliacao === 'amarelo') {
-                if(cor !== 'vermelho')
-                  cor = 'amarelo';
-
-                return;
-              }
-            } else{
-              cor = 'cinza'; return;
-            }
-          });
-        }
-      });
-      //                       Referência de variable.scss > $colors
-      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
-      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
-      if (cor === 'verde')     {return 'avaliacaoVerde';}
-      if (cor === 'cinza')     {return 'avaliacaoCinza';}
-    } else{
-      return 'avaliacaoCinza' //Cinza ()
-    }
-
-
+    if(this.isInArray("avaliacaoCinza",avaliacoes)) return "avaliacaoCinza";
+    if(this.isInArray("avaliacaoManual",avaliacoes)) return "avaliacaoManual";
+    if(this.isInArray("avaliacaoVermelho",avaliacoes)) return "avaliacaoVermelho";
+    if(this.isInArray("avaliacaoAmarelo",avaliacoes) && !nivel.avaliacaoManual) return "avaliacaoManual";
+    if(this.isInArray("avaliacaoAmarelo",avaliacoes) && nivel.avaliacaoManual) return nivel.avaliacaoManual == "vermelho"? "avaliacaoVermelho":"avaliacaoAmarelo";
+    return "avaliacaoVerde";
   }
 
-  getCorNivel(nivel) {
+  newGetCorNivel(nivel){
+    let avaliacao = this.newGetAvaliacaoNivel(nivel);
+    return avaliacao == "avaliacaoManual"? "avaliacaoAmarelo": avaliacao;
+  }
 
-    //Verifica set manual
-    if(nivel.avaliacaoManual !== undefined){
-      if(nivel.avaliacaoManual == 'verde') return 'avaliacaoVerde';
-      if(nivel.avaliacaoManual == 'amarelo') return 'avaliacaoAmarelo';
-      if(nivel.avaliacaoManual == 'vermelho') return 'avaliacaoVermelho';
-    }
+  newMostrarCardAvaliacaoManualCriterio(criterio){
 
-    if(nivel.criterios){
+    //Transformar em array
+    criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
+      let value = criterio.itensDeAvaliacao[i];
+      value.key = i;
+      return value;
+    });
 
-      nivel.criterios = Object.keys( nivel.criterios).map(i => {
-        let value = nivel.criterios[i];
-        value.key = i;
-        return value;
-      });
+    let avaliacoes = [];
 
-      let cor = 'verde';
-      nivel.criterios.forEach((criterio, index) => {
-
-        //Verifica set manual
-        if(criterio.avaliacaoManual !== undefined){
-          if(criterio.avaliacaoManual == 'verde') cor = 'verde';
-          if(criterio.avaliacaoManual == 'amarelo') cor = 'amarelo';
-          if(criterio.avaliacaoManual == 'vermelho') cor = 'vermelho';
-        }
-        else{
-          criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
-            let value = criterio.itensDeAvaliacao[i];
-            value.key = i;
-            return value;
-          });
+    criterio.itensDeAvaliacao.forEach(item => {avaliacoes.push(item.avaliacao)});
 
 
-          criterio.itensDeAvaliacao.forEach((itemAvaliacao, index) => {
-            if(itemAvaliacao.avaliacao){
-              if (itemAvaliacao.avaliacao === 'vermelho') {
-                cor = 'vermelho';
-                return;
-              }
-              if (itemAvaliacao.avaliacao === 'amarelo') {
-                if(cor !== 'vermelho')
-                  cor = 'amarelo';
+    if(this.isInArray(undefined,avaliacoes)) return false;
+    if(this.isInArray("vermelho",avaliacoes)) return false;
+    if(this.isInArray("amarelo",avaliacoes)) return true;
+    return false;
+  }
 
-                return;
-              }
-            } else{
-              cor = 'cinza'; return;
-            }
-          });
-        }
-      });
-      //                       Referência de variable.scss > $colors
-      if (cor === 'vermelho')  {return 'avaliacaoVermelho';}
-      if (cor === 'amarelo')   {return 'avaliacaoAmarelo';}
-      if (cor === 'verde')     {return 'avaliacaoVerde';}
-      if (cor === 'cinza')     {return 'avaliacaoCinza';}
-    } else{
-      return 'avaliacaoCinza' //Cinza ()
-    }
+  newMostrarCardAvaliacaoManualNivel(nivel){
 
+    //Transformar em array
+    nivel.criterios = Object.keys( nivel.criterios).map(i => {
+      let value = nivel.criterios[i];
+      value.key = i;
+      return value;
+    });
 
+    let avaliacoes = [];
+
+    nivel.criterios.forEach(item => {avaliacoes.push(this.newGetAvaliacaoCriterio(item))});
+
+    if(this.isInArray("avaliacaoCinza",avaliacoes)) return false;
+    if(this.isInArray("avaliacaoManual",avaliacoes)) return false;
+    if(this.isInArray("avaliacaoVermelho",avaliacoes)) return false;
+    if(this.isInArray("avaliacaoAmarelo",avaliacoes)) return true;
+    return false;
+  }
+
+  isInArray(value, array) {
+    return array.indexOf(value) > -1;
   }
 
 

@@ -1,5 +1,5 @@
-import {Component, ViewChild} from '@angular/core';
-import {AlertController, IonicPage, Navbar, NavController, NavParams, ToastController} from 'ionic-angular';
+import {Component} from '@angular/core';
+import {AlertController, IonicPage, NavController, NavParams, ToastController} from 'ionic-angular';
 import {Criterio} from "../../data/criterioInterface";
 import {Observable} from "rxjs/Observable";
 import {ItemDeAvaliacao} from "../../data/itemDeAvaliacaoInterface";
@@ -51,7 +51,7 @@ export class AvaliacaoItensPage {
     this.criterioSubscription = this.criterio$.subscribe((data) => {
       this.criterio = data;
 
-      if(this.avaliacaoService.getCorCriterioAutomatico(this.criterio) !== 'avaliacaoAmarelo'){
+      if(!this.avaliacaoService.newMostrarCardAvaliacaoManualCriterio(this.criterio)){
         this.resetarAvaliacaoManualDeCriterio();
       }
 
@@ -201,7 +201,7 @@ export class AvaliacaoItensPage {
 
     this.criterio.itensDeAvaliacao.forEach(item => {
 
-      if(item.avaliacao !== 'verde' && item.observacao === undefined){
+      if((item.avaliacao !== 'verde' && item.avaliacao !== undefined) && item.observacao === undefined){
         flagEmOrdem = false;
         return;
       }

@@ -34,10 +34,6 @@ export class SetorService {
   }
 
   delete(setor: Setor){
-    // let updates = {};
-    // updates['/setores/' + setor.key] = {ativo: false};
-    // this.db.database.ref().update(updates);
-
     setor.ativo = false;
     this.save(setor);
 
@@ -45,8 +41,7 @@ export class SetorService {
     console.log(setor);
   }
 
-  setorTemAvaliacaoAnterior(key: string){
-    return false;
+  exist() {
+    // Não faz nada (ver uso)
   }
-
 }

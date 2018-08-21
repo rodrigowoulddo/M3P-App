@@ -26,7 +26,7 @@
   <div class="browser-compat">
 
     <!--Avaliação Manual-->
-    <ion-card *ngIf="avaliacaoService.getCorCriterioAutomatico(criterio) === 'avaliacaoAmarelo'">
+    <ion-card *ngIf="avaliacaoService.newMostrarCardAvaliacaoManualCriterio(criterio)">
 
       <ion-card-header margin-left="45" margin-right="45" text-center="">
         <h2>Avaliação Manual de Critério</h2>

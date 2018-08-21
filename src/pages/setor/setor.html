@@ -75,7 +75,7 @@
           <ion-item *ngIf="mostrarHistoricoCompleto || (i <= 2)">
 
             <!--Caso ja tenha finalizado-->
-            <div (click)="avaliacao.dataFim? verAvaliacaoAnterior(avaliacao):null">
+            <div (click)="avaliacao.dataFim? verAvaliacaoAnterior(avaliacao):avaliarSetor()">
               <h3 ion-text [color]="avaliacao.dataFim? 'dark' : 'danger'">{{avaliacao.dataFim? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
               <p>{{avaliacao.dataFim? avaliacao.dataFim: avaliacao.dataInicio}}</p>
             </div>

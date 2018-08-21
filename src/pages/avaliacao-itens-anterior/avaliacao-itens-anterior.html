@@ -17,7 +17,7 @@
   <div class="browser-compat">
 
     <!--Avaliação Manual-->
-    <ion-card *ngIf="avaliacaoService.getCorCriterioAutomatico(criterio) === 'avaliacaoAmarelo'">
+    <ion-card *ngIf="criterio.avaliacaoManual">
 
       <ion-card-header margin-left="45" margin-right="45" text-center="">
         <h2>Avaliação Manual de Critério</h2>
@@ -56,33 +56,24 @@
             <ion-icon *ngIf="item.avaliacao == 'verde'" color="avaliacaoVerde" name="checkmark-circle"
                       class="icon-avaliacao-anterior"></ion-icon>
           </ion-col>
+          <ion-col>
+            <ion-icon *ngIf="!item.avaliacao" color="avaliacaoCinza" name="ios-close-circle-outline"
+                      class="icon-avaliacao-anterior"></ion-icon>
+          </ion-col>
         </ion-row>
-
-        <!--<ion-row float-right>-->
-          <!--<ion-col>-->
-            <!--<ion-icon [color]="item.avaliacao == 'vermelho'? 'avaliacaoVermelho': 'avaliacaoCinza'" name="close-circle"-->
-                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
-          <!--</ion-col>-->
-          <!--<ion-col>-->
-            <!--<ion-icon [color]="item.avaliacao == 'amarelo'? 'avaliacaoAmarelo': 'avaliacaoCinza'" name="help-circle"-->
-                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
-          <!--</ion-col>-->
-          <!--<ion-col>-->
-            <!--<ion-icon [color]="item.avaliacao == 'verde'? 'avaliacaoVerde': 'avaliacaoCinza'" name="checkmark-circle"-->
-                      <!--class="icon-avaliacao-anterior"></ion-icon>-->
-          <!--</ion-col>-->
-        <!--</ion-row>-->
 
         <ion-card-title>Item {{i+1}}</ion-card-title>
 
         <ion-label text-wrap margin-top="10"><p>{{item.descricao}}</p></ion-label>
+
+
 
         <ion-item no-lines *ngIf="item.observacao">
           <h6 ion-text color="primary" stacked>Observação</h6>
           <ion-note text-wrap>{{item.observacao}}</ion-note>
         </ion-item>
 
-        <ion-row float-right>
+        <ion-row float-right *ngIf="item.usuarioAvaliacao">
             <ion-icon
               color="primary"
               style=" width: 30px; height: 30px"
@@ -103,7 +94,6 @@
         </ion-row>
 
       </ion-card-header>
-
 
     </ion-card>
 

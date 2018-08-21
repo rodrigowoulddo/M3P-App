@@ -107,12 +107,6 @@ export class AvaliacaoPage {
               console.log('Avaliação do setor ' + this.setor.sigla + ' finalizada.');
             }
           },
-          // {
-          //   text: 'Nível Manual',
-          //   handler: () => {
-          //     this.setarNivelManualmente();
-          //   }
-          // },
           {
             text: 'Cancelar',
             role: 'cancel',
@@ -167,51 +161,52 @@ export class AvaliacaoPage {
     });
 
     corpo.forEach(nivel => {
-      if(!flagNivelNaoVerde && this.avaliacaoService.getCorNivel(nivel) === 'avaliacaoVerde') nivelAtingido = nivel.nome;
+      if(!flagNivelNaoVerde && this.avaliacaoService.newGetAvaliacaoNivel(nivel) === 'avaliacaoVerde') nivelAtingido = nivel.nome;
       else flagNivelNaoVerde = true;
     });
 
     if(nivelAtingido) return nivelAtingido;
-    else return corpo[0].nome;
+    else return 'Nível 0';
 
   }
 
-  private setarNivelManualmente() {
-
-    let nivelAvaliado;
-
-    let alert = this.alertCtrl.create();
-    alert.setTitle('Nível Manual');
-
-    let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
-      let value = this.objAvaliacao.corpo[i];
-      value.key = i;
-      return value;
-    });
-
-    corpo.forEach(nivel => {
-      alert.addInput({
-        type: 'radio',
-        label: nivel.nome,
-        value: nivel.nome
-      });
-    });
-
-    alert.addButton({
-      text: 'Cancelar',
-      role: 'cancel'
-    });
-
-    alert.addButton({
-      text: 'Confirmar',
-      handler: (data: string) => {
-        nivelAvaliado = data;
-        this.finalizarAvaliacao(nivelAvaliado);
-      }
-    });
-
-    alert.present();
-  }
+  // Método não mais utilizado
+  // private setarNivelManualmente() {
+  //
+  //   let nivelAvaliado;
+  //
+  //   let alert = this.alertCtrl.create();
+  //   alert.setTitle('Nível Manual');
+  //
+  //   let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
+  //     let value = this.objAvaliacao.corpo[i];
+  //     value.key = i;
+  //     return value;
+  //   });
+  //
+  //   corpo.forEach(nivel => {
+  //     alert.addInput({
+  //       type: 'radio',
+  //       label: nivel.nome,
+  //       value: nivel.nome
+  //     });
+  //   });
+  //
+  //   alert.addButton({
+  //     text: 'Cancelar',
+  //     role: 'cancel'
+  //   });
+  //
+  //   alert.addButton({
+  //     text: 'Confirmar',
+  //     handler: (data: string) => {
+  //       nivelAvaliado = data;
+  //       this.finalizarAvaliacao(nivelAvaliado);
+  //     }
+  //   });
+  //
+  //   alert.present();
+  // }
 
   private verificarObservacoes() {
     let flagEmOrdem = true;
@@ -230,6 +225,10 @@ export class AvaliacaoPage {
           criterio.itensDeAvaliacao.forEach(item => {
             if ((item.avaliacao == 'amarelo' || item.avaliacao == 'vermelho') && item.observacao === undefined) {
               flagEmOrdem = false;
+
+              //DEBUG
+              console.log("Observação faltante no item:",item);
+
               return;
             }
           });
@@ -331,7 +330,7 @@ export class AvaliacaoPage {
     });
 
     corpo.forEach(nivel => {
-      if((this.avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual){flagAvaliacoesManuaisConformidade = false}
+      if((this.avaliacaoService.newGetCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual){flagAvaliacoesManuaisConformidade = false}
     });
 
     if(!flagAvaliacoesManuaisConformidade){

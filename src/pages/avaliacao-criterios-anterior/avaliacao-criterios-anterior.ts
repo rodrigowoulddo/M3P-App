@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
-import {AvaliacaoService} from "../../services/avaliacao";
 import {Nivel} from "../../data/nivelInterface";
 import {Criterio} from "../../data/criterioInterface";
 import {AvaliacaoItensAnteriorPage} from "../avaliacao-itens-anterior/avaliacao-itens-anterior";
+import {AvaliacaoService} from "../../services/avaliacao";
 
 /**
  * Generated class for the AvaliacaoCriteriosAnteriorPage page.
@@ -21,7 +21,7 @@ export class AvaliacaoCriteriosAnteriorPage {
 
   nivel: Nivel;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private avaliacaoService:AvaliacaoService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public avaliacaoService: AvaliacaoService) {
 
     this.nivel = navParams.get('nivel');
 

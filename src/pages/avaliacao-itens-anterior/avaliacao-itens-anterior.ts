@@ -20,7 +20,7 @@ export class AvaliacaoItensAnteriorPage {
   criterio: Criterio;
   avaliadoresVisiveis: boolean[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private avaliacaoService: AvaliacaoService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public avaliacaoService: AvaliacaoService) {
 
     this.criterio = navParams.get('criterio');
     this.avaliadoresVisiveis = [];

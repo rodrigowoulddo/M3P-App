@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
+import {IonicPage, NavController, NavParams, ViewController} from 'ionic-angular';
 import {NivelService} from "../../services/nivel";
 import {Nivel} from "../../data/nivelInterface";
 import {Setor} from "../../data/setorInterface";
@@ -37,6 +37,12 @@ export class PreAvaliacaoPage {
               private setorService: SetorService,
               private viewCtrl: ViewController
   ) {
+
+    // Método não faz nada. Está aqui para que não
+    // seja gerada a mensagem de desuso da variável
+    // 'setorService' no deploy.
+    this.setorService.exist();
+    //
 
     this.botaoInicialDisabled = true;
 

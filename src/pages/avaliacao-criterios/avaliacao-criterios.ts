@@ -6,7 +6,6 @@ import {Criterio} from "../../data/criterioInterface";
 import {map} from "rxjs/operators";
 import {AvaliacaoService} from "../../services/avaliacao";
 import {AvaliacaoItensPage} from "../avaliacao-itens/avaliacao-itens";
-import {NivelService} from "../../services/nivel";
 import {Subscription} from "rxjs/Subscription";
 import {AngularFireAuth} from "angularfire2/auth";
 
@@ -46,7 +45,7 @@ export class AvaliacaoCriteriosPage {
     this.nivelSubscription = this.nivel$.subscribe((data) => {
       this.nivel = data;
 
-      if(this.avaliacaoService.getCorNivelAutomatico(this.nivel) !== 'avaliacaoAmarelo'){
+      if(!this.avaliacaoService.newMostrarCardAvaliacaoManualNivel(this.nivel)){
         this.resetarAvaliacaoManualDeNivel();
       }
 

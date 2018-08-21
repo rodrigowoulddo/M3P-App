@@ -58,8 +58,8 @@
         <button *ngFor="let nivel of corpo" ion-item  (click)="abrirCriterios(nivel)">
           {{nivel.nome}}
 
-          <ion-icon *ngIf="!((avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual)"    item-end [color]="avaliacaoService.getCorNivel(nivel)" name="star"></ion-icon>
-          <ion-icon *ngIf="(avaliacaoService.getCorNivel(nivel) === 'avaliacaoAmarelo') && !nivel.avaliacaoManual"       item-end color="avaliacaoAmarelo" name="md-help"></ion-icon>
+          <ion-icon *ngIf="!(avaliacaoService.newGetCorNivel(nivel) === 'avaliacaoManual')"    item-end [color]="avaliacaoService.newGetCorNivel(nivel)" name={{avaliacaoService.ICON_ESTRELA}}></ion-icon>
+          <ion-icon *ngIf="(avaliacaoService.newGetCorNivel(nivel) === 'avaliacaoManual')"       item-end color="avaliacaoAmarelo" name={{avaliacaoService.ICON_AVALIACAO_MANUAL}}></ion-icon>
 
         </button>
 

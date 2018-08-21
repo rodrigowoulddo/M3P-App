@@ -3,8 +3,8 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 import {Avaliacao} from "../../data/avaliacaoInterface";
 import {Setor} from "../../data/setorInterface";
 import {Nivel} from "../../data/nivelInterface";
-import {AvaliacaoService} from "../../services/avaliacao";
 import {AvaliacaoCriteriosAnteriorPage} from "../avaliacao-criterios-anterior/avaliacao-criterios-anterior";
+import {AvaliacaoService} from "../../services/avaliacao";
 
 /**
  * Generated class for the AvaliacaoAnteriorPage page.
@@ -24,7 +24,7 @@ export class AvaliacaoAnteriorPage {
   setor: Setor;
   corpo: Nivel[];
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private avaliacaoService: AvaliacaoService) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, public avaliacaoService: AvaliacaoService) {
 
     this.avaliacao = navParams.get('avaliacao');
     this.setor = navParams.get('setor');
