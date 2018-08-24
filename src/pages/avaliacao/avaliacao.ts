@@ -33,7 +33,6 @@ export class AvaliacaoPage {
   niveis: Nivel[];
   avaliacaoSubscription: Subscription;
 
-
   constructor(public navCtrl: NavController,
               public navParams: NavParams,
               private alertCtrl: AlertController,
@@ -77,28 +76,33 @@ export class AvaliacaoPage {
 
     let nivelAtingido = this.getNivelAtingidoAutomaticamente();
 
-
-    //Checar conformidade da avaliação
-    let observacoesConformidade = this.verificarObservacoes();
     let todosItensAvaliados = this.verificarTodosItensAvaliados();
-    let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
 
-    //IF tudo ok
-    this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
+    if(todosItensAvaliados){
+      let observacoesConformidade = this.verificarObservacoes(true);
+      let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
+
+      if(observacoesConformidade && avaliacoesManuaisConformidade)
+        this.finalizarAvaliacaoVerificandoConformidade(nivelAtingido);
+
+    }
+
+    // //Checar conformidade da avaliação
+    // let observacoesConformidade = this.verificarObservacoes(true);
+    // let todosItensAvaliados = this.verificarTodosItensAvaliados();
+    // let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
+    //
+    // //IF tudo ok
+    // this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
 
   }
 
 
-  private finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido) {
+  private finalizarAvaliacaoVerificandoConformidade(nivelAtingido) {
 
-    if (
-      observacoesConformidade &&
-      todosItensAvaliados &&
-      avaliacoesManuaisConformidade
-    ) {
       let alertFinalizar = this.alertCtrl.create({
         title: 'Finalizar avaliação',
-        message: 'Deseja finalizar avaliação do setor? o nível atingido será: ' + nivelAtingido,
+        message: 'Deseja finalizar avaliação do setor? <br><br> o nível atingido será: ' + '<strong>'+nivelAtingido+'<strong>',
         buttons: [
           {
             text: 'Finalizar',
@@ -116,7 +120,6 @@ export class AvaliacaoPage {
         ]
       });
       alertFinalizar.present();
-    }
   }
 
   finalizarAvaliacao(nivelAtingido: string) {
@@ -170,45 +173,7 @@ export class AvaliacaoPage {
 
   }
 
-  // Método não mais utilizado
-  // private setarNivelManualmente() {
-  //
-  //   let nivelAvaliado;
-  //
-  //   let alert = this.alertCtrl.create();
-  //   alert.setTitle('Nível Manual');
-  //
-  //   let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
-  //     let value = this.objAvaliacao.corpo[i];
-  //     value.key = i;
-  //     return value;
-  //   });
-  //
-  //   corpo.forEach(nivel => {
-  //     alert.addInput({
-  //       type: 'radio',
-  //       label: nivel.nome,
-  //       value: nivel.nome
-  //     });
-  //   });
-  //
-  //   alert.addButton({
-  //     text: 'Cancelar',
-  //     role: 'cancel'
-  //   });
-  //
-  //   alert.addButton({
-  //     text: 'Confirmar',
-  //     handler: (data: string) => {
-  //       nivelAvaliado = data;
-  //       this.finalizarAvaliacao(nivelAvaliado);
-  //     }
-  //   });
-  //
-  //   alert.present();
-  // }
-
-  private verificarObservacoes() {
+  private verificarObservacoes(mostrarAlert: boolean) {
     let flagEmOrdem = true;
 
     let corpo = Object.keys( this.objAvaliacao.corpo).map(i => {
@@ -216,6 +181,8 @@ export class AvaliacaoPage {
       value.key = i;
       return value;
     });
+
+    let faltantes = [];
 
     corpo.forEach((nivel) => {
       if (!flagEmOrdem) return;
@@ -229,6 +196,9 @@ export class AvaliacaoPage {
               //DEBUG
               console.log("Observação faltante no item:",item);
 
+              let obsrvacaoFaltanteString = nivel.nome+" > "+criterio.nome+" > Item "+item.ordem;
+              faltantes.push(obsrvacaoFaltanteString);
+
               return;
             }
           });
@@ -236,13 +206,19 @@ export class AvaliacaoPage {
       }
     });
 
+    let faltantesString = "";
+    faltantes.forEach(string => {
+      faltantesString += string + '<br>';
+    });
+
     if (!flagEmOrdem) {
       let alertFaltamObservaoes = this.alertCtrl.create({
         title: 'Observações Faltantes',
-        subTitle: 'Faltam observações em itens de valiação avaliados como Amarelo ou Vermelho.',
+        subTitle: 'Faltam observações em itens de valiação avaliados como Amarelo ou Vermelho.' + '<br> <br> <strong>' + faltantesString +'<strong>',
         buttons: ['Ok']
       });
-      alertFaltamObservaoes.present();
+
+      if(mostrarAlert) alertFaltamObservaoes.present();
     }
 
     return flagEmOrdem;
@@ -281,7 +257,7 @@ export class AvaliacaoPage {
 
       continuar = false;
 
-      let alertFaltamObservaoes = this.alertCtrl.create({
+      let alertAvaliacoesFaltantes = this.alertCtrl.create({
         title: 'Avaliações Faltantes',
         subTitle: 'Nem todos os itens correspondentes ao nível desejado foram avaliados, deseja continuar?',
         buttons: [
@@ -299,12 +275,12 @@ export class AvaliacaoPage {
               let nivelAtingido = this.getNivelAtingidoAutomaticamente();
 
               //Checar conformidade da avaliação
-              let observacoesConformidade = this.verificarObservacoes();
-              let todosItensAvaliados = continuar;
+              let observacoesConformidade = this.verificarObservacoes(true);
               let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
 
               //IF tudo ok
-              this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
+              if(observacoesConformidade && avaliacoesManuaisConformidade)
+                this.finalizarAvaliacaoVerificandoConformidade(nivelAtingido);
             }
           },
           {
@@ -313,10 +289,10 @@ export class AvaliacaoPage {
           }
         ]
       });
-      alertFaltamObservaoes.present();
+      alertAvaliacoesFaltantes.present();
     }
 
-    return continuar;
+    return flagTodosAvaliados;
   }
 
   private verificarAvaliacoesManuais() {

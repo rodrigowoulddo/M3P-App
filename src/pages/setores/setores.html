@@ -45,10 +45,10 @@
 
   <div class="browser-compat">
     <ion-list>
-      <ion-card *ngFor="let setor of setoresFiltrados$ | async">
+      <ion-card (click)="irParaPaginaDoSetor(setor)" *ngFor="let setor of setoresFiltrados$ | async" >
 
         <div *ngIf="setor?.ativo">
-          <ion-item (click)="irParaPaginaDoSetor(setor)">
+          <ion-item>
             <ion-avatar *ngIf="setor.nivel" icone-estrela item-end>
               <img src={{getUrlImagemNivel(setor.nivel)}}>
             </ion-avatar>

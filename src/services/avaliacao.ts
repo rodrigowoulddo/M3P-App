@@ -276,6 +276,11 @@ export class AvaliacaoService {
 
   newMostrarCardAvaliacaoManualCriterio(criterio){
 
+    /*
+    * Caso o critério chegue vazio esse método não é executado
+    */
+    if(!criterio.itensDeAvaliacao) return;
+
     //Transformar em array
     criterio.itensDeAvaliacao = Object.keys( criterio.itensDeAvaliacao).map(i => {
       let value = criterio.itensDeAvaliacao[i];
