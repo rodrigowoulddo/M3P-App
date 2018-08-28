@@ -28,13 +28,13 @@ export class SetoresPage {
   setoresFiltrados$: Observable<Setor[]>;
 
 
-  constructor(  public navCtrl: NavController,
-                public navParams: NavParams,
-                private setorService: SetorService,
-                private viewCtrl: ViewController,
-                private angularFireAuth: AngularFireAuth,
-                private alertCtrl: AlertController,
-                private app: App) {
+  constructor(public navCtrl: NavController,
+              public navParams: NavParams,
+              private setorService: SetorService,
+              private viewCtrl: ViewController,
+              private angularFireAuth: AngularFireAuth,
+              private alertCtrl: AlertController,
+              private app: App) {
 
     this.setores$ = this.setorService
       .getAll() //DB LIST
@@ -54,25 +54,28 @@ export class SetoresPage {
 
   }
 
-  addSetor(){
+  addSetor() {
     this.navCtrl.push(CadastroSetorPage);
   }
 
 
-  irParaPaginaDoSetor(setor: Setor){
+  irParaPaginaDoSetor(setor: Setor) {
     this.navCtrl.push(SetorPage, {setor: setor});
   }
 
   filterItems(ev: any) {
 
-    if(ev.target.value == null){
+    if (ev.target.value == null) {
       this.atualizaListaDeSetores();
       return;
     }
 
-    this.setoresFiltrados$ = this.setores$.map(function(ARRAY) {
-      return ARRAY.filter(function(setor) {
-        return ((setor.sigla.toLowerCase().includes(ev.target.value.toLowerCase())) || (setor.nome.toLowerCase().includes(ev.target.value.toLowerCase())) || (setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase())))
+    this.setoresFiltrados$ = this.setores$.map(function (ARRAY) {
+      return ARRAY.filter(function (setor) {
+        return ((
+          setor.sigla.toLowerCase().includes(ev.target.value.toLowerCase())) ||
+          (setor.nome.toLowerCase().includes(ev.target.value.toLowerCase())) ||
+          (setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase())))
       })
     });
 
@@ -87,24 +90,26 @@ export class SetoresPage {
     this.setoresFiltrados$ = this.setores$;
   }
 
-  fecharPágina(){
+  fecharPágina() {
     this.viewCtrl.dismiss();
   }
 
   getUrlImagemNivel(nivel) {
-    return 'http://nqi.ufcspa.edu.br/wiki/selos-niveis/'+nivel+'.png';
+    return 'http://nqi.ufcspa.edu.br/wiki/selos-niveis/' + nivel + '.png';
   }
 
   logoff() {
 
     let alert = this.alertCtrl.create({
       title: 'Logout',
-      message: 'Deseja fazer logout da conta '+this.angularFireAuth.auth.currentUser.email,
+      message: 'Deseja fazer logout da conta <br> <strong>' + this.angularFireAuth.auth.currentUser.email + '<strong>',
       buttons: [
         {
           text: 'Fazer logout',
           handler: () => {
-            this.angularFireAuth.auth.signOut().then(() => {this.app.getRootNav().setRoot(LoginPage);})
+            this.angularFireAuth.auth.signOut().then(() => {
+              this.app.getRootNav().setRoot(LoginPage);
+            })
 
           }
         },

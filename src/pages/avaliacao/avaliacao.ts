@@ -1,5 +1,13 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, ToastController, ViewController} from 'ionic-angular';
+import {
+  AlertController,
+  IonicPage,
+  ModalController,
+  NavController,
+  NavParams,
+  ToastController,
+  ViewController
+} from 'ionic-angular';
 import {Observable} from "rxjs/Observable";
 import {Setor} from "../../data/setorInterface";
 import {AngularFireObject} from "angularfire2/database";
@@ -9,6 +17,7 @@ import {AvaliacaoCriteriosPage} from "../avaliacao-criterios/avaliacao-criterios
 import {Nivel} from "../../data/nivelInterface";
 import {SetorService} from "../../services/setor";
 import {AvaliacaoService} from "../../services/avaliacao";
+import {ModalObservacoesPage} from "../modal-observacoes/modal-observacoes";
 
 
 /**
@@ -39,7 +48,8 @@ export class AvaliacaoPage {
               private setorService: SetorService,
               private viewCtrl: ViewController,
               private toastCtrl: ToastController,
-              private avaliacaoService: AvaliacaoService
+              private avaliacaoService: AvaliacaoService,
+              private modalCtrl: ModalController
               ) {
 
     this.setor = this.navParams.get('setor');
@@ -185,10 +195,10 @@ export class AvaliacaoPage {
     let faltantes = [];
 
     corpo.forEach((nivel) => {
-      if (!flagEmOrdem) return;
+      //if (!flagEmOrdem) return;
       if(nivel.criterios){
         nivel.criterios.forEach(criterio => {
-          if (!flagEmOrdem) return;
+          //if (!flagEmOrdem) return;
           criterio.itensDeAvaliacao.forEach(item => {
             if ((item.avaliacao == 'amarelo' || item.avaliacao == 'vermelho') && item.observacao === undefined) {
               flagEmOrdem = false;
@@ -199,7 +209,7 @@ export class AvaliacaoPage {
               let obsrvacaoFaltanteString = nivel.nome+" > "+criterio.nome+" > Item "+item.ordem;
               faltantes.push(obsrvacaoFaltanteString);
 
-              return;
+              //return;
             }
           });
         });
@@ -214,7 +224,7 @@ export class AvaliacaoPage {
     if (!flagEmOrdem) {
       let alertFaltamObservaoes = this.alertCtrl.create({
         title: 'Observações Faltantes',
-        subTitle: 'Faltam observações em itens de valiação avaliados como Amarelo ou Vermelho.' + '<br> <br> <strong>' + faltantesString +'<strong>',
+        subTitle: 'Faltam observações em itens de valiação avaliados como Amarelo ou Vermelho.' + '<br><br><ion-item><strong>' + faltantesString + '<strong><ion-note>',
         buttons: ['Ok']
       });
 

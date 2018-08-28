@@ -33,6 +33,7 @@ import {AvaliacaoCriteriosAnteriorPage} from "../pages/avaliacao-criterios-anter
 import {AvaliacaoItensAnteriorPage} from "../pages/avaliacao-itens-anterior/avaliacao-itens-anterior";
 import {LoginPage} from "../pages/login/login";
 import {AngularFireAuth} from "angularfire2/auth";
+import {ModalObservacoesPage} from "../pages/modal-observacoes/modal-observacoes";
 
 @NgModule({
   declarations: [
@@ -49,7 +50,8 @@ import {AngularFireAuth} from "angularfire2/auth";
     AvaliacaoAnteriorPage,
     AvaliacaoCriteriosAnteriorPage,
     AvaliacaoItensAnteriorPage,
-    LoginPage
+    LoginPage,
+    ModalObservacoesPage
   ],
   imports: [
     BrowserModule,
@@ -73,7 +75,8 @@ import {AngularFireAuth} from "angularfire2/auth";
     AvaliacaoAnteriorPage,
     AvaliacaoCriteriosAnteriorPage,
     AvaliacaoItensAnteriorPage,
-    LoginPage
+    LoginPage,
+    ModalObservacoesPage
   ],
   providers: [
     StatusBar,
