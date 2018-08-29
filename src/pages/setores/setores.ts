@@ -90,10 +90,6 @@ export class SetoresPage {
     this.setoresFiltrados$ = this.setores$;
   }
 
-  fecharPágina() {
-    this.viewCtrl.dismiss();
-  }
-
   getUrlImagemNivel(nivel) {
     return 'http://nqi.ufcspa.edu.br/wiki/selos-niveis/' + nivel + '.png';
   }
