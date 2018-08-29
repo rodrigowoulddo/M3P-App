@@ -20,5 +20,5 @@ App developed with ionic 3 to avaliate Federal University of Health Sciences of 
 
 If you wish to use the **M3P**, such as the **M3P App** in your company / institution please make contact by the email: nqi@ufcspa.edu.br
 
-Mais informações [aqui](http://nqi.ufcspa.edu.br/wiki/index.php/Portal_de_Processos_da_UFCSPA#Modelo_de_Maturidade_em_Mapeamento_de_Processos_.28M3P.29)
+More information [here](http://nqi.ufcspa.edu.br/wiki/index.php/Portal_de_Processos_da_UFCSPA#Modelo_de_Maturidade_em_Mapeamento_de_Processos_.28M3P.29)
 
