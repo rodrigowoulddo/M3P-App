@@ -6,4 +6,4 @@
 
 Aplicação desenvolvida com o framework Ionic 3 para a avaliaçã de setores internos da Unuversidade Federal de Ciências da Saúde de Porto Alegre (UFCSPA) no Modelo de Maturidade em Mapeamento de Processos (M3P).
 
-Mais informações [aqui](http://nqi.ufcspa.edu.br/wiki/index.php/Portal_de_Processos_da_UFCSPA)
+Mais informações [aqui](http://nqi.ufcspa.edu.br/wiki/index.php/Portal_de_Processos_da_UFCSPA#Modelo_de_Maturidade_em_Mapeamento_de_Processos_.28M3P.29)
