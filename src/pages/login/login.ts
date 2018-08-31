@@ -2,6 +2,8 @@ import {Component} from '@angular/core';
 import {AlertController, IonicPage, LoadingController, NavController, NavParams} from 'ionic-angular';
 import {AngularFireAuth} from "angularfire2/auth";
 import {TabsPage} from "../tabs/tabs";
+import { Storage } from '@ionic/storage';
+
 
 /**
  * Generated class for the LoginPage page.
@@ -21,12 +23,31 @@ export class LoginPage {
   password: string;
   loading;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController) {
+  constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController,private storage: Storage) {
 
-    if(this.verificaUsuarioJaLogado())
-      this.setarRootPáginaInicial();
+    this.verificarUsuarioJaLogado();
+  }
 
+  private verificarUsuarioJaLogado() {
+    this.storage.get('user')
+      .then((val) => {
 
+        let logado;
+
+        //DEBUG
+        console.log('Usuário logado:', val);
+
+        if (!val) {
+          console.log('Usuario não logado!');
+          logado = false;
+        }
+        else {
+          console.log('Usuario', val, 'logado!');
+          logado = true;
+          this.setarRootPáginaInicial();
+        }
+
+      });
   }
 
   ionViewDidLoad() {
@@ -38,19 +59,6 @@ export class LoginPage {
       this.loading.dismiss();
   }
 
-  verificaUsuarioJaLogado(){
-   let user =  this.angularFireAuth.auth.currentUser;
-      return !!user;
-  }
-
-  // async login() {
-  //   if(this.verificaUsuarioJaLogado())
-  //     this.setarRootPáginaInicial();
-  //   else
-  //     this.realizarLogin();
-  //
-  // }
-
   async login() {
     try {
       this.loading = this.loadingCtrl.create({
@@ -60,6 +68,7 @@ export class LoginPage {
       this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password)
         .then(auth => {
           this.setarRootPáginaInicial();
+          this.salvarUsuarioLocal(this.email);
         }).catch(err => {
           let alert = this.alertCtrl.create({
             title: 'Ops! :(',
@@ -83,5 +92,10 @@ export class LoginPage {
 
   private setarRootPáginaInicial() {
     this.navCtrl.setRoot(TabsPage);
+  }
+
+  private salvarUsuarioLocal(email: string) {
+    // set a key/value
+    this.storage.set('user',email);
   }
 }

@@ -9,6 +9,8 @@ import {SetorPage} from "../setor/setor";
 import "rxjs-compat/add/operator/map";
 import {AngularFireAuth} from "angularfire2/auth";
 import {LoginPage} from "../login/login";
+import { Storage } from '@ionic/storage';
+
 
 /**
  * Generated class for the SetoresPage page.
@@ -34,7 +36,8 @@ export class SetoresPage {
               private viewCtrl: ViewController,
               private angularFireAuth: AngularFireAuth,
               private alertCtrl: AlertController,
-              private app: App) {
+              private app: App,
+              private storage: Storage) {
 
     this.setores$ = this.setorService
       .getAll() //DB LIST
@@ -104,6 +107,7 @@ export class SetoresPage {
           text: 'Fazer logout',
           handler: () => {
             this.angularFireAuth.auth.signOut().then(() => {
+              this.removeUsuarioLocal();
               this.app.getRootNav().setRoot(LoginPage);
             })
 
@@ -116,5 +120,10 @@ export class SetoresPage {
       ]
     });
     alert.present();
+  }
+
+  private removeUsuarioLocal() {
+    // set a key/value
+    this.storage.remove('user');
   }
 }

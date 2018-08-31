@@ -33,6 +33,8 @@ import {AvaliacaoCriteriosAnteriorPage} from "../pages/avaliacao-criterios-anter
 import {AvaliacaoItensAnteriorPage} from "../pages/avaliacao-itens-anterior/avaliacao-itens-anterior";
 import {LoginPage} from "../pages/login/login";
 import {AngularFireAuth} from "angularfire2/auth";
+import {AppMinimize} from "@ionic-native/app-minimize";
+import {IonicStorageModule} from "@ionic/storage";
 
 @NgModule({
   declarations: [
@@ -54,6 +56,7 @@ import {AngularFireAuth} from "angularfire2/auth";
   imports: [
     BrowserModule,
     IonicModule.forRoot(MyApp),
+    IonicStorageModule.forRoot(),
     AngularFireModule.initializeApp(FIREBASE_CONFIG),
     AngularFireDatabaseModule,
     NgPipesModule
@@ -83,7 +86,8 @@ import {AngularFireAuth} from "angularfire2/auth";
     SetorService,
     NivelService,
     AvaliacaoService,
-    Toaster
+    Toaster,
+    AppMinimize,
   ]
 })
 export class AppModule {}

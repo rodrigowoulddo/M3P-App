@@ -17,7 +17,6 @@ import {AvaliacaoCriteriosPage} from "../avaliacao-criterios/avaliacao-criterios
 import {Nivel} from "../../data/nivelInterface";
 import {SetorService} from "../../services/setor";
 import {AvaliacaoService} from "../../services/avaliacao";
-import {ModalObservacoesPage} from "../modal-observacoes/modal-observacoes";
 
 
 /**
