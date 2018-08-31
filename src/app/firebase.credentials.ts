@@ -1,8 +1,8 @@
 export const FIREBASE_CONFIG  = {
-  apiKey: "AIzaSyCyARgZSkCnufQO11Pg-MSIaqZ0wz30ek0",
-  authDomain: "m3p-app.firebaseapp.com",
-  databaseURL: "https://m3p-app.firebaseio.com",
-  projectId: "m3p-app",
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_AUTH_DOMAIN",
+  databaseURL: "YOUR_DATABASE_URL",
+  projectId: "YOUR_APP_ID",
   storageBucket: "",
-  messagingSenderId: "414887828407"
+  messagingSenderId: "YOUR_MESSAGING_SENFER_ID"
 };
