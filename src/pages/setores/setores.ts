@@ -78,7 +78,7 @@ export class SetoresPage {
         return ((
           setor.sigla.toLowerCase().includes(ev.target.value.toLowerCase())) ||
           (setor.nome.toLowerCase().includes(ev.target.value.toLowerCase())) ||
-          (setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase())))
+          ((setor.vinculo && setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase()))))
       })
     });
 
