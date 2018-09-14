@@ -95,7 +95,7 @@
 
       </ion-list>
 
-      <button ion-button clear small full *ngIf="(historico$ | async)?.length==0"
+      <button ion-button clear small full *ngIf="(historico$ | async)?.length>3"
       (click)="verMaisMenosClick()">{{btnVerMaisMenosContent}}</button>
 
     </ion-card>
