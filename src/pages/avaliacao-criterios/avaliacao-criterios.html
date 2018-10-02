@@ -29,28 +29,16 @@
 
         <div text-center>
           <button
-            ion-button round  small color="avaliacaoVermelho" [outline]="nivel.avaliacaoManual !== 'vermelho'" (click)="avaliarNivelManual('vermelho')">
+            ion-button round  small color="avaliacaoVermelho" [outline]="nivel.avaliacaoManual !== 'vermelho'"
+            (click)="nivel.avaliacaoManual !== 'vermelho'? avaliarNivelManual('vermelho'): avaliarNivelManual(null)">
             <ion-icon name="close"></ion-icon>
           </button>
 
           <button
-            ion-button round  small color="avaliacaoAmarelo" [outline]="nivel.avaliacaoManual !== 'amarelo'" (click)="avaliarNivelManual('amarelo')">
+            ion-button round  small color="avaliacaoAmarelo" [outline]="nivel.avaliacaoManual !== 'amarelo'"
+            (click)="nivel.avaliacaoManual !== 'amarelo'? avaliarNivelManual('amarelo'): avaliarNivelManual(null)">
             <ion-icon name="help"></ion-icon>
           </button>
-
-          <button
-            ion-button
-            mini
-            clear
-            icon-only
-            (click)="avaliarNivelManual(null)">
-            <ion-icon
-              color="avaliacaoCinza"
-              name="close-circle">
-            </ion-icon>
-          </button>
-
-
         </div>
 
 

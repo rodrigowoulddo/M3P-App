@@ -37,28 +37,16 @@
 
         <div text-center>
           <button
-            ion-button round  small color="avaliacaoVermelho" [outline]="criterio.avaliacaoManual !== 'vermelho'" (click)="avaliarCriterioManual('vermelho')">
+            ion-button round  small color="avaliacaoVermelho" [outline]="criterio.avaliacaoManual !== 'vermelho'"
+            (click)="criterio.avaliacaoManual !== 'vermelho'? avaliarCriterioManual('vermelho'): avaliarCriterioManual(null)">
             <ion-icon name="close"></ion-icon>
           </button>
 
           <button
-            ion-button round  small color="avaliacaoAmarelo" [outline]="criterio.avaliacaoManual !== 'amarelo'" (click)="avaliarCriterioManual('amarelo')">
+            ion-button round  small color="avaliacaoAmarelo" [outline]="criterio.avaliacaoManual !== 'amarelo'"
+            (click)="criterio.avaliacaoManual !== 'amarelo'? avaliarCriterioManual('amarelo'): avaliarCriterioManual(null)">
             <ion-icon name="help"></ion-icon>
           </button>
-
-          <button
-            ion-button
-            mini
-            clear
-            icon-only
-            (click)="avaliarCriterioManual(null)">
-            <ion-icon
-              color="avaliacaoCinza"
-              name="close-circle">
-            </ion-icon>
-          </button>
-
-
         </div>
 
 
@@ -91,17 +79,17 @@
 
       <ion-row float-right>
           <button ion-button  round  small color="avaliacaoVermelho" [outline]="item.avaliacao !== 'vermelho'"
-                  (click)="avaliarComo(item,'vermelho')"
+                  (click)="item.avaliacao !== 'vermelho'? avaliarComo(item,'vermelho') : avaliarComo(item, null)"
           >
             <ion-icon name="close"></ion-icon>
           </button>
           <button ion-button  round small  color="avaliacaoAmarelo"  [outline]="item.avaliacao !== 'amarelo'"
-                  (click)="avaliarComo(item,'amarelo')"
+                  (click)="item.avaliacao !== 'amarelo'? avaliarComo(item,'amarelo') : avaliarComo(item, null)"
           >
             <ion-icon name="help"></ion-icon>
           </button>
           <button ion-button  round  small color="avaliacaoVerde"    [outline]="item.avaliacao !== 'verde'"
-                  (click)="avaliarComo(item,'verde')"
+                  (click)="item.avaliacao !== 'verde'? avaliarComo(item,'verde') : avaliarComo(item, null)"
           >
             <ion-icon name="checkmark"></ion-icon>
           </button>

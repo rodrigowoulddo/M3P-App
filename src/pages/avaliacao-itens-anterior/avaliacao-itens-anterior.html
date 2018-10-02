@@ -70,7 +70,7 @@
 
         <ion-item no-lines *ngIf="item.observacao">
           <h6 ion-text color="primary" stacked>Observação</h6>
-          <ion-note text-wrap>{{item.observacao}}</ion-note>
+          <ion-note class="text-selectable" text-wrap>{{item.observacao}}</ion-note>
         </ion-item>
 
         <ion-row float-right *ngIf="item.usuarioAvaliacao">
