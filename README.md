@@ -25,7 +25,7 @@ More information [here](http://nqi.ufcspa.edu.br/wiki/index.php/Portal_de_Proces
 ----
 
 Desenvolvido por / Developed by:
-Andressa Bortolaso (andressabo@ufcspa.edu.br)
-Juliana Herbert (julianash@ufcspa.edu.br)
-Ricardo Zago (rfzago@gmail.com)
-Rodrigo Giglio (rodrigofgiglio@gmail.com)
+* Andressa Bortolaso (andressabo@ufcspa.edu.br)
+* Juliana Herbert (julianash@ufcspa.edu.br)
+* Ricardo Zago (rfzago@gmail.com)
+* Rodrigo Giglio (rodrigofgiglio@gmail.com)
