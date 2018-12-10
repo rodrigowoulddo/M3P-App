@@ -31,6 +31,7 @@ export class AvaliacaoItensPage {
   itensSubscription: Subscription;
   observacaoVisible; // array
   observacaoConforme; //array
+  triggerObservacaoNaoSalva: string[];
 
 
 
@@ -45,6 +46,7 @@ export class AvaliacaoItensPage {
     this.criterio = this.navParams.get('criterio');
     this.observacaoVisible = [];
     this.observacaoConforme = [];
+    this.triggerObservacaoNaoSalva = [];
 
     this.criterio$ = this.avaliacaoService.getCriterio(this.refCriterio).snapshotChanges().map(c => ({key: c.payload.key, ...c.payload.val(),}));
 
@@ -69,7 +71,31 @@ export class AvaliacaoItensPage {
       ));
 
     this.itensSubscription = this.itensDeAvaliacao$.subscribe((data) =>{
-      this.itensDeAvaliacao = data;
+
+      if(this.itensDeAvaliacao != null){
+
+          for (let i = 0; i < data.length; i++) {
+
+            //Caso uma observação tenha sido escrita e não salva ela não é apagada
+
+            //DEBUG
+            console.log(this.triggerObservacaoNaoSalva);
+
+            if(this.triggerObservacaoNaoSalva[i] || this.triggerObservacaoNaoSalva[i]==""){
+
+                //let observacaoNaoSalva = this.itensDeAvaliacao[i].observacao;
+                this.itensDeAvaliacao[i] = data[i];
+                console.log('Observação nao salva no item'+(i+1)+':',this.triggerObservacaoNaoSalva[i]);
+                this.itensDeAvaliacao[i].observacao = this.triggerObservacaoNaoSalva[i];
+                //this.itensDeAvaliacao[i].observacao = observacaoNaoSalva;
+
+              }else
+                this.itensDeAvaliacao = data;
+          }
+      }
+      else
+        this.itensDeAvaliacao = data;
+
     });
 
   }
@@ -112,6 +138,7 @@ export class AvaliacaoItensPage {
     if(!observacao)
       this.observacaoVisible[index] = false;
 
+    this.triggerObservacaoNaoSalva[index] = null;
     this.mostrarToastObservacaoSalva();
 
 
@@ -208,5 +235,10 @@ export class AvaliacaoItensPage {
     });
 
     return flagEmOrdem;
+  }
+
+  observacaoOnChange(observacao: string,i: any) {
+    this.triggerObservacaoNaoSalva[i] = observacao;
+    console.log('Observação item '+(i+1)+' não salva');
   }
 }
