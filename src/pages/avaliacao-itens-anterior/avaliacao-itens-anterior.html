@@ -88,7 +88,7 @@
           <ion-col *ngIf="item.usuarioAvaliacao">
             <ion-note>Avaliado por:<br>{{item.usuarioAvaliacao}}</ion-note>
           </ion-col>
-          <ion-col *ngIf="item.usuarioObservacao">
+          <ion-col *ngIf="item.usuarioObservacao && item.observacao">
             <ion-note>Observação por:<br>{{item.usuarioObservacao}}</ion-note>
           </ion-col>
         </ion-row>

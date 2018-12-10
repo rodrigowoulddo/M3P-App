@@ -25,25 +25,18 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController,private storage: Storage) {
 
-    this.verificarUsuarioJaLogado();
+    // this.verificarUsuarioJaLogado();
   }
 
   private verificarUsuarioJaLogado() {
     this.storage.get('user')
       .then((val) => {
 
-        let logado;
-
-        //DEBUG
-        console.log('Usuário logado:', val);
-
         if (!val) {
-          console.log('Usuario não logado!');
-          logado = false;
+          //Usuário não logado
         }
         else {
-          console.log('Usuario', val, 'logado!');
-          logado = true;
+          //Usuário logado
           this.setarRootPáginaInicial();
         }
 
