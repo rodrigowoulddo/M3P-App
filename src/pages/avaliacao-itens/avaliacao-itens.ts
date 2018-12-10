@@ -78,9 +78,6 @@ export class AvaliacaoItensPage {
 
             //Caso uma observação tenha sido escrita e não salva ela não é apagada
 
-            //DEBUG
-            console.log(this.triggerObservacaoNaoSalva);
-
             if(this.triggerObservacaoNaoSalva[i] || this.triggerObservacaoNaoSalva[i]==""){
 
                 //let observacaoNaoSalva = this.itensDeAvaliacao[i].observacao;
@@ -239,6 +236,5 @@ export class AvaliacaoItensPage {
 
   observacaoOnChange(observacao: string,i: any) {
     this.triggerObservacaoNaoSalva[i] = observacao;
-    console.log('Observação item '+(i+1)+' não salva');
   }
 }
