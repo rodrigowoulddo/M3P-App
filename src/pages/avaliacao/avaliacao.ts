@@ -95,23 +95,19 @@ export class AvaliacaoPage {
         this.finalizarAvaliacaoVerificandoConformidade(nivelAtingido);
 
     }
-
-    // //Checar conformidade da avaliação
-    // let observacoesConformidade = this.verificarObservacoes(true);
-    // let todosItensAvaliados = this.verificarTodosItensAvaliados();
-    // let avaliacoesManuaisConformidade = this.verificarAvaliacoesManuais();
-    //
-    // //IF tudo ok
-    // this.finalizarAvaliacaoVerificandoConformidade(observacoesConformidade, todosItensAvaliados, avaliacoesManuaisConformidade, nivelAtingido);
-
   }
 
 
   private finalizarAvaliacaoVerificandoConformidade(nivelAtingido) {
 
+    let mensagemFinalizacao = 'Deseja finalizar avaliação do setor? <br><br> o nível atingido será: ' + '<strong>'+nivelAtingido+'<strong>';
+
+    if(this.objAvaliacao.dataInicioAvaliacaoComplementar)
+      mensagemFinalizacao = 'Deseja finalizar a avaliação complementar do setor? <br><br> o nível atingido será: ' + '<strong>'+nivelAtingido+'<strong> <br><br> <strong>Ao finalizar agora a avaliação não poderá ser reaberta.</strong>';
+
       let alertFinalizar = this.alertCtrl.create({
         title: 'Finalizar avaliação',
-        message: 'Deseja finalizar avaliação do setor? <br><br> o nível atingido será: ' + '<strong>'+nivelAtingido+'<strong>',
+        message: mensagemFinalizacao,
         buttons: [
           {
             text: 'Finalizar',
@@ -134,7 +130,12 @@ export class AvaliacaoPage {
   finalizarAvaliacao(nivelAtingido: string) {
 
     this.objAvaliacao.nivelAtingido = nivelAtingido;
-    this.objAvaliacao.dataFim = this.avaliacaoService.getDataAgora();
+
+    if(this.objAvaliacao.dataInicioAvaliacaoComplementar)
+      this.objAvaliacao.dataFimAvaliacaoComplementar = this.avaliacaoService.getDataAgora();
+    else
+      this.objAvaliacao.dataFim = this.avaliacaoService.getDataAgora();
+
     this.avaliacaoService.save(this.objAvaliacao);
 
     this.setor.sendoAvaliado = false;

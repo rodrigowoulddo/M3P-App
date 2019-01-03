@@ -34,19 +34,24 @@
 
     </ion-card>
 
+    <!--TODO VERIFICAR NOMENCLATURA DE INÍCIO E FIM-->
+
     <ion-card>
       <ion-row padding margin-right="10" margin-left="5">
         <ion-col>
-          <h6 ion-text  stacked color="primary">Início:</h6><p>{{avaliacao?.dataInicio}}</p>
+          <h6 ion-text  stacked color="primary">Início regular:</h6><p>{{avaliacao?.dataInicio}}</p>
         </ion-col>
         <ion-col>
-          <h6 ion-text  stacked color="primary">Fim:</h6><p>{{avaliacao?.dataFim}}</p>
+          <h6 ion-text  stacked color="primary">Fim regular:</h6><p>{{avaliacao?.dataFim}}</p>
         </ion-col>
       </ion-row>
-      <ion-row margin-right="10" margin-left="5" *ngIf="avaliacao.dataInicioAvaliacaoComplementar">
-        <ion-col margin-left="auto" margin-right="auto" >
-          <h6 ion-text  stacked color="primary">Complementar:</h6><p>{{avaliacao?.dataInicioAvaliacaoComplementar}}</p>
-          <div margin-top="10"></div>
+
+      <ion-row padding margin-right="10" margin-left="5" *ngIf="avaliacao.dataInicioAvaliacaoComplementar">
+        <ion-col *ngIf="avaliacao.dataInicioAvaliacaoComplementar">
+          <h6 ion-text  stacked color="primary">Início complementar:</h6><p>{{avaliacao?.dataInicioAvaliacaoComplementar}}</p>
+        </ion-col>
+        <ion-col *ngIf="avaliacao.dataFimAvaliacaoComplementar">
+          <h6 ion-text  stacked color="primary">Fim complementar:</h6><p>{{avaliacao?.dataFimAvaliacaoComplementar}}</p>
         </ion-col>
       </ion-row>
 

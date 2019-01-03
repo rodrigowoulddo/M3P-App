@@ -6,6 +6,7 @@ export interface Avaliacao {
   nivelAtingido?: string,
   dataInicio: string,
   dataInicioAvaliacaoComplementar?: string,
+  dataFimAvaliacaoComplementar?: string,
   dataFim?: string,
   corpo: any
 }

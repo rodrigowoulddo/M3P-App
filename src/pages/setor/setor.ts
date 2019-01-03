@@ -149,7 +149,6 @@ export class SetorPage {
   iniciarAvaliacaoComplementar(avaliacao: Avaliacao){
 
     this.setor.sendoAvaliado = true;
-    avaliacao.dataFim = null;
     avaliacao.dataInicioAvaliacaoComplementar = this.avaliacaoService.getDataAgora();
 
     this.setorService.save(this.setor);

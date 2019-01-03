@@ -83,7 +83,7 @@
 
 
             <!--Botão de avaliação complementar-->
-            <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim) && (i==0)" (click)="iniciarAvaliacaoComplementarClick(avaliacao)">
+            <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim && !avaliacao.dataFimAvaliacaoComplementar) && (i==0)" (click)="iniciarAvaliacaoComplementarClick(avaliacao)">
               Complementar
               <ion-icon color="danger" name="refresh"></ion-icon>
             </button>

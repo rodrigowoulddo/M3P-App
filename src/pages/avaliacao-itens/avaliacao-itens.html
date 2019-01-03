@@ -73,10 +73,6 @@
           </ion-icon>
         </button>
 
-      <!--Nesse button:-->
-      <!--[disabled]="observacaoConforme[i] == false"-->
-
-
       <ion-row float-right>
           <button ion-button  round  small color="avaliacaoVermelho" [outline]="item.avaliacao !== 'vermelho'"
                   (click)="item.avaliacao !== 'vermelho'? avaliarComo(item,'vermelho') : avaliarComo(item, null)"
@@ -97,7 +93,7 @@
 
       <ion-item no-lines *ngIf="mostrarObservacao(item,i)">
         <ion-label color="primary" stacked>Observação</ion-label>
-        <ion-textarea class="md-no-underline" name="observacao" [(ngModel)]="item.observacao" (ionChange)="observacaoOnChange(item.observacao,i)"></ion-textarea>
+        <ion-textarea autosize class="md-no-underline text-area-observacao" name="observacao" [(ngModel)]="item.observacao" (ionChange)="observacaoOnChange(item.observacao,i)"></ion-textarea>
       </ion-item>
 
       <ion-row float-right *ngIf="mostrarObservacao(item,i)">

@@ -35,6 +35,7 @@ import {LoginPage} from "../pages/login/login";
 import {AngularFireAuth} from "angularfire2/auth";
 import {AppMinimize} from "@ionic-native/app-minimize";
 import {IonicStorageModule} from "@ionic/storage";
+import { Autosize} from '../components/autosize/autosize'
 
 @NgModule({
   declarations: [
@@ -52,6 +53,7 @@ import {IonicStorageModule} from "@ionic/storage";
     AvaliacaoCriteriosAnteriorPage,
     AvaliacaoItensAnteriorPage,
     LoginPage,
+    Autosize,
   ],
   imports: [
     BrowserModule,

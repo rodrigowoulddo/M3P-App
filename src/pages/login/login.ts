@@ -25,21 +25,59 @@ export class LoginPage {
 
   constructor(public navCtrl: NavController, public navParams: NavParams, private angularFireAuth: AngularFireAuth, private alertCtrl: AlertController, private loadingCtrl: LoadingController,private storage: Storage) {
 
-    // this.verificarUsuarioJaLogado();
+    this.verificarUsuarioJaLogado();
+
   }
 
   private verificarUsuarioJaLogado() {
     this.storage.get('user')
-      .then((val) => {
+      .then((email) => {
 
-        if (!val) {
+        if (!email) {
           //Usuário não logado
+          console.log('Usuário não logado');
+          return false;
         }
         else {
-          //Usuário logado
-          this.setarRootPáginaInicial();
-        }
+          //Usuário logado previamente e salvo
+          // this.setarRootPáginaInicial();
+          this.loading = this.loadingCtrl.create({
+            content: 'Aguarde...'
+          });
+          this.loading.present();
 
+          console.log('Usuário logado');
+
+          //Faz login do usuário salvo
+          this.storage.get('password')
+            .then((password) => {
+              if(password){
+                this.angularFireAuth.auth.signInWithEmailAndPassword(email, password)
+                  .then(auth => {
+
+                    //DEBUG
+                    console.log('Usuário autenticado, entrando na tela inicial...');
+
+                    this.setarRootPáginaInicial();
+                  }).catch(err => {
+
+                    //DEBUG
+                    console.log('Erro de login...');
+
+                  let alert = this.alertCtrl.create({
+                    title: 'Ops, ocorreu um erro ao logar na sua conta salva! :(',
+                    message: err,
+                    buttons: ['OK']
+                  });
+                  this.loading.dismiss();
+                  alert.present();
+                });
+              }
+              else
+                this.loading.dismiss();
+            });
+
+        }
       });
   }
 
@@ -61,7 +99,7 @@ export class LoginPage {
       this.angularFireAuth.auth.signInWithEmailAndPassword(this.email, this.password)
         .then(auth => {
           this.setarRootPáginaInicial();
-          this.salvarUsuarioLocal(this.email);
+          this.salvarUsuarioLocal(this.email, this.password);
         }).catch(err => {
           let alert = this.alertCtrl.create({
             title: 'Ops! :(',
@@ -87,8 +125,9 @@ export class LoginPage {
     this.navCtrl.setRoot(TabsPage);
   }
 
-  private salvarUsuarioLocal(email: string) {
+  private salvarUsuarioLocal(email: string, password: string) {
     // set a key/value
     this.storage.set('user',email);
+    this.storage.set('password',password);
   }
 }

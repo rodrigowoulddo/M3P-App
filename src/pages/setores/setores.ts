@@ -67,12 +67,10 @@ export class SetoresPage {
   }
 
   filterItems(ev: any) {
-
     if (ev.target.value == null) {
       this.atualizaListaDeSetores();
       return;
     }
-
     this.setoresFiltrados$ = this.setores$.map(function (ARRAY) {
       return ARRAY.filter(function (setor) {
         return ((
@@ -81,9 +79,7 @@ export class SetoresPage {
           ((setor.vinculo && setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase()))))
       })
     });
-
-    console.log(this.setores$);
-  }
+    }
 
   onCancel() {
     this.atualizaListaDeSetores();

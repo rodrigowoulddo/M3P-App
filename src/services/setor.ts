@@ -5,7 +5,7 @@ import {AngularFireDatabase} from "angularfire2/database";
 @Injectable()
 export class SetorService {
 
-  private setoresRef = this.db.list<Setor>('setores');
+  private setoresRef = this.db.list<Setor>('setores',ref=>ref.orderByChild('sigla'));
   public setores: Setor[];
 
   constructor(private db: AngularFireDatabase){ }
