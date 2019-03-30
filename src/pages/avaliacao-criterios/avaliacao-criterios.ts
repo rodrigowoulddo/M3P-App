@@ -66,6 +66,11 @@ export class AvaliacaoCriteriosPage {
   ionViewDidLoad() {
     console.log('ionViewDidLoad AvaliacaoCriteriosPage');
   }
+  ionViewWillLeave(){
+    if(this.nivelSubscription)
+      this.nivelSubscription.unsubscribe();
+  }
+
 
   abrirItensDeAvaliacao(criterio: Criterio) {
     let refCriterio = this.refNivel+'/'+'criterios'+'/'+criterio.key;

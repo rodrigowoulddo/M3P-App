@@ -101,6 +101,15 @@ export class AvaliacaoItensPage {
     console.log('ionViewDidLoad AvaliacaoItensPage');
   }
 
+  ionViewWillLeave(){
+    if(this.itensSubscription)
+      this.itensSubscription.unsubscribe();
+
+    if(this.criterioSubscription)
+      this.criterioSubscription.unsubscribe();
+  }
+
+
   avaliarComo(item: ItemDeAvaliacao, avaliacao: string) {
     item.avaliacao = avaliacao;
     item.usuarioAvaliacao = this.angularFireAuth.auth.currentUser.email;

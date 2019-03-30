@@ -60,6 +60,11 @@ export class AvaliacaoPage {
     console.log('ionViewDidLoad AvaliacaoPage');
   }
 
+  ionViewWillUnload(){
+    if(this.avaliacaoSubscription)
+      this.avaliacaoSubscription.unsubscribe();
+  }
+
   ngOnInit(){
     this.avaliacao$ = this.avaliacaoRef.snapshotChanges().map(c => ({key: c.payload.key, ...c.payload.val(),}));
 

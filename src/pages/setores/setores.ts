@@ -10,6 +10,7 @@ import "rxjs-compat/add/operator/map";
 import {AngularFireAuth} from "angularfire2/auth";
 import {LoginPage} from "../login/login";
 import { Storage } from '@ionic/storage';
+import { ChangeDetectorRef } from '@angular/core';
 
 
 /**
@@ -37,7 +38,8 @@ export class SetoresPage {
               private angularFireAuth: AngularFireAuth,
               private alertCtrl: AlertController,
               private app: App,
-              private storage: Storage) {
+              private storage: Storage,
+              private cd: ChangeDetectorRef) {
 
     this.setores$ = this.setorService
       .getAll() //DB LIST
@@ -79,6 +81,8 @@ export class SetoresPage {
           ((setor.vinculo && setor.vinculo.toLowerCase().includes(ev.target.value.toLowerCase()))))
       })
     });
+    // Adicionado após identificar problemas na busca, força a identificação de atualizações do angular.
+    this.cd.detectChanges();
     }
 
   onCancel() {
