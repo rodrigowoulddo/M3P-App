@@ -75,15 +75,15 @@
           <ion-item *ngIf="mostrarHistoricoCompleto || (i <= 2)">
 
             <!--Caso ja tenha finalizado-->
-            <div (click)="avaliacao.dataFim? verAvaliacaoAnterior(avaliacao):avaliarSetor()">
-              <h3 ion-text [color]="avaliacao.dataFim? 'dark' : 'danger'">{{avaliacao.dataFim? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
+            <div (click)="(avaliacao.dataFim && !avaliacao.dataInicioAvaliacaoComplementar) || (avaliacao.dataInicioAvaliacaoComplementar && avaliacao.dataFimAvaliacaoComplementar)? verAvaliacaoAnterior(avaliacao):avaliarSetor()">
+              <h3 ion-text [color]="(avaliacao.dataFim && !avaliacao.dataInicioAvaliacaoComplementar) || (avaliacao.dataInicioAvaliacaoComplementar && avaliacao.dataFimAvaliacaoComplementar)? 'dark' : 'danger'">{{(avaliacao.dataFim && !avaliacao.dataInicioAvaliacaoComplementar) || (avaliacao.dataInicioAvaliacaoComplementar && avaliacao.dataFimAvaliacaoComplementar)? avaliacao.nivelAtingido : 'Em andamento'}}</h3>
               <p>{{avaliacao.dataFim? avaliacao.dataFim: avaliacao.dataInicio}}</p>
             </div>
 
 
 
             <!--Botão de avaliação complementar-->
-            <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim && !avaliacao.dataFimAvaliacaoComplementar) && (i==0)" (click)="iniciarAvaliacaoComplementarClick(avaliacao)">
+            <button small round outline ion-button item-end icon-right *ngIf="(avaliacao.dataFim && !avaliacao.dataInicioAvaliacaoComplementar) && (i==0)" (click)="iniciarAvaliacaoComplementarClick(avaliacao)">
               Complementar
               <ion-icon color="danger" name="refresh"></ion-icon>
             </button>
@@ -96,7 +96,7 @@
       </ion-list>
 
       <button ion-button clear small full *ngIf="(historico$ | async)?.length>3"
-      (click)="verMaisMenosClick()">{{btnVerMaisMenosContent}}</button>
+              (click)="verMaisMenosClick()">{{btnVerMaisMenosContent}}</button>
 
     </ion-card>
   </div>
