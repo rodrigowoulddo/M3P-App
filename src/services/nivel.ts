@@ -15,8 +15,22 @@ export class NivelService {
   ){ }
 
 
-  getAll(){
+  getAllasList(){
     return this.niveisRef;
+  }
+
+  getAllAsArray(context){
+
+    console.log('buscando niveis as array...')
+
+    this.db.database.ref('niveis').once("value",
+      (data) => {
+        context.niveis = (<any>Object).values(data.val());
+        console.log(context.niveis);
+      },
+      () => {console.log('ERRO AO BUSCAR NÍVEIS'); return []}
+    );
+
   }
 
 }

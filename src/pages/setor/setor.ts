@@ -107,11 +107,11 @@ export class SetorPage {
   abrirPaginaAvaliacao(refAvaliacaoCorrente, self){
 
     self.navCtrl.push(
-                      AvaliacaoPage,
-                            {
-                                      setor: self.setor,
-                                      avaliacao: refAvaliacaoCorrente
-                                    });
+      AvaliacaoPage,
+      {
+        setor: self.setor,
+        avaliacao: refAvaliacaoCorrente
+      });
   }
 
   verMaisMenosClick() {

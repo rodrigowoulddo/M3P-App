@@ -46,9 +46,8 @@ export class PreAvaliacaoPage {
 
     this.botaoInicialDisabled = true;
 
-    //Debug
     this.niveis$ = this.nivelService
-      .getAll() //DB LIST
+      .getAllasList() //DB LIST
       .snapshotChanges()// KEY AND VALUE
       .pipe(map(
         changes => {

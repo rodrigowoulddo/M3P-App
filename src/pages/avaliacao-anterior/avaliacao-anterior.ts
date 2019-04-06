@@ -29,18 +29,10 @@ export class AvaliacaoAnteriorPage {
     this.avaliacao = navParams.get('avaliacao');
     this.setor = navParams.get('setor');
 
-    //DEBUG
-    console.log('corpo avaliação (antes)');
-    console.log(this.avaliacao.corpo);
-
     this.corpo = [];
     Object.keys(this.avaliacao.corpo).forEach(keyNivel => {
       this.corpo.push(this.avaliacao.corpo[keyNivel]);
     });
-
-    //DEBUG
-    console.log('corpo avaliação (depois)');
-    console.log(this.corpo);
 
   }
 
