@@ -1,10 +1,10 @@
 
 // Desenvolvimento
 export const FIREBASE_CONFIG  = {
-  apiKey: "AIzaSyCyARgZSkCnufQO11Pg-MSIaqZ0wz30ek0",
-  authDomain: "m3p-app.firebaseapp.com",
-  databaseURL: "https://m3p-app.firebaseio.com",
-  projectId: "m3p-app",
-  storageBucket: "m3p-app.appspot.com",
-  messagingSenderId: "414887828407"
+  apiKey: "APP_KEY",
+  authDomain: "AUTH_DOMAIN",
+  databaseURL: "URL",
+  projectId: "PROJECT_ID",
+  storageBucket: "STORAGE_BUCKET",
+  messagingSenderId: "MESSAGING_SENDER_ID"
 };
