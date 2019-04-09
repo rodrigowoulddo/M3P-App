@@ -1,0 +1,92 @@
+<!--
+  Generated template for the EdicaoCriterioPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+
+    <ion-title>{{criterio.nome}}</ion-title>
+
+    <ion-buttons end>
+      <button ion-button (click)="toggleEditable()">{{editableOn ? 'Ok' : 'Editar'}}</button>
+    </ion-buttons>
+
+
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding class="bg-image">
+
+  <div class="browser-compat" text-center>
+
+    <ion-card *ngIf="!editableOn">
+      <ion-item>
+        <h2>Descrição</h2>
+        <p text-wrap="">{{criterio.descricao ? criterio.descricao : 'Este critério ainda não possui descrição.'}}</p>
+      </ion-item>
+    </ion-card>
+
+    <ion-card *ngIf="editableOn">
+      <ion-item>
+        <ion-label color="dark">Nome do Critério</ion-label>
+        <ion-input placeholder="Nome" [value]="criterio.nome" name="nome" [(ngModel)]="criterio.nome"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-label color="dark">Descrição</ion-label>
+        <ion-textarea *ngIf="editableOn" autosize class="md-no-underline text-area-observacao" name="descricao"
+                      [(ngModel)]="criterio.descricao" placeholder="Descrição do novo critério"></ion-textarea>
+      </ion-item>
+
+    </ion-card>
+
+    <ion-card>
+      <ion-list>
+
+        <div *ngIf="!editableOn">
+
+          <ion-item *ngFor="let item of criterio.itensDeAvaliacao">
+            <h2>Item {{criterio.itensDeAvaliacao.indexOf(item) + 1}}</h2>
+            <p text-wrap="">{{item.descricao ? item.descricao : 'Este item não possui descricão'}}</p>
+          </ion-item>
+        </div>
+
+
+        <div *ngIf="editableOn">
+          <ion-item-group [reorder]="editableOn" (ionItemReorder)="reorderItems($event)">
+
+            <ion-item ion-item *ngFor="let item of criterio.itensDeAvaliacao">
+
+              <ion-label>Item {{criterio.itensDeAvaliacao.indexOf(item) + 1}}</ion-label>
+
+              <ion-textarea style="color: #555555" autosize class="md-no-underline text-area-observacao"
+                            name="descricao"
+                            [(ngModel)]="item.descricao" placeholder="Descrição do novo item"></ion-textarea>
+
+              <button icon-only ion-button item-start color="danger"
+                      (click)="removeItem(item);$event.stopPropagation();this.changeRef.detectChanges();">
+                <ion-icon name="trash"></ion-icon>
+              </button>
+
+            </ion-item>
+          </ion-item-group>
+
+        </div>
+
+
+      </ion-list>
+    </ion-card>
+
+  </div>
+
+  <ion-fab bottom right *ngIf="editableOn">
+    <button ion-fab color="danger" (click)="adicionar()">
+      <ion-icon name="add"></ion-icon>
+    </button>
+  </ion-fab>
+
+</ion-content>

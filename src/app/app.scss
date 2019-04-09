@@ -43,6 +43,15 @@
   font-size: 40px;
 }
 
+.rounded-input {
+  width: 100%;
+  height: 100px;
+  -moz-border-radius: 50px;
+  -webkit-border-radius: 50px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
 //Background image
 .bg-image{
   background-image: url('../assets/imgs/background.jpg');

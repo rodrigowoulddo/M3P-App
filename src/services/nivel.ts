@@ -1,6 +1,8 @@
 import { Nivel } from "../data/nivelInterface";
 import {Injectable} from "@angular/core";
 import {AngularFireDatabase} from "angularfire2/database";
+import {Criterio} from "../data/criterioInterface";
+import {ItemDeAvaliacao} from "../data/itemDeAvaliacaoInterface";
 // import {ToastController} from "ionic-angular";
 
 @Injectable()
@@ -19,18 +21,41 @@ export class NivelService {
     return this.niveisRef;
   }
 
-  getAllAsArray(context){
+  saveNiveisHistorico(niveisHistorico: Nivel[]){
 
-    console.log('buscando niveis as array...')
+  }
 
-    this.db.database.ref('niveis').once("value",
-      (data) => {
-        context.niveis = (<any>Object).values(data.val());
-        console.log(context.niveis);
-      },
-      () => {console.log('ERRO AO BUSCAR NÍVEIS'); return []}
-    );
+  saveNiveis(niveis: Nivel[]){
+    niveis.forEach(nivel => this.saveNivel(nivel));
+  }
 
+  saveNivel(nivel: Nivel){
+
+    let nivelCopy = {...nivel};
+
+    nivel.key = this.niveisRef.push(null).key;
+    nivel.criterios = null;
+    this.niveisRef.update('/'+nivel.key,JSON.parse(JSON.stringify(nivel)));
+
+    nivelCopy.criterios.forEach(criterio => this.saveCriterio(criterio, nivel.key));
+
+  }
+
+  saveCriterio(criterio: Criterio, keyNivel: string){
+
+    let criterioCopy = {...criterio};
+
+    criterio.key = this.db.list<Nivel>('niveis'+'/'+keyNivel+'criterios').push(null).key;
+    criterio.itensDeAvaliacao = null;
+    this.niveisRef.update('/'+ keyNivel + '/criterios/' + criterio.key ,JSON.parse(JSON.stringify(criterio)));
+
+    criterioCopy.itensDeAvaliacao.forEach(item => this.saveItemDeAvaliacao(item, keyNivel, criterio.key));
+
+  }
+
+  saveItemDeAvaliacao(item: ItemDeAvaliacao, keyNivel: string, keyCriterio: string){
+    item.key = this.niveisRef.push(null).key;
+    this.niveisRef.update('/'+ keyNivel + '/criterios/' + keyCriterio + '/itensDeAvaliacao/'+ item.key ,JSON.parse(JSON.stringify(item)));
   }
 
 }

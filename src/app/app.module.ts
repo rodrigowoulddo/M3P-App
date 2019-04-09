@@ -8,7 +8,6 @@ import { TabsPage } from '../pages/tabs/tabs';
 import { StatusBar } from '@ionic-native/status-bar';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import {SetoresPage} from "../pages/setores/setores";
-import {NiveisPage} from "../pages/niveis/niveis";
 import {NgPipesModule} from "ngx-pipes";
 
 
@@ -36,13 +35,15 @@ import {AngularFireAuth} from "angularfire2/auth";
 import {AppMinimize} from "@ionic-native/app-minimize";
 import {IonicStorageModule} from "@ionic/storage";
 import { Autosize} from '../components/autosize/autosize'
+import {EdicaoNiveisPage} from "../pages/edicao-niveis/edicao-niveis";
+import {EdicaoNivelPage} from "../pages/edicao-nivel/edicao-nivel";
+import {EdicaoCriterioPage} from "../pages/edicao-criterio/edicao-criterio";
 
 @NgModule({
   declarations: [
     MyApp,
     TabsPage,
     SetoresPage,
-    NiveisPage,
     CadastroSetorPage,
     SetorPage,
     PreAvaliacaoPage,
@@ -54,6 +55,9 @@ import { Autosize} from '../components/autosize/autosize'
     AvaliacaoItensAnteriorPage,
     LoginPage,
     Autosize,
+    EdicaoNiveisPage,
+    EdicaoNivelPage,
+    EdicaoCriterioPage
   ],
   imports: [
     BrowserModule,
@@ -68,7 +72,6 @@ import { Autosize} from '../components/autosize/autosize'
     MyApp,
     TabsPage,
     SetoresPage,
-    NiveisPage,
     CadastroSetorPage,
     SetorPage,
     PreAvaliacaoPage,
@@ -79,6 +82,9 @@ import { Autosize} from '../components/autosize/autosize'
     AvaliacaoCriteriosAnteriorPage,
     AvaliacaoItensAnteriorPage,
     LoginPage,
+    EdicaoNiveisPage,
+    EdicaoNivelPage,
+    EdicaoCriterioPage
   ],
   providers: [
     StatusBar,
