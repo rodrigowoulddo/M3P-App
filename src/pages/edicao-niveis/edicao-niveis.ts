@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {AlertController, IonicPage, NavController, NavParams, reorderArray} from 'ionic-angular';
+import {AlertController, IonicPage, NavController, NavParams, reorderArray, ToastController} from 'ionic-angular';
 import {Nivel} from "../../data/nivelInterface";
 import {AngularFireDatabase} from "angularfire2/database";
 import { ChangeDetectorRef } from '@angular/core'
@@ -33,14 +33,17 @@ export class EdicaoNiveisPage {
               public navParams: NavParams,
               private db: AngularFireDatabase,
               private changeRef: ChangeDetectorRef,
-              private alertCtrl: AlertController) {
+              private alertCtrl: AlertController,
+              private toastCtrl: ToastController) {
 
 
     this.db.database.ref('niveis').on("value",
       (data) => {
+
+      if(!data.val()) return;
+
         this.niveis = (<any>Object).values(data.val());
         this.niveisRollback = [...this.niveis]; // copia
-        console.log(this.niveis);
         this.changeRef.detectChanges(); // força atualizações quando pega primeira resposta
 
       },
@@ -61,7 +64,42 @@ export class EdicaoNiveisPage {
   salvarNiveis(){
     console.log('salvar niveis');
 
+    let alert = this.alertCtrl.create({
+      title: 'Nova Estrutura de Níveis',
+      message: 'Defina um nome para a nova estrutura de níveis.',
+      inputs: [
+        {
+          name: 'nome',
+          placeholder: 'Nome da Estrutra'
+        },
+      ],
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+        {
+          text: 'Salva',
+          handler: data => {
+            this.nivelService.saveNiveisHistorico(this.niveis, data.nome);
+            this.nivelService.deleteNiveis();
+            this.nivelService.saveNiveis(this.niveis);
 
+            let toast = this.toastCtrl.create({
+              message: 'Nova estrutura de níveis salva com sucesso!',
+              duration: 3000,
+            });
+
+            toast.present();
+
+          }
+        }
+      ]
+    });
+    alert.present();
 
   }
 
@@ -111,7 +149,7 @@ export class EdicaoNiveisPage {
   }
 
   adicionar(){
-    let novoNivel: Nivel = {nome: 'Novo Nível', criterios: []};
+    let novoNivel: Nivel = {nome: '', criterios: []};
     this.niveis.push(novoNivel);
     this.changeRef.detectChanges();
   }

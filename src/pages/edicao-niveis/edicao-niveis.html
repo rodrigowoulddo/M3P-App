@@ -11,7 +11,7 @@
     <ion-title>M3P</ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="toggleEditable()">{{editableOn? 'Ok' : 'Editar'}}</button>
+      <button ion-button showWhen="android,ios" (click)="toggleEditable()">{{editableOn? 'Ok' : 'Editar'}}</button>
     </ion-buttons>
 
   </ion-navbar>
@@ -33,7 +33,7 @@
           <img src="{{getUrlImagemNivel(nivel.nome)}}">
         </ion-avatar>
 
-        <ion-label>{{nivel.nome}}</ion-label>
+        <ion-label>{{nivel.nome ? nivel.nome : 'Novo Nível'}}</ion-label>
         <button *ngIf="editableOn" icon-only ion-button item-start color="danger" (click)="removerNivel(nivel);$event.stopPropagation();this.changeRef.detectChanges();">
           <ion-icon name="trash"></ion-icon>
         </button>
@@ -45,14 +45,24 @@
   </ion-list>
 </ion-card>
 
-    <button padding class="centralized" ion-button (click)="salvarNiveis()">
-      Salvar Níveis
-    </button>
+    <ion-row padding>
+      <button showWhen="core" padding class="centralized" ion-button (click)="toggleEditable()">
+        {{editableOn ? 'Confirmar' : 'Editar'}}
+      </button>
+
+      <button *ngIf="editableOn" ion-button align-self-end showWhen="core" color="danger" icon-only (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+    </ion-row>
+
+    <ion-row padding-top="100px">
+      <button padding class="centralized" ion-button (click)="salvarNiveis()">
+        Salvar Níveis
+      </button>
+    </ion-row>
 
   </div>
 
   <ion-fab bottom right *ngIf="editableOn">
-    <button ion-fab color="danger" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+    <button showWhen="android,ios" ion-fab color="danger" (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
   </ion-fab>
 
 </ion-content>

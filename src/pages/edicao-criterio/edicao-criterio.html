@@ -8,10 +8,10 @@
 
   <ion-navbar>
 
-    <ion-title>{{criterio.nome}}</ion-title>
+    <ion-title>{{criterio.nome ? criterio.nome : 'Novo Critério'}}</ion-title>
 
     <ion-buttons end>
-      <button ion-button (click)="toggleEditable()">{{editableOn ? 'Ok' : 'Editar'}}</button>
+      <button showWhen="android,ios" ion-button (click)="toggleEditable()">{{editableOn ? 'Ok' : 'Editar'}}</button>
     </ion-buttons>
 
 
@@ -80,6 +80,14 @@
 
       </ion-list>
     </ion-card>
+
+    <ion-row padding>
+      <button showWhen="core" padding class="centralized" ion-button (click)="toggleEditable()">
+        {{editableOn ? 'Confirmar' : 'Editar'}}
+      </button>
+
+      <button *ngIf="editableOn" ion-button align-self-end showWhen="core" color="danger" icon-only (click)="adicionar()"><ion-icon name="add"></ion-icon></button>
+    </ion-row>
 
   </div>
 

@@ -24,6 +24,7 @@ export class EdicaoNivelPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private changeRef: ChangeDetectorRef, private alertCtrl: AlertController) {
 
     this.nivel = navParams.get('nivel');
+    if(!this.nivel.criterios) this.nivel.criterios = [];
     this.nivel.criterios = (<any>Object).values(this.nivel.criterios);
     console.log(this.nivel)
 
@@ -83,7 +84,7 @@ export class EdicaoNivelPage {
   }
 
   adicionar(){
-    let novoCriterio: Criterio = {nome: 'Novo Critério', descricao:'', itensDeAvaliacao: []};
+    let novoCriterio: Criterio = {nome: '', descricao:'', itensDeAvaliacao: []};
     this.nivel.criterios.push(novoCriterio);
     this.changeRef.detectChanges();
   }

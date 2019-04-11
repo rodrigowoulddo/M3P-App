@@ -23,6 +23,7 @@ export class EdicaoCriterioPage {
   constructor(public navCtrl: NavController, public navParams: NavParams, private changeRef: ChangeDetectorRef, private alertCtrl: AlertController) {
 
     this.criterio = navParams.get('criterio');
+    if (!this.criterio.itensDeAvaliacao) this.criterio.itensDeAvaliacao = [];
     this.criterio.itensDeAvaliacao = (<any>Object).values(this.criterio.itensDeAvaliacao);
 
   }
