@@ -7,6 +7,7 @@ import {SetorPage} from "../setor/setor";
 import {EdicaoNivelPage} from "../edicao-nivel/edicao-nivel";
 import {NivelService} from "../../services/nivel";
 import {detectChanges} from "@angular/core/src/render3";
+import {HistoricoDeNivel} from "../../data/historicoDeNivel";
 
 
 
@@ -25,7 +26,8 @@ import {detectChanges} from "@angular/core/src/render3";
 export class EdicaoNiveisPage {
 
   niveis: Nivel[] = [];
-  niveisRollback: Nivel[] = []
+  nivelHistorico: HistoricoDeNivel = [];
+  niveisRollback: Nivel[] = [];
   editableOn: boolean = false;
 
   constructor(public navCtrl: NavController,
@@ -50,6 +52,21 @@ export class EdicaoNiveisPage {
       () => {console.log('ERRO AO BUSCAR NÍVEIS'); return []}
     );
 
+    let refUltimaOrganizacaoDeNiveis = this.db.database.ref('historicoDeNiveis').orderByChild('dataCriacao').limitToLast(1);
+
+    let self = this;
+
+    refUltimaOrganizacaoDeNiveis.on("value",
+      data => {
+        this.nivelHistorico = (<any>Object).values(data.val())[0];
+        this.changeRef.detectChanges(); // força atualizações quando pega primeira resposta
+
+        //debug
+        console.log(this.nivelHistorico)
+
+      }
+    );
+
 
   }
 
@@ -62,7 +79,57 @@ export class EdicaoNiveisPage {
   }
 
   salvarNiveis(){
-    console.log('salvar niveis');
+
+
+      console.log('salvar nova versão');
+
+      let alert = this.alertCtrl.create({
+        title: 'Editar Níveis',
+        message: 'Criar uma nova versão da estrutura de níveis ou fazer uma alteração simples na versão já existente?',
+        buttons: [
+
+          {
+            text: 'Alteração',
+            handler: () => {
+              this.salvarAlteracaoSimplesNaEstruturaAtual();
+            }
+          },
+
+          {
+            text: 'Nova Versão',
+            handler: () => {
+              this.salvarNovaVersaoDeNivel();
+            }
+          },
+
+          {
+            text: 'Cancelar',
+            role: 'cancel',
+            handler: data => {
+              console.log('Cancel clicked');
+            }
+          },
+        ]
+      });
+
+      alert.present();
+  }
+
+  private salvarAlteracaoSimplesNaEstruturaAtual() {
+
+    this.nivelService.deleteNiveis();
+    this.nivelService.saveNiveis(this.niveis);
+
+    let toast = this.toastCtrl.create({
+      message: 'Alteração da versão atual salva com sucesso!',
+      duration: 3000,
+    });
+
+    toast.present();
+  }
+
+  private salvarNovaVersaoDeNivel() {
+    console.log('salvar nova versão');
 
     let alert = this.alertCtrl.create({
       title: 'Nova Estrutura de Níveis',
@@ -100,7 +167,6 @@ export class EdicaoNiveisPage {
       ]
     });
     alert.present();
-
   }
 
   irParaEdicaoDeNivel(nivel: Nivel){
