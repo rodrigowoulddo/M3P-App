@@ -26,7 +26,7 @@ import {HistoricoDeNivel} from "../../data/historicoDeNivel";
 export class EdicaoNiveisPage {
 
   niveis: Nivel[] = [];
-  nivelHistorico: HistoricoDeNivel = [];
+  nivelHistorico: HistoricoDeNivel;
   niveisRollback: Nivel[] = [];
   editableOn: boolean = false;
 
@@ -38,6 +38,7 @@ export class EdicaoNiveisPage {
               private alertCtrl: AlertController,
               private toastCtrl: ToastController) {
 
+    // this.nivelHistorico.nome = "";
 
     this.db.database.ref('niveis').on("value",
       (data) => {
