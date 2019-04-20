@@ -156,31 +156,55 @@ export class EdicaoNiveisPage {
       ],
       buttons: [
         {
-          text: 'Cancel',
+          text: 'Cancelar',
           role: 'cancel',
           handler: data => {
             console.log('Cancel clicked');
           }
         },
         {
-          text: 'Salva',
+          text: 'Salvar',
           handler: data => {
-            this.nivelService.saveNiveisHistorico(this.niveis, data.nome);
-            this.nivelService.deleteNiveis();
-            this.nivelService.saveNiveis(this.niveis);
 
-            let toast = this.toastCtrl.create({
-              message: 'Nova estrutura de níveis salva com sucesso!',
-              duration: 3000,
-            });
-
-            toast.present();
+            if(data.nome)
+              this.persistirNovaVersãoNoBanco(data.nome);
+            else
+            {
+              let alert = this.alertCtrl.create({
+                title: 'Ops!',
+                subTitle: 'A nova versão de níveis deve possuir um nome',
+                buttons: [
+                  {
+                    text: 'Confirmar',
+                    role: 'cancel',
+                    handler: data => {
+                      // pede novamente pelo nome
+                      this.salvarNovaVersaoDeNivel()
+                    }
+                  }
+                ]
+              });
+              alert.present();
+            }
 
           }
         }
       ]
     });
     alert.present();
+  }
+
+  private persistirNovaVersãoNoBanco(nome: string) {
+    this.nivelService.saveNiveisHistorico(this.niveis, nome);
+    this.nivelService.deleteNiveis();
+    this.nivelService.saveNiveis(this.niveis);
+
+    let toast = this.toastCtrl.create({
+      message: 'Nova estrutura de níveis salva com sucesso!',
+      duration: 3000,
+    });
+
+    toast.present();
   }
 
   irParaEdicaoDeNivel(nivel: Nivel){
