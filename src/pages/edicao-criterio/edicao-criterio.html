@@ -92,7 +92,7 @@
   </div>
 
   <ion-fab bottom right *ngIf="editableOn">
-    <button ion-fab color="danger" (click)="adicionar()">
+    <button showWhen="android,ios" ion-fab color="danger" (click)="adicionar()">
       <ion-icon name="add"></ion-icon>
     </button>
   </ion-fab>

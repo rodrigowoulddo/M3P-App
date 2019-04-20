@@ -184,7 +184,7 @@ export class AvaliacaoPage {
     });
 
     if(nivelAtingido) return nivelAtingido;
-    else return 'Nível 0';
+    else return 'Nenhum Nível';
 
   }
 

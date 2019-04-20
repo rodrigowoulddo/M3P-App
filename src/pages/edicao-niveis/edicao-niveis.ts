@@ -8,6 +8,8 @@ import {EdicaoNivelPage} from "../edicao-nivel/edicao-nivel";
 import {NivelService} from "../../services/nivel";
 import {detectChanges} from "@angular/core/src/render3";
 import {HistoricoDeNivel} from "../../data/historicoDeNivel";
+import {Criterio} from "../../data/criterioInterface";
+import {ItemDeAvaliacao} from "../../data/itemDeAvaliacaoInterface";
 
 
 
@@ -81,39 +83,50 @@ export class EdicaoNiveisPage {
 
   salvarNiveis(){
 
+    let menssagemDeErro = this.validarEstruturaDeNíveis(this.niveis);
 
-      console.log('salvar nova versão');
+    if (menssagemDeErro)
+      this.mostrarAlertDeErroNaEstrutura(menssagemDeErro);
+    else
+      this.mostrarAlertDeTipoDeAlteracao();
 
-      let alert = this.alertCtrl.create({
-        title: 'Editar Níveis',
-        message: 'Criar uma nova versão da estrutura de níveis ou fazer uma alteração simples na versão já existente?',
-        buttons: [
 
-          {
-            text: 'Alteração',
-            handler: () => {
-              this.salvarAlteracaoSimplesNaEstruturaAtual();
-            }
-          },
 
-          {
-            text: 'Nova Versão',
-            handler: () => {
-              this.salvarNovaVersaoDeNivel();
-            }
-          },
+  }
 
-          {
-            text: 'Cancelar',
-            role: 'cancel',
-            handler: data => {
-              console.log('Cancel clicked');
-            }
-          },
-        ]
-      });
+  private mostrarAlertDeTipoDeAlteracao() {
+    console.log('salvar nova versão');
 
-      alert.present();
+    let alert = this.alertCtrl.create({
+      title: 'Editar Níveis',
+      message: 'Criar uma nova versão da estrutura de níveis ou fazer uma alteração simples na versão já existente?',
+      buttons: [
+
+        {
+          text: 'Alteração',
+          handler: () => {
+            this.salvarAlteracaoSimplesNaEstruturaAtual();
+          }
+        },
+
+        {
+          text: 'Nova Versão',
+          handler: () => {
+            this.salvarNovaVersaoDeNivel();
+          }
+        },
+
+        {
+          text: 'Cancelar',
+          role: 'cancel',
+          handler: data => {
+            console.log('Cancel clicked');
+          }
+        },
+      ]
+    });
+
+    alert.present();
   }
 
   private salvarAlteracaoSimplesNaEstruturaAtual() {
@@ -228,6 +241,121 @@ export class EdicaoNiveisPage {
 
     return 'http://nqi.ufcspa.edu.br/wiki/selos-niveis/' + nivel + '.png';
   }
+
+  validarNivel(nivel: Nivel){
+
+      if(!nivel) return 'Não há nível';
+
+      if (!nivel.nome)
+        return 'Níveis devem possuir um nome';
+
+      if(!nivel.criterios || nivel.criterios.length == 0)
+        return 'Níveis devem possuir ao menos um Critério';
+
+    return null;
+
+  }
+
+  validarCriterio(criterio: Criterio){
+
+    if (!criterio) return 'Não há critério';
+
+      if (!criterio.descricao || !criterio.nome)
+        return 'Critérios devem possuir nome e descrição';
+
+      //DEBUG
+    console.log('itens de avaliação do criterio:');
+    console.log(criterio.itensDeAvaliacao);
+
+      if (!criterio.itensDeAvaliacao || criterio.itensDeAvaliacao.length == 0)
+        return 'Critérios devem possuir ao menos um Item de Avaliação';
+
+    return null;
+
+  }
+
+  validarItensDeAvaliacao(item: ItemDeAvaliacao) {
+
+    if (!item) return 'Deve haver ao menos um Item de Avaliação por critério';
+
+    if (!item.descricao) return 'Itens de Avaliação devem possuir uma descrição';
+
+    return null;
+
+  }
+
+  validarEstruturaDeNíveis(niveis: Nivel[]){
+
+    let msg: String = '';
+
+    if (!niveis) return 'Não há níveis!';
+
+    niveis.forEach(nivel => {
+
+      let preAviso = '<br>'+(niveis.indexOf(nivel)+1) +'º Nível: ';
+
+      if(this.validarNivel(nivel))
+        msg += preAviso +  this.validarNivel(nivel);
+      else
+        nivel.criterios = (<any>Object).values(nivel.criterios);
+
+        if(nivel.criterios)
+          nivel.criterios.forEach(criterio => {
+
+            if(this.validarCriterio(criterio))
+              msg += preAviso + this.validarCriterio(criterio);
+            else
+              criterio.itensDeAvaliacao = (<any>Object).values(criterio.itensDeAvaliacao);
+
+              if(criterio.itensDeAvaliacao)
+                criterio.itensDeAvaliacao.forEach(item => {
+
+                  if(this.validarItensDeAvaliacao(item))
+                    msg += preAviso + this.validarItensDeAvaliacao(item);
+
+                });
+
+          });
+
+    });
+
+    if (msg)
+      console.log(msg);
+    else
+      console.log('Estrutura de Níveis validada');
+
+    return msg;
+
+  }
+
+  mostrarAlertDeErroNaEstrutura(msg: String){
+
+    let alert = this.alertCtrl.create({
+      title: 'Erro',
+      message:
+        'Foram encontrados os seguintes erros na nova estrutura de níveis:'
+        + msg
+        + '<br> <br>'
+        + '<strong>A estrutura de níveis não será salva</strong>',
+
+      buttons: [
+        {
+          text: 'Ok',
+          role: 'cancel',
+          handler: () => {
+            console.log('Cancel clicked');
+          }
+        },
+      ]
+    });
+
+    alert.present();
+
+  }
+
+
+
+
 
 
 
